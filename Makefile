@@ -6,7 +6,7 @@
 #    By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/04 15:47:14 by paminna           #+#    #+#              #
-#    Updated: 2021/02/05 17:08:45 by paminna          ###   ########.fr        #
+#    Updated: 2021/02/05 20:44:43 by paminna          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,17 +26,22 @@ CFLAGS = -Wall -Wextra -Werror -g
 LIBFLAG = -L. -lmlx -framework OpenGL -framework AppKit 
 .c.o:
 			 	${CC} ${CFLAGS} -c $< 
-
+init : 
+			$(MAKE) -C libft
+			$(MAKE) -C minilibx
+			
 $(NAME):		${OBJS}
-				$(MAKE) -C minilibx  && mv minilibx/libmlx.a . && rm -rf minilibx/libmlx.a
+				 mv minilibx/libmlx.a . && rm -rf minilibx/libmlx.a
 				$(CC) $(CFLAGS) $(OBJS) $(LIBFLAG) -o $(NAME)
 
-all: ${NAME}
+all: init ${NAME}
 
 clean:
+				$(MAKE) -C libft clean
 				${RM} ${OBJS}
 
 fclean:			clean
+				$(MAKE) -C libft clean
 				${RM} ${NAME}
 
 re:				fclean all
