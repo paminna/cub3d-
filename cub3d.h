@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:11:57 by paminna           #+#    #+#             */
-/*   Updated: 2021/02/05 20:41:17 by paminna          ###   ########.fr       */
+/*   Updated: 2021/02/06 19:59:38 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,21 @@ typedef struct  		s_data
 	int					y;
 	int 				i;
 	int 				j;
-	char	 			map[5][5];
+	char	 			**map;
 }               		t_data;
 
-int	n_in_rem(char *str_n, char **remainder, char **line);
-int	r_less_null(char **remainder);
-int	r_null(char **line, char **remainder);
-int	get_next_line(int fd, char **line);
-
+int		n_in_rem(char *str_n, char **remainder, char **line);
+int		r_less_null(char **remainder);
+int		r_null(char **line, char **remainder);
+int		get_next_line(int fd, char **line);
+t_data	*make_map(t_list **head, int size, t_data *img);
+void 	find_player(t_data *img);
+void 	redraw(t_data *img);
+void	ft_initialize(t_data *img);
+void	my_mlx_pixel_put(t_data *data, int x, int y, unsigned int color);
+void 	draw_square(t_data *img, int i, int j, int scale);
+void 	draw_map(t_data *img);
+int		win_close(int keycode, t_data *img);
 // typedef struct			s_player
 // {
 // 	unsigned int color;

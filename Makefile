@@ -6,12 +6,11 @@
 #    By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/04 15:47:14 by paminna           #+#    #+#              #
-#    Updated: 2021/02/05 20:44:43 by paminna          ###   ########.fr        #
+#    Updated: 2021/02/06 15:22:57 by paminna          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-
-SRCS = main.c 
+SRCS = main.c ft_parser.c get_next_line.c
 
 OBJS = ${SRCS:.c=.o}
 
@@ -31,8 +30,9 @@ init :
 			$(MAKE) -C minilibx
 			
 $(NAME):		${OBJS}
-				 mv minilibx/libmlx.a . && rm -rf minilibx/libmlx.a
-				$(CC) $(CFLAGS) $(OBJS) $(LIBFLAG) -o $(NAME)
+				mv minilibx/libmlx.a . && rm -rf minilibx/libmlx.a
+				mv libft/libft.a . && rm -rf libft/libft.a
+				$(CC) $(CFLAGS) $(OBJS) libft.a $(LIBFLAG) -o $(NAME)
 
 all: init ${NAME}
 
