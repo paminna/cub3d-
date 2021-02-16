@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 16:48:04 by paminna           #+#    #+#             */
-/*   Updated: 2021/02/06 20:58:29 by paminna          ###   ########.fr       */
+/*   Updated: 2021/02/16 20:25:11 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ void					ft_initialize(t_data *img)
 	img->y = 0;
 	img->color = 0xFFC0CB;
 	// player->color =0xFF5733; 
-	img->i = 0;
-	img->j = 0;
+	img->mapX = 0;
+	img->mapY = 0;
 }
 
 void					my_mlx_pixel_put(t_data *data, int x, int y, unsigned int color)
@@ -33,7 +33,7 @@ void					my_mlx_pixel_put(t_data *data, int x, int y, unsigned int color)
     *(unsigned int*)dst = color;
 }
 
-void draw_square(t_data *img, int i, int j, int scale)
+void draw_square(t_data *img, int i, int j)
 {
 	int i2 = i * scale;
 	int j2 = j * scale;
@@ -49,46 +49,47 @@ void draw_square(t_data *img, int i, int j, int scale)
 	}
 }
 
-
 void	find_player(t_data *img)
 {	
-	while (img->i < 7)
+	while (img->mapX < 7)
 	{
-		while (img->j < 7)
+		while (img->mapY < 7)
 		{
-			if (img->map[img->i][img->j] == 'p')
+			if (img->map[img->mapX][img->mapY] == 'p')
 			{
-				img->x = img->i;
-				img->y = img->j;
-				img->map[img->i][img->j] = '0';
+				img->x = img->mapX;
+				img->y = img->mapY;
+				img->map[img->mapX][img->mapY] = '0';
 			}
-			img->j++;
+			img->mapY++;
 		}
-		img->j = 0;
-		img->i++;
+		img->mapY = 0;
+		img->mapX++;
 	}
-	img->i = 0;
-	img->j = 0;
+	img->mapX = 0;
+	img->mapY = 0;
 }
 
 void draw_map(t_data *img)
 {
-	while (img->i < 7)
+	while (img->mapX < 7)
 	{
-		while (img->j < 7)
+		while (img->mapY < 7)
 		{
-			if (img->map[img->i][img->j] == '1')
-				draw_square(img, img->i, img->j, 20);
-			if (img->map[img->i][img->j] == 'p')
-				draw_square(img, img->i, img->j, 20);
-			img->j++;
+			if (img->map[img->mapX][img->mapY] == '1')
+				draw_square(img, img->mapX, img->mapY);
+			if (img->map[img->mapX][img->mapY] == 'p')
+			{
+				draw_square(img, img->mapX, img->mapY);
+			}
+			img->mapY++;
 		}
-		img->j = 0;
-		img->i++;
+		img->mapY = 0;
+		img->mapX++;
 	}
-	// mlx_put_image_to_window(img->mlx, img->mlx_win, img->img, 0, 0);
-	img->i = 0;
-	img->j = 0;
+	// mlx_put_image_to_window(img->mlx, img->mlx_win, img->mapXmg, 0, 0);
+	img->mapX = 0;
+	img->mapY = 0;
 }
 
 void redraw(t_data *img)
@@ -96,12 +97,12 @@ void redraw(t_data *img)
 	img->img = mlx_new_image(img->mlx, 800, 580);
 	img->addr = mlx_get_data_addr(img->img, &img->bits_per_pixel, &img->line_length,
                                  &img->endian);
- 	draw_square(img, img->x, img->y, 20);
+ 	draw_square(img, img->x, img->y);
 }
 
 int	win_close(int keycode, t_data *img)
 {
-	if (keycode == 2)
+	if (keycode == D)
 	{
 		if (img->map[img->x+1][img->y] != '1') {
 			img->x += 1;
@@ -109,7 +110,7 @@ int	win_close(int keycode, t_data *img)
 			img->map[img->x - 1][img->y] = '0';
 		}
 	}
-	if (keycode == 0)
+	if (keycode == A)
 	{
 		if (img->map[img->x-1][img->y] != '1') {
 			img->x -= 1;
@@ -117,7 +118,7 @@ int	win_close(int keycode, t_data *img)
 			img->map[img->x + 1][img->y] = '0';
 		}
 	}
-	if (keycode == 13)
+	if (keycode == W)
 	{
 		if (img->map[img->x][img->y-1] != '1') {
 			img->y -= 1;
@@ -125,7 +126,7 @@ int	win_close(int keycode, t_data *img)
 			img->map[img->x][img->y + 1] = '0';
 		}
 	}
-	if (keycode == 1)
+	if (keycode == S)
 	{
 		if (img->map[img->x][img->y+1] != '1') {
 			img->y += 1;
@@ -137,7 +138,7 @@ int	win_close(int keycode, t_data *img)
 	redraw(img);
 	draw_map(img);
 	mlx_put_image_to_window(img->mlx, img->mlx_win, img->img, 0, 0);
-	if (keycode == 53)
+	if (keycode == ESC)
 		exit(0);
 	return (0);
 }
@@ -146,6 +147,7 @@ int	win_close(int keycode, t_data *img)
 int main(void)
 {
 	t_data img;
+	t_ray	ray;
 	int i;
 	int j;
 
@@ -165,6 +167,7 @@ int main(void)
 	find_player(&img);
 	redraw(&img);
 	draw_map(&img);
+	ft_raycast(&img, &ray);
 	mlx_put_image_to_window(img.mlx, img.mlx_win, img.img, 0, 0);
 	mlx_hook(img.mlx_win, 2, 1L<<0, win_close, &img);
 	mlx_loop(img.mlx);

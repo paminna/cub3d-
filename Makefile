@@ -6,11 +6,11 @@
 #    By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/04 15:47:14 by paminna           #+#    #+#              #
-#    Updated: 2021/02/06 15:22:57 by paminna          ###   ########.fr        #
+#    Updated: 2021/02/07 14:08:55 by paminna          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS = main.c ft_parser.c get_next_line.c
+SRCS = main.c ft_parser.c get_next_line.c ft_raycast.c
 
 OBJS = ${SRCS:.c=.o}
 
