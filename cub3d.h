@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:11:57 by paminna           #+#    #+#             */
-/*   Updated: 2021/02/16 20:24:40 by paminna          ###   ########.fr       */
+/*   Updated: 2021/02/17 18:10:23 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 #  define screenHeight 580
 #  define scale 20
 #  define step 0.3
+#  define pink 0xFFC0CB
+#  define orange 0xFF5733
 # endif
 
 #include "libft/libft.h"
@@ -75,6 +77,9 @@ typedef struct			s_ray
 	int		side;
 	double	sideDistX;
 	double	sideDistY;
+	int		lineheight;
+	int		drawstart;
+	int		drawend;
 	t_player player;
 }						t_ray;
 
@@ -84,7 +89,7 @@ int		r_less_null(char **remainder);
 int		r_null(char **line, char **remainder);
 int		get_next_line(int fd, char **line);
 t_data	*make_map(t_list **head, int size, t_data *img);
-void 	find_player(t_data *img);
+void 	find_player(t_data *img, t_player *player);
 void 	redraw(t_data *img);
 void	ft_initialize(t_data *img);
 void	my_mlx_pixel_put(t_data *data, int x, int y, unsigned int color);
