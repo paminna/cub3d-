@@ -6,7 +6,7 @@
 #    By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/04 15:47:14 by paminna           #+#    #+#              #
-#    Updated: 2021/02/07 14:08:55 by paminna          ###   ########.fr        #
+#    Updated: 2021/02/18 18:32:24 by paminna          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ CFLAGS = -Wall -Wextra -Werror -g
 
 LIBFLAG = -L. -lmlx -framework OpenGL -framework AppKit 
 .c.o:
-			 	${CC} ${CFLAGS} -c $< 
+			 	${CC} ${CFLAGS} ${LIBFLAGS} -c $< 
 init : 
 			$(MAKE) -C libft
 			$(MAKE) -C minilibx

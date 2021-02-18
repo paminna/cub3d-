@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:11:57 by paminna           #+#    #+#             */
-/*   Updated: 2021/02/17 18:10:23 by paminna          ###   ########.fr       */
+/*   Updated: 2021/02/18 19:20:03 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void	ft_initialize(t_data *img);
 void	my_mlx_pixel_put(t_data *data, int x, int y, unsigned int color);
 void 	draw_square(t_data *img, int i, int j);
 void 	draw_map(t_data *img);
-int		win_close(int keycode, t_data *img);
+int		win_close(int keycode, t_data *img, t_ray *ray);
 void	ft_raycast(t_data *img, t_ray *ray);
 // void 	ft_cast_ray(t_data *img);
 // void 	ft_init_ray(t_ray *ray, t_data *img);
