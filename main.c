@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 16:48:04 by paminna           #+#    #+#             */
-/*   Updated: 2021/02/17 17:47:54 by paminna          ###   ########.fr       */
+/*   Updated: 2021/02/18 15:12:39 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,6 +167,9 @@ int main(void)
 	find_player(&img, &ray.player);
 	redraw(&img);
 	// draw_map(&img);
+	img.img = mlx_new_image(img.mlx, 800, 580);
+	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length,
+                                 &img.endian);
 	ft_raycast(&img, &ray);
 	mlx_put_image_to_window(img.mlx, img.mlx_win, img.img, 0, 0);
 	mlx_hook(img.mlx_win, 2, 1L<<0, win_close, &img);
