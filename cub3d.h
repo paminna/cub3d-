@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:11:57 by paminna           #+#    #+#             */
-/*   Updated: 2021/02/18 19:20:03 by paminna          ###   ########.fr       */
+/*   Updated: 2021/02/19 19:40:56 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 #  define step 0.3
 #  define pink 0xFFC0CB
 #  define orange 0xFF5733
+#  define movespeed 0.1
 # endif
 
 #include "libft/libft.h"
@@ -97,6 +98,7 @@ void 	draw_square(t_data *img, int i, int j);
 void 	draw_map(t_data *img);
 int		win_close(int keycode, t_data *img, t_ray *ray);
 void	ft_raycast(t_data *img, t_ray *ray);
+void 	ft_init(t_ray *ray);
 // void 	ft_cast_ray(t_data *img);
 // void 	ft_init_ray(t_ray *ray, t_data *img);
 

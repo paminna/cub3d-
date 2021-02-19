@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 16:48:04 by paminna           #+#    #+#             */
-/*   Updated: 2021/02/18 20:34:53 by paminna          ###   ########.fr       */
+/*   Updated: 2021/02/19 20:08:10 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,8 @@ void	find_player(t_data *img, t_player *player)
 		{
 			if (img->map[img->mapX][img->mapY] == 'p')
 			{
-				player->posY = img->mapX;
-				player->posX= img->mapY;
+				player->posY = img->mapY;
+				player->posX = img->mapX;
 				// img->x = img->mapX;
 				// img->y = img->mapY;
 				img->map[img->mapX][img->mapY] = '0';
@@ -102,36 +102,40 @@ void redraw(t_data *img)
 
 int	win_close(int keycode, t_data *img, t_ray *ray)
 {
-	if (keycode == D)
-	{
-		if (img->map[(int)ray->player.posX +1][(int)ray->player.posY] == '0') {
-			ray->player.posX  += 1;
-			img->map[(int)ray->player.posX][(int)ray->player.posY] = 'p';
-			img->map[(int)ray->player.posX - 1][(int)ray->player.posY] = '0';
-		}
-	}
-	if (keycode == A)
-	{
-		if (img->map[(int)ray->player.posX -1][(int)ray->player.posY] == '0') {
-			ray->player.posX -= 1;
-			img->map[(int)ray->player.posX][(int)ray->player.posY] = 'p';
-			img->map[(int)ray->player.posX  + 1][(int)ray->player.posY] = '0';
-		}
-	}
 	if (keycode == W)
 	{
-		if (img->map[(int)ray->player.posX][(int)ray->player.posY-1] == '0') {
-			ray->player.posY -= 1;
-			img->map[(int)ray->player.posX][(int)ray->player.posY] = 'p';
-			img->map[(int)ray->player.posX][(int)ray->player.posY + 1] = '0';
+		if (img->map[(int)(ray->player.posX + ray->dirX * movespeed)][(int)ray->player.posY] == '0') 
+		{
+			ray->player.posX += ray->dirX * movespeed;
+			// img->map[(int)ray->player.posX][(int)ray->player.posY] = 'p';
+			img->map[(int)(ray->player.posX + ray->dirX * movespeed)][(int)ray->player.posY] = '0';
 		}
 	}
 	if (keycode == S)
 	{
-		if (img->map[(int)ray->player.posX][(int)ray->player.posY+1] == '0') {
-			ray->player.posY += 1;
-			img->map[(int)ray->player.posX][(int)ray->player.posY] = 'p';
-			img->map[(int)ray->player.posX][(int)ray->player.posY - 1] = '0';
+		if (img->map[(int)(ray->player.posX - ray->dirX * movespeed)][(int)ray->player.posY] == '0') 
+		{
+			ray->player.posX -= ray->dirX * movespeed;
+			// img->map[(int)ray->player.posX][(int)ray->player.posY] = 'p';
+			img->map[(int)(ray->player.posX - ray->dirX * movespeed)][(int)ray->player.posY] = '0';
+		}
+	}
+	if (keycode == D)
+	{
+		if (img->map[(int)ray->player.posX][(int)(ray->dirX * movespeed)] == '0') 
+		{
+			ray->player.posY -= ray->dirX * movespeed;
+			// img->map[(int)ray->player.posX][(int)ray->player.posY] = 'p';
+			img->map[(int)ray->player.posX][(int)(ray->dirX * movespeed)] = '0';
+		}
+	}
+	if (keycode == A)
+	{
+		if (img->map[(int)ray->player.posX][(int)(ray->dirX * movespeed)] == '0') 
+		{
+			ray->player.posY += ray->dirX * movespeed;
+			// img->map[(int)ray->player.posX][(int)ray->player.posY] = 'p';
+			img->map[(int)ray->player.posX][(int)(ray->dirX * movespeed)] = '0';
 		}
 	}
 	// ray->player.posX = img->mapX;
@@ -176,6 +180,7 @@ int main(void)
 	img.img = mlx_new_image(img.mlx, 800, 580);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length,
                                  &img.endian);
+	ft_init(&ray);
 	ft_raycast(&img, &ray);
 	mlx_put_image_to_window(img.mlx, img.mlx_win, img.img, 0, 0);
 	mlx_hook(img.mlx_win, 2, 1L<<0, win_close, &img);

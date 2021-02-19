@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/07 14:08:33 by paminna           #+#    #+#             */
-/*   Updated: 2021/02/18 20:48:38 by paminna          ###   ########.fr       */
+/*   Updated: 2021/02/19 19:40:01 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ void ft_raycast(t_data *img, t_ray *ray)
 	int y;
 	
 	x = -1;
-	ft_init(ray);
 	while (++x < screenWidth)
 	{
 		ray->cameraX = 2 * x / (double)screenWidth - 1;
@@ -110,12 +109,9 @@ void ft_raycast(t_data *img, t_ray *ray)
 		if (ray->drawstart >= screenHeight)
 			ray->drawend = screenHeight - 1;
 		y = ray->drawstart;
-		printf("wall_start = %d\n", y);
 		while (y < ray->drawend)
 		{
 			my_mlx_pixel_put(img, x, y, pink);
-			// redraw(img);
-			// mlx_put_image_to_window(img->mlx, img->mlx_win, img->img, 0, 0);
 			y++;
 		}
 	}
