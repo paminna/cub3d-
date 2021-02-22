@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_raycast.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: paminna <paminna@stud.21-school.ru>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/07 14:08:33 by paminna           #+#    #+#             */
-/*   Updated: 2021/02/19 19:40:01 by paminna          ###   ########.fr       */
+/*   Updated: 2021/02/22 18:49:21 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ void ft_raycast(t_data *img, t_ray *ray)
 		ray->cameraX = 2 * x / (double)screenWidth - 1;
 		ray->rayDirX = ray->dirX + ray->planeX * ray->cameraX;
 		ray->rayDirY = ray->dirY + ray->planeY * ray->cameraX;
-		img->mapX = (int)ray->player.posX;
-		img->mapY = (int)ray->player.posY;
+		img->mapX = (int)ray->posX;
+		img->mapY = (int)ray->posY;
 		if (ray->rayDirY == 0)
 			ray->deltaDistX = 0;
 		else
@@ -62,22 +62,22 @@ void ft_raycast(t_data *img, t_ray *ray)
 		if (ray->rayDirX < 0)
 		{
 			ray->stepX = -1;
-			ray->sideDistX = (ray->player.posX - img->mapX) * ray->deltaDistX;
+			ray->sideDistX = (ray->posX - img->mapX) * ray->deltaDistX;
 		}
 		else
 		{
 			ray->stepX = 1;
-			ray->sideDistX = (img->mapX + 1.0 - ray->player.posX) * ray->deltaDistX;
+			ray->sideDistX = (img->mapX + 1.0 - ray->posX) * ray->deltaDistX;
 		}
 		if (ray->rayDirY < 0)
 		{
 			ray->stepY = -1;
-			ray->sideDistY = (ray->player.posY - img->mapY) * ray->deltaDistY;
+			ray->sideDistY = (ray->posY - img->mapY) * ray->deltaDistY;
 		}
 		else
 		{
 			ray->stepY = 1;
-			ray->sideDistY = (img->mapY + 1.0 - ray->player.posY) * ray->deltaDistY;
+			ray->sideDistY = (img->mapY + 1.0 - ray->posY) * ray->deltaDistY;
 		}
 		ray->hit = 0;
 		while (ray->hit == 0)
@@ -98,9 +98,9 @@ void ft_raycast(t_data *img, t_ray *ray)
 				ray->hit = 1;
 		}
 		if (ray->side == 0)
-			ray->perpWallDist = ((double)img->mapX - ray->player.posX + (1 - (double)ray->stepX) / 2) / ray->rayDirX;
+			ray->perpWallDist = ((double)img->mapX - ray->posX + (1 - (double)ray->stepX) / 2) / ray->rayDirX;
 		else
-			ray->perpWallDist = ((double)img->mapY - ray->player.posY + (1 - (double)ray->stepY) / 2) / ray->rayDirY;
+			ray->perpWallDist = ((double)img->mapY - ray->posY + (1 - (double)ray->stepY) / 2) / ray->rayDirY;
 		ray->lineheight = (int) (screenHeight / ray->perpWallDist);
 		ray->drawstart = -ray->lineheight / 2 + screenHeight / 2;
 		if (ray->drawstart < 0)

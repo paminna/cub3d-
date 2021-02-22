@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: paminna <paminna@stud.21-school.ru>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:11:57 by paminna           #+#    #+#             */
-/*   Updated: 2021/02/19 19:40:56 by paminna          ###   ########.fr       */
+/*   Updated: 2021/02/22 18:46:13 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,29 +30,12 @@
 # endif
 
 #include "libft/libft.h"
-# include <mlx.h>
+# include "minilibx/mlx.h"
 # include <stdlib.h>
 # include <fcntl.h>
 # include <unistd.h>
 # include <math.h>
 # include <stdio.h> //
-
-typedef struct  		s_data
-{
-    void        		*img;
-    char       			*addr;
-    int         		bits_per_pixel;
-    int         		line_length;
-    int         		endian;
-	unsigned int 		color;
-	void 				*mlx;
-	void 				*mlx_win;
-	int					x;
-	int					y;
-	int 				mapX;
-	int 				mapY;
-	char	 			**map;
-}               		t_data;
 
 typedef struct			s_player
 {
@@ -81,22 +64,40 @@ typedef struct			s_ray
 	int		lineheight;
 	int		drawstart;
 	int		drawend;
-	t_player player;
+	double	posX;
+	double	posY;
 }						t_ray;
 
+typedef struct  		s_data
+{
+    void        		*img;
+    char       			*addr;
+    int         		bits_per_pixel;
+    int         		line_length;
+    int         		endian;
+	unsigned int 		color;
+	void 				*mlx;
+	void 				*mlx_win;
+	int					x;
+	int					y;
+	int 				mapX;
+	int 				mapY;
+	char	 			**map;
+	t_ray				ray;
+}               		t_data;
 
 int		n_in_rem(char *str_n, char **remainder, char **line);
 int		r_less_null(char **remainder);
 int		r_null(char **line, char **remainder);
 int		get_next_line(int fd, char **line);
 t_data	*make_map(t_list **head, int size, t_data *img);
-void 	find_player(t_data *img, t_player *player);
+void 	find_player(t_data *img, t_ray *player);
 void 	redraw(t_data *img);
 void	ft_initialize(t_data *img);
 void	my_mlx_pixel_put(t_data *data, int x, int y, unsigned int color);
 void 	draw_square(t_data *img, int i, int j);
 void 	draw_map(t_data *img);
-int		win_close(int keycode, t_data *img, t_ray *ray);
+int		win_close(int keycode, t_data *img);
 void	ft_raycast(t_data *img, t_ray *ray);
 void 	ft_init(t_ray *ray);
 // void 	ft_cast_ray(t_data *img);
