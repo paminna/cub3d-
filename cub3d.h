@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@stud.21-school.ru>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:11:57 by paminna           #+#    #+#             */
-/*   Updated: 2021/02/22 18:46:13 by paminna          ###   ########.fr       */
+/*   Updated: 2021/02/23 21:32:00 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 #  define pink 0xFFC0CB
 #  define orange 0xFF5733
 #  define movespeed 0.1
+#  define rotation 0.2
 # endif
 
 #include "libft/libft.h"

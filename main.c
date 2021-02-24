@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@stud.21-school.ru>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 16:48:04 by paminna           #+#    #+#             */
-/*   Updated: 2021/02/22 18:47:13 by paminna          ###   ########.fr       */
+/*   Updated: 2021/02/24 11:35:42 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,11 @@ void redraw(t_data *img)
 
 int	win_close(int keycode, t_data *img)
 {
-	printf("player_x = %f\n", img->ray.posX);
-	printf("player_x = %f\n", img->ray.posY);
+	double oldDirX;
+	double oldPlaneX;
+
+	oldPlaneX = img->ray.planeX;
+	oldDirX = img->ray.dirX;
 	if (keycode == W)
 	{
 		if (img->map[(int)(img->ray.posX)][(int)(img->ray.posY + img->ray.dirY * movespeed)] != '1') 
@@ -121,30 +124,63 @@ int	win_close(int keycode, t_data *img)
 	}
 	if (keycode == S)
 	{
-		if (img->map[(int)(img->ray.posX - img->ray.dirX * movespeed)][(int)img->ray.posY] == '0') 
+		if (img->map[(int)(img->ray.posX)][(int)(img->ray.posY - img->ray.dirY * movespeed)] != '1') 
+		{
+			img->ray.posY -= img->ray.dirY * movespeed;
+			// img->map[(int)img->ray.posX][(int)img->ray.posY] = 'p';
+			// img->map[(int)(img->ray.posX + img->ray.dirX * movespeed)][(int)img->ray.posY] = '0';
+		}
+		if (img->map[(int)(img->ray.posX - img->ray.dirX * movespeed)][(int)(img->ray.posY)] != '1') 
 		{
 			img->ray.posX -= img->ray.dirX * movespeed;
 			// img->map[(int)img->ray.posX][(int)img->ray.posY] = 'p';
-			img->map[(int)(img->ray.posX - img->ray.dirX * movespeed)][(int)img->ray.posY] = '0';
+			// img->map[(int)(img->ray.posX + img->ray.dirX * movespeed)][(int)img->ray.posY] = '0';
 		}
 	}
 	if (keycode == D)
 	{
-		if (img->map[(int)img->ray.posX][(int)(img->ray.dirX * movespeed)] == '0') 
+		if (img->map[(int)(img->ray.posX)][(int)(img->ray.posY + img->ray.planeY * movespeed)] != '1') 
 		{
-			img->ray.posY -= img->ray.dirX * movespeed;
+			img->ray.posY += img->ray.planeY * movespeed;
 			// img->map[(int)img->ray.posX][(int)img->ray.posY] = 'p';
-			img->map[(int)img->ray.posX][(int)(img->ray.dirX * movespeed)] = '0';
+			// img->map[(int)(img->ray.posX + img->ray.dirX * movespeed)][(int)img->ray.posY] = '0';
+		}
+		if (img->map[(int)(img->ray.posX + img->ray.planeX * movespeed)][(int)(img->ray.posY)] != '1') 
+		{
+			img->ray.posX += img->ray.planeX * movespeed;
+			// img->map[(int)img->ray.posX][(int)img->ray.posY] = 'p';
+			// img->map[(int)(img->ray.posX + img->ray.dirX * movespeed)][(int)img->ray.posY] = '0';
 		}
 	}
 	if (keycode == A)
 	{
-		if (img->map[(int)img->ray.posX][(int)(img->ray.dirX * movespeed)] == '0') 
+		if (img->map[(int)(img->ray.posX)][(int)(img->ray.posY - img->ray.planeY * movespeed)] != '1') 
 		{
-			img->ray.posY += img->ray.dirX * movespeed;
+			img->ray.posY -= img->ray.planeY * movespeed;
 			// img->map[(int)img->ray.posX][(int)img->ray.posY] = 'p';
-			img->map[(int)img->ray.posX][(int)(img->ray.dirX * movespeed)] = '0';
+			// img->map[(int)(img->ray.posX + img->ray.dirX * movespeed)][(int)img->ray.posY] = '0';
 		}
+		if (img->map[(int)(img->ray.posX - img->ray.planeX * movespeed)][(int)(img->ray.posY)] != '1') 
+		{
+			img->ray.posX -= img->ray.planeX * movespeed;
+			// img->map[(int)img->ray.posX][(int)img->ray.posY] = 'p';
+			// img->map[(int)(img->ray.posX + img->ray.dirX * movespeed)][(int)img->ray.posY] = '0';
+		}
+	}
+	if (keycode == 124)
+	{	
+      img->ray.dirX = img->ray.dirX * cos(-rotation) - img->ray.dirY * sin(-rotation);
+      img->ray.dirY = oldDirX * sin(-rotation) + img->ray.dirY * cos(-rotation);
+     
+      img->ray.planeX = img->ray.planeX * cos(-rotation) - img->ray.planeY * sin(-rotation);
+      img->ray.planeY = oldPlaneX * sin(-rotation) + img->ray.planeY * cos(-rotation);
+	}
+	if (keycode == 123)
+	{
+		img->ray.dirX = img->ray.dirX * cos(rotation) - img->ray.dirY * sin(rotation);
+		img->ray.dirY = oldDirX * sin(rotation) + img->ray.dirY * cos(rotation);
+		img->ray.planeX = img->ray.planeX * cos(rotation) - img->ray.planeY * sin(rotation);
+		img->ray.planeY = oldPlaneX * sin(rotation) + img->ray.planeY * cos(rotation);
 	}
 	// img->ray.posX = img->mapX;
 	// img->ray.posY = img->mapY;
