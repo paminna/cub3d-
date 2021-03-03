@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@stud.21-school.ru>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 16:48:04 by paminna           #+#    #+#             */
-/*   Updated: 2021/02/24 11:35:42 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/02 18:58:23 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,11 @@ void					ft_initialize(t_data *img)
 void					my_mlx_pixel_put(t_data *data, int x, int y, unsigned int color)
 {
     char    *dst;
-
-    dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
-    *(unsigned int*)dst = color;
+	if (y < screenHeight && x < screenWidth && x >= 0 && y >= 0)
+	{
+    	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
+    	*(unsigned int*)dst = color;
+	}
 }
 
 void draw_square(t_data *img, int i, int j)

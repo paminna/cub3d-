@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@stud.21-school.ru>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/07 14:08:33 by paminna           #+#    #+#             */
-/*   Updated: 2021/02/22 18:49:21 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/03 11:12:19 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void ft_raycast(t_data *img, t_ray *ray)
 			if (img->map[img->mapX][img->mapY] == '1')
 				ray->hit = 1;
 		}
-		if (ray->side == 0)
+		if (ray->side == 0 )
 			ray->perpWallDist = ((double)img->mapX - ray->posX + (1 - (double)ray->stepX) / 2) / ray->rayDirX;
 		else
 			ray->perpWallDist = ((double)img->mapY - ray->posY + (1 - (double)ray->stepY) / 2) / ray->rayDirY;
@@ -109,9 +109,19 @@ void ft_raycast(t_data *img, t_ray *ray)
 		if (ray->drawstart >= screenHeight)
 			ray->drawend = screenHeight - 1;
 		y = ray->drawstart;
+		// добавить разбиение на цвета в зависимости от 
+		int color;
+
+		if (ray->side == 0)
+		{
+			color = 0xFF5733;
+		}
+		else 
+а			color = pink;
+		}
 		while (y < ray->drawend)
 		{
-			my_mlx_pixel_put(img, x, y, pink);
+			my_mlx_pixel_put(img, x, y, color);
 			y++;
 		}
 	}
