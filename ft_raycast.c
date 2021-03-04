@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_raycast.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paminna <paminna@stud.21-school.ru>        +#+  +:+       +#+        */
+/*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/07 14:08:33 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/03 11:12:19 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/04 15:51:44 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void ft_init(t_ray *ray)
 	ray->dirX = -1;
 	ray->dirY = 0;
 	ray->planeX = 0;
-	ray->planeY = 0.66;
+	ray->planeY = -0.66;
 	ray->cameraX = 0;
 	ray->rayDirX = 0;
 	ray->rayDirY = 0;
@@ -25,12 +25,15 @@ void ft_init(t_ray *ray)
 	ray->lineheight = 0;
 	ray->perpWallDist = 0;
 	ray->side = 0;
+	ray->color = 0;
 }
 
 void ft_raycast(t_data *img, t_ray *ray)
 {
 	int x;
 	int y;
+	int i;
+	
 	
 	x = -1;
 	while (++x < screenWidth)
@@ -106,23 +109,34 @@ void ft_raycast(t_data *img, t_ray *ray)
 		if (ray->drawstart < 0)
 			ray->drawstart = 0;
 		ray->drawend = ray->lineheight / 2 + screenHeight / 2;
-		if (ray->drawstart >= screenHeight)
+		if (ray->drawstart >= screenHeight || ray->drawend < 0)
 			ray->drawend = screenHeight - 1;
-		y = ray->drawstart;
-		// добавить разбиение на цвета в зависимости от 
-		int color;
-
 		if (ray->side == 0)
 		{
-			color = 0xFF5733;
+			if (ray->rayDirY < 0)
+				ray->color = pink; // south
+			if (ray->rayDirY > 0)
+				ray->color = orange; // north
 		}
-		else 
-а			color = pink;
-		}
-		while (y < ray->drawend)
+		else if (ray->side == 1)
 		{
-			my_mlx_pixel_put(img, x, y, color);
-			y++;
+			if (ray->rayDirX < 0)
+				ray->color = pink;
+			if (ray->rayDirX > 0)
+				ray->color = orange;
 		}
+        y = 0;
+        i = ray->drawend;
+        while (y++ < ray->drawstart)
+            my_mlx_pixel_put(img, x, y, blue);
+        y  = ray->drawstart;
+        while (y <= ray->drawend)
+        {
+            my_mlx_pixel_put(img, x, y, ray->color);
+            y++;
+        }
+        y = i;
+        while (y++ < screenHeight)
+            my_mlx_pixel_put(img, x, y, green);
 	}
 }

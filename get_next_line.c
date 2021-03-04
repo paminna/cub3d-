@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/20 18:47:16 by paminna           #+#    #+#             */
-/*   Updated: 2021/02/05 20:35:16 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/04 13:42:00 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,5 +71,10 @@ int	get_next_line(int fd, char **line)
 		if ((str_n = ft_strchr(remainder, '\n')))
 			return (n_in_rem(str_n, &remainder, line));
 	}
+	// if (r < 0)
+	// 	return (r_less_null(&remainder));
+	// else
+	// 	return (r_null(line, &remainder));
+	// return (0);
 	return ((r < 0) ? r_less_null(&remainder) : r_null(line, &remainder));
 }
