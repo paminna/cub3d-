@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:11:09 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/04 15:12:16 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/06 19:09:55 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,11 +98,15 @@ t_data	*make_map(t_list **head, int size, t_data *img)
 // 			{
 // 				ray->planeX = 0;
 // 				ray->planeY = 0.66;
+// 				ray->dirX = -1;
+// 				ray->dirY = 0;
 // 			}
 // 			if (str[i] == 'S')
 // 			{
 // 				ray->planeX = 0;
 // 				ray->planeY = -0.66;
+// 				ray->dirX = 1;
+// 				ray->dirY = 0;
 // 			}
 // 			if (str[i] == 'E')
 // 			{
