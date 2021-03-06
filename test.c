@@ -1,65 +1,14 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_parser.c                                        :+:      :+:    :+:   */
+/*   test.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/04 19:11:09 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/06 19:35:01 by paminna          ###   ########.fr       */
+/*   Created: 2021/03/06 19:37:45 by paminna           #+#    #+#             */
+/*   Updated: 2021/03/06 19:46:27 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include "cub3d.h"
-
-// t_data	*make_map(t_list **head, int size, t_data *img)
-// {
-// 	int		  i = -1;
-// 	t_list	*tmp = *head;
-
-// 	img->map = ft_calloc(size + 1, sizeof(char *));
-// 	while (tmp)
-// 	{
-// 		img->map[++i] = tmp->content;
-// 		tmp= tmp->next;
-// 	}
-// 	img->map[++i] = NULL;
-// 	return (img);
-// }
-
-int		ft_find_numbers(char *str)
-{
-	int i;
-	int numb;
-	
-	i = 0;
-	while (str[i] != '\0')
-	{
-		if (ft_isdigit(str[i]))
-			numb = ft_atoi(&str[i]);
-		i++;
-	}
-	return (numb);
-}
-
-int		ft_find_color(char *str)
-{
-	int i;
-	int color;
-	
-	i = 0;
-	while (str[i] != '\0')
-	{
-		if (str[i] == '0' && str[i+1] == 'x')
-		{
-			i = i + 2;
-			while (ft_isdigit(str[i]))
-				color = ft_atoi(&str[i]);
-		}
-		i++;
-	}
-	return (color);
-}
 
 void ft_parser(t_data *img, t_ray *ray)
 {
@@ -131,4 +80,19 @@ void ft_parser(t_data *img, t_ray *ray)
 			}
 		}
 	}
+}
+
+int main()
+{
+	char map[8][8] =
+	{	
+ 	{'1', '1', '1', '1', '1', '1', '1', '1'},
+ 	{'1', '0', '1', '0', '0', '0', '0', '1'},
+ 	{'1', '0', '1', '0', '0', '0', '0', '1'},
+ 	{'1', '0', '0', '0', '0', '1', '1', '1'},
+ 	{'1', '0', 'p', '0', '0', '0', '0', '1'},
+	{'1',0001111},
+	{'1', '0', 'p', '0', '0', '0', '0', '1'},
+	{'1', '0', 'p', '0', '0', '0', '0', '1'}
+	};
 }
