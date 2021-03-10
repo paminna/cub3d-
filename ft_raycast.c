@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_raycast.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paminna <paminna@stud.21-school.ru>        +#+  +:+       +#+        */
+/*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/07 14:08:33 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/08 17:02:20 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/10 18:49:30 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ void ft_init(t_ray *ray)
 {
 	ray->dirX = -1;
 	ray->dirY = 0;
-	ray->planeX = 0;
-	ray->planeY = 0.66;
+	// ray->planeX = 0;
+	// ray->planeY = 0.66;
 	ray->cameraX = 0;
 	ray->rayDirX = 0;
 	ray->rayDirY = 0;
@@ -121,11 +121,11 @@ void ft_raycast(t_data *img, t_ray *ray)
 	 	y = 0;
         i = ray->drawend;
         while (y++ < ray->drawstart)
-            my_mlx_pixel_put(img, x, y, blue);
+            my_mlx_pixel_put(img, x, y, 28369126);
         y  = ray->drawstart;
         while (y <= ray->drawend)
         {
-            my_mlx_pixel_put(img, x, y, ray->color);
+            my_mlx_pixel_put(img, x, y, 28369126);
             y++;
         }
         y = i;
