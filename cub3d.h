@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: paminna <paminna@stud.21-school.ru>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:11:57 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/06 19:11:39 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/08 17:00:52 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ typedef struct			s_ray
 	int		drawend;
 	double	posX;
 	double	posY;
-	int		color;
+	int 	color;
 }						t_ray;
 
 typedef struct  		s_data
@@ -82,20 +82,11 @@ typedef struct  		s_data
 	unsigned int 		color;
 	void 				*mlx;
 	void 				*mlx_win;
-	// int					x;
-	// int					y;
+	int					x;
+	int					y;
 	int 				mapX;
 	int 				mapY;
 	char	 			**map;
-	int					no;
-	int					so;
-	int					we;
-	int					ea;
-	int					c;
-	int					f;
-	int					s;
-	int					width;
-	int					height;
 	t_ray				ray;
 }               		t_data;
 
@@ -113,7 +104,6 @@ void 	draw_map(t_data *img);
 int		win_close(int keycode, t_data *img);
 void	ft_raycast(t_data *img, t_ray *ray);
 void 	ft_init(t_ray *ray);
-// void 	ft_parser(t_data *img, t_ray *ray);
 // void 	ft_cast_ray(t_data *img);
 // void 	ft_init_ray(t_ray *ray, t_data *img);
 

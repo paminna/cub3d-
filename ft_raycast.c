@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_raycast.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: paminna <paminna@stud.21-school.ru>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/07 14:08:33 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/06 19:13:12 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/08 17:02:20 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,13 @@ void ft_init(t_ray *ray)
 	ray->lineheight = 0;
 	ray->perpWallDist = 0;
 	ray->side = 0;
-	ray->color = 0;
 }
 
 void ft_raycast(t_data *img, t_ray *ray)
 {
 	int x;
 	int y;
-	// int i;
-	
+	int i;
 	
 	x = -1;
 	while (++x < screenWidth)
@@ -91,9 +89,9 @@ void ft_raycast(t_data *img, t_ray *ray)
 				img->mapX += ray->stepX;
 				ray->side = 0;
 				if (ray->rayDirX < 0)
-					ray->color = 0x808080;
+					ray->color = 0xDDA0DD;
 				if (ray->rayDirX > 0)
-					ray->color = 0x00FFFF;
+					ray->color = 0xE6E6FA;
 			}
 			else
 			{
@@ -101,9 +99,9 @@ void ft_raycast(t_data *img, t_ray *ray)
 				img->mapY += ray->stepY;
 				ray->side = 1;
 				if (ray->rayDirY < 0)
-					ray->color = pink; 
+					ray->color = pink;
 				if (ray->rayDirY > 0)
-					ray->color = orange;
+					ray->color = 0xFFE4C4;
 			}
 			if (img->map[img->mapX][img->mapY] == '1')
 				ray->hit = 1;
@@ -117,34 +115,26 @@ void ft_raycast(t_data *img, t_ray *ray)
 		if (ray->drawstart < 0)
 			ray->drawstart = 0;
 		ray->drawend = ray->lineheight / 2 + screenHeight / 2;
-		if (ray->drawstart >= screenHeight || ray->drawend < 0)
+		if (ray->drawstart >= screenHeight)
 			ray->drawend = screenHeight - 1;
-		// if (ray->side == 0)
-		// {
-		// 	if (ray->rayDirY < 0)
-		// 		ray->color = pink; // south
-		// 	if (ray->rayDirY > 0)
-		// 		ray->color = orange; // north
-		// }
-		// else if (ray->side == 1)
-		// {
-		// 	if (ray->rayDirX < 0)
-		// 		ray->color = pink;
-		// 	if (ray->rayDirX > 0)
-		// 		ray->color = orange;
-		// }
-        // y = 0;
-        // i = ray->drawend;
-        // while (y++ < ray->drawstart)
-        //     my_mlx_pixel_put(img, x, y, blue);
+		// y = ray->drawstart;
+	 	y = 0;
+        i = ray->drawend;
+        while (y++ < ray->drawstart)
+            my_mlx_pixel_put(img, x, y, blue);
         y  = ray->drawstart;
         while (y <= ray->drawend)
         {
             my_mlx_pixel_put(img, x, y, ray->color);
             y++;
         }
-        // y = i;
-        // while (y++ < screenHeight)
-        //     my_mlx_pixel_put(img, x, y, green);
+        y = i;
+        while (y++ < screenHeight)
+            my_mlx_pixel_put(img, x, y, green);
+		// while (y < ray->drawend)
+		// {
+		// 	my_mlx_pixel_put(img, x, y, ray->color);
+		// 	y++;
+		// }
 	}
 }
