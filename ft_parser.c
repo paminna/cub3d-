@@ -6,26 +6,11 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:11:09 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/10 19:07:54 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/11 19:55:26 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-// t_data	*make_map(t_list **head, int size, t_data *img)
-// {
-// 	int		  i = -1;
-// 	t_list	*tmp = *head;
-
-// 	img->map = ft_calloc(size + 1, sizeof(char *));
-// 	while (tmp)
-// 	{
-// 		img->map[++i] = tmp->content;
-// 		tmp= tmp->next;
-// 	}
-// 	img->map[++i] = NULL;
-// 	return (img);
-// }
 
 void ft_errors(char *ans)
 {
@@ -65,6 +50,7 @@ void ft_parse_tex(char *line, int *side)
 	int i;
 	int j;
 	char *tex;
+	int fd;
 
 	i = 0;
 	j = 0;
@@ -72,69 +58,12 @@ void ft_parse_tex(char *line, int *side)
 		ft_errors("Malloc error");
 	while (line[i] != '.' && line[i+1] != '/')
 		i++;
-	while (ft_isalpha(line[i]) || ft_isdigit(line[i]) || line[i] == '.' || line[i] == '/')
-	{
-		tex[j] = line[i];
-		j++;
-		i++;
-	}
-	tex[j] = '\0';
-	if ((*side = open(tex, O_RDONLY)) < 0)
+	tex = ft_strtrim(&line[i], " ");
+	if ((fd = open(tex, O_RDONLY)) < 0)
 		ft_errors("Error Wrong textures");
+	close(fd);
+	*side = fd;
 }
-
-// char *ft_make_str(int c, char *color, int i)
-// {
-// 	if (c == 0)
-// 	{
-// 		color[i++] = '0';
-// 		color[i++] = '0';
-// 	}
-// 	i += 3;
-// 	while (c != 0)
-// 	{
-// 		color[i--] = "0123456789ABCDEF"[c % 16];
-// 		c /= 16;
-// 	}
-// 	// printf("color in f |%s|\n", color);
-// 	return (color);
-// }
-
-// char *ft_convert(int r, int g, int b)
-// {
-// 	char *color;
-// 	int ans;
-// 	int i;
-// 	char help[10];
-
-// 	i = 0;
-// 	// color = (char*)malloc(11);
-// 	// if (color == 0)
-// 	// 	ft_errors("wrong malloc");
-// 	help[0] = '0';
-// 	help[1] = 'x';
-// 	// printf("color %s", color);
-// 	i = 2;
-// 	color = ft_make_str(r,&color[i], i);
-// 	// ans = ft_atoi((const char*)color);
-// 	color = ft_make_str(g,&color[i], i);
-// 	// ans = ft_atoi((const char*)color);
-// 	color = ft_make_str(b,&color[i], i);
-// 	// ans = ft_atoi((const char*)color);
-// 	// if (r == 0)
-// 	// {
-// 	// 	color[i] = '0';
-// 	// 	color[i+1] = '0';
-// 	// }
-// 	// while (r != 0)
-// 	// {
-// 	// 	color[i--] = "0123456789abcdef"[r % 16];
-// 	// 	r /= 16;
-// 	// }
-// 	printf("color %s", color);
-// 	return(color);
-// }
-
 
 void ft_parse_color(char *line, int *side)
 {
@@ -142,7 +71,6 @@ void ft_parse_color(char *line, int *side)
 	int g;
 	int b;
 	int i;
-	// char * color;
 
 	i = 0;
 	b = 0;
@@ -172,7 +100,6 @@ void ft_parse_color(char *line, int *side)
 		b = ft_atoi(&line[i]);
 	if (r < 0 || g < 0 || b < 0 || r > 255 || g > 255 || b > 255)
 		ft_errors("Color error");
-	// color = ft_convert(r, g, b);
 	*side = (1 << 24 | r << 16 | g << 8 | b);
 }
 
@@ -181,9 +108,10 @@ void	ft_parse_map(char *line, t_ray *ray, t_data *img)
 	int i;
 
 	i = 0;
+	img->map[img->mapX] = (char*)malloc(sizeof(char) * (ft_strlen(line)+1));
 	while (line[i] != '\0')
 	{
-		img->map[img->mapX][img->mapY] = line[i];
+		img->map[img->mapX][img->mapY] = (char) line[i];
 		if (line[i]== 'N' || line[i]== 'S')
 		{
 			ray->posX = img->mapX;
@@ -231,11 +159,6 @@ void ft_parser(t_ray *ray, t_data *img)
 {
 	char *line;
 	int fd;
-	// int width;
-	// int height;
-
-	// width = 0;
-	// height = 0;
 	fd = open("map.cub", O_RDONLY);
 	line = NULL;
 	while (get_next_line(fd, &line) != 0)
