@@ -3,29 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parser.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paminna <paminna@stud.21-school.ru>        +#+  +:+       +#+        */
+/*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:11:09 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/13 17:21:45 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/13 19:07:57 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-// t_data	*make_map(t_list **head, int size, t_data *img)
-//  {
-//  	int		  i = -1;
-//  	t_list	*tmp = *head;
-
-//  	img->map = ft_calloc(size + 1, sizeof(char *));
-//  	while (tmp)
-//  	{
-//  		img->map[++i] = tmp->content;
-//  		tmp= tmp->next;
-//  	}
-//  	img->map[++i] = NULL;
-//  	return (img);
-//  }
 
 void ft_errors(char *ans)
 {
@@ -124,13 +109,12 @@ void	ft_parse_map(char *line, t_ray *ray, t_data *img)
 
 	i = 0;
 	img->map[img->mapX] = ft_strdup(line);
-	// img->map[img->mapX][img->mapY] = line[i];
 	while (line[i] != '\0')
 	{
 		if (line[i]== 'N' || line[i]== 'S')
 		{
 			ray->posX = img->mapX;
-			ray->posY = img->mapY;
+			ray->posY = i;
 			ray->planeX = 0;
 			ray->dirY = 0;
 			if (line[i]== 'N')
@@ -143,12 +127,12 @@ void	ft_parse_map(char *line, t_ray *ray, t_data *img)
 				ray->planeY = -0.66;
 				ray->dirX = 1;
 			}
-			img->map[img->mapX][img->mapY] = '0';
+			img->map[img->mapX][i] = '0';
 		}
 		if (line[i]== 'W' || line[i]== 'E')
 		{
 			ray->posX = img->mapX;
-			ray->posY = img->mapY;
+			ray->posY = i;
 			ray->planeY = 0;
 			ray->dirX = 0;
 		
@@ -162,13 +146,11 @@ void	ft_parse_map(char *line, t_ray *ray, t_data *img)
 				ray->planeX = 1;
 				ray->dirY = 0.66;
 			}
-			img->map[img->mapX][img->mapY] = '0';
+			img->map[img->mapX][i] = '0';
 		}
-		img->mapX++;
 		i++;
 	}
-	img->mapY++;
-	img->mapX = 0;
+	img->mapX++;
 }
 
 
@@ -217,6 +199,8 @@ void ft_parser(t_ray *ray, t_data *img)
 			ft_parse_tex(line, &ray->we);
 		if (line[0] == 'E' && line[1] == 'A')
 			ft_parse_tex(line, &ray->ea);
+		if (line[0] == 'S' && line[1] == ' ')
+			ft_parse_tex(line, &ray->s);
 		if (line[0] == 'C' && line[1] == ' ')
 			ft_parse_color(line, &ray->c);
 		if (line[0] == 'F' && line[1] == ' ')

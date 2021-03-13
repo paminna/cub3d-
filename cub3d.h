@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paminna <paminna@stud.21-school.ru>        +#+  +:+       +#+        */
+/*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:11:57 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/12 12:01:48 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/13 19:05:56 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ typedef struct			s_ray
 	int		ea;
 	int 	c;
 	int		f;
+	int		s;
 	int		width;
 	int		height;
 }						t_ray;
