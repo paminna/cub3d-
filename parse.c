@@ -6,11 +6,26 @@
 /*   By: paminna <paminna@stud.21-school.ru>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/08 18:02:01 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/08 18:19:22 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/13 17:20:08 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+// t_data	*make_map(t_list **head, int size, t_data *img)
+//  {
+//  	int		  i = -1;
+//  	t_list	*tmp = *head;
+
+//  	img->map = ft_calloc(size + 1, sizeof(char *));
+//  	while (tmp)
+//  	{
+//  		img->map[++i] = tmp->content;
+//  		tmp= tmp->next;
+//  	}
+//  	img->map[++i] = NULL;
+//  	return (img);
+//  }
 
 // void parse_resolution(int *height, int *width, char **line)
 // {

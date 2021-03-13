@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: paminna <paminna@stud.21-school.ru>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:11:57 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/10 19:06:12 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/12 12:01:48 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,12 +112,12 @@ void 	draw_map(t_data *img);
 int		win_close(int keycode, t_data *img);
 void	ft_raycast(t_data *img, t_ray *ray);
 void 	ft_init(t_ray *ray);
-void ft_parser(t_ray *ray, t_data *img);
+void 	ft_parser(t_ray *ray, t_data *img);
 void	ft_parse_map(char *line, t_ray *ray, t_data *img);
-void ft_parse_color(char *line, int *side);
-void ft_parse_tex(char *line, int *side);
+void 	ft_parse_color(char *line, int *side);
+void 	ft_parse_tex(char *line, int *side);
 void 	ft_parse_resolution(t_ray *ray, char *line);
-void ft_errors(char *ans);
+void 	ft_errors(char *ans);
 // void 	ft_cast_ray(t_data *img);
 // void 	ft_init_ray(t_ray *ray, t_data *img);
 

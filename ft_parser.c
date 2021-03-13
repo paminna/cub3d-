@@ -3,14 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parser.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: paminna <paminna@stud.21-school.ru>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:11:09 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/11 19:55:26 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/13 17:21:45 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+// t_data	*make_map(t_list **head, int size, t_data *img)
+//  {
+//  	int		  i = -1;
+//  	t_list	*tmp = *head;
+
+//  	img->map = ft_calloc(size + 1, sizeof(char *));
+//  	while (tmp)
+//  	{
+//  		img->map[++i] = tmp->content;
+//  		tmp= tmp->next;
+//  	}
+//  	img->map[++i] = NULL;
+//  	return (img);
+//  }
 
 void ft_errors(char *ans)
 {
@@ -108,25 +123,25 @@ void	ft_parse_map(char *line, t_ray *ray, t_data *img)
 	int i;
 
 	i = 0;
-	img->map[img->mapX] = (char*)malloc(sizeof(char) * (ft_strlen(line)+1));
+	img->map[img->mapX] = ft_strdup(line);
+	// img->map[img->mapX][img->mapY] = line[i];
 	while (line[i] != '\0')
 	{
-		img->map[img->mapX][img->mapY] = (char) line[i];
 		if (line[i]== 'N' || line[i]== 'S')
 		{
 			ray->posX = img->mapX;
 			ray->posY = img->mapY;
 			ray->planeX = 0;
- 			ray->dirY = 0;
+			ray->dirY = 0;
 			if (line[i]== 'N')
- 			{
+			{
 				ray->planeY = 0.66;
- 				ray->dirX = -1;
+				ray->dirX = -1;
 			}
 			if (line[i]== 'S')
 			{
 				ray->planeY = -0.66;
- 				ray->dirX = 1;
+				ray->dirX = 1;
 			}
 			img->map[img->mapX][img->mapY] = '0';
 		}
@@ -134,12 +149,13 @@ void	ft_parse_map(char *line, t_ray *ray, t_data *img)
 		{
 			ray->posX = img->mapX;
 			ray->posY = img->mapY;
- 			ray->planeY = 0;
- 			ray->dirX = 0;
+			ray->planeY = 0;
+			ray->dirX = 0;
+		
 			if (line[i]== 'W')
 			{
 				ray->planeX = -1;
- 				ray->dirY = -0.66;
+				ray->dirY = -0.66;
 			}
 			if (line[i]== 'E')
 			{
@@ -155,10 +171,38 @@ void	ft_parse_map(char *line, t_ray *ray, t_data *img)
 	img->mapX = 0;
 }
 
+
+void ft_count_lines(t_data *img)
+{
+	int fd;
+	int size;
+	char *line;
+	int i;
+
+	size = 0;
+	i = 0;
+	fd = open("map.cub", O_RDONLY);
+	line = NULL;
+	while (get_next_line(fd, &line) != 0)
+	{
+		if ((line[i] == '1' || line[i] == '0') && (line[i] != '\0'))
+		{
+			while (line[i] == '1' || line[i] == '0')
+				i++;
+			size++;
+			i = 0;
+		}
+	}
+	close(fd);
+	img->map = (char**)malloc((size+1) * sizeof(char*));
+}
+
 void ft_parser(t_ray *ray, t_data *img)
 {
 	char *line;
 	int fd;
+
+	ft_count_lines(img);
 	fd = open("map.cub", O_RDONLY);
 	line = NULL;
 	while (get_next_line(fd, &line) != 0)

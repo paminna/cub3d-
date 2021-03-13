@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: paminna <paminna@stud.21-school.ru>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 16:48:04 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/11 19:54:34 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/13 17:23:26 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ void draw_square(t_data *img, int i, int j)
 // 	}
 // 	img->mapX = 0;
 // 	img->mapY = 0;
+// 	printf("x = %f,y = %f", player->posX , player->posY);
 // }
 
 // void draw_map(t_data *img)
@@ -216,8 +217,8 @@ int main(void)
 	// 	ft_lstadd_back(&head, ft_lstnew(line));
 	// ft_lstadd_back(&head, ft_lstnew(line));
 	// make_map(&head, ft_lstsize(head), &img);
+	// ft_initialize(&img);
 	ft_parser(&img.ray, &img);
-	ft_initialize(&img);
 	img.mlx = mlx_init();
 	img.mlx_win = mlx_new_window(img.mlx, 800, 580, "Hey, cutie pie!");
 	// find_player(&img, &img.ray);
