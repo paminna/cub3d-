@@ -1,10 +1,10 @@
 R 800 580
-NO ./1.xpm
-SO ./1.xpm
-WE ./1.xpm
-EA ./1.xpm
+NO ./war.xpm
+SO ./war.xpm
+WE ./war.xpm
+EA ./war.xpm
 
-S 255,87,51
+S ./war.xpm
 F 144,238,144
 C 176,224,230
 

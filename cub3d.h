@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:11:57 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/13 19:05:56 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/14 20:46:57 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@
 #  define screenWidth 800
 #  define screenHeight 580
 #  define scale 20
-#  define step 0.3
 #  define pink 0xFFC0CB
 #  define orange 0xFF5733
 #  define movespeed 0.1
@@ -70,32 +69,44 @@ typedef struct			s_ray
 	double	posX;
 	double	posY;
 	int 	color;
-	int		no;
-	int		so;
-	int		we;
-	int		ea;
-	int 	c;
+	int		c;
 	int		f;
-	int		s;
-	int		width;
-	int		height;
+	double	tex_pos;
+	int		tex_h;
+	int		tex_w;
+	double	wall_h;
+	double	wall_x;
+	int		tex_x;
+	int		tex_y;
+	double	step;
+	void	*tex;
 }						t_ray;
 
-typedef struct  		s_data
+typedef struct			s_img
 {
-    void        		*img;
+	void        		*img;
     char       			*addr;
     int         		bits_per_pixel;
     int         		line_length;
     int         		endian;
+	int					width;
+	int					height;
+	char				*side;
+}						t_img;
+
+typedef struct  		s_data
+{
 	unsigned int 		color;
 	void 				*mlx;
 	void 				*mlx_win;
-	int					x;
-	int					y;
+	// int					x;
+	// int					y;
 	int 				mapX;
 	int 				mapY;
 	char	 			**map;
+	t_img				tex;
+	t_img				sides[5];
+	t_img				win;		
 	t_ray				ray;
 }               		t_data;
 
@@ -116,9 +127,11 @@ void 	ft_init(t_ray *ray);
 void 	ft_parser(t_ray *ray, t_data *img);
 void	ft_parse_map(char *line, t_ray *ray, t_data *img);
 void 	ft_parse_color(char *line, int *side);
-void 	ft_parse_tex(char *line, int *side);
-void 	ft_parse_resolution(t_ray *ray, char *line);
+void 	ft_parse_tex(char *line, char **side);
+void 	ft_parse_resolution(t_data *imgg, char *line);
 void 	ft_errors(char *ans);
+void 	ft_init_tex(t_data *img);
+int	my_mlx_pixel_get(t_img *data, int x, int y);
 // void 	ft_cast_ray(t_data *img);
 // void 	ft_init_ray(t_ray *ray, t_data *img);
 

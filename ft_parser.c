@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:11:09 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/13 19:07:57 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/14 20:22:55 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void ft_errors(char *ans)
 	exit(0);
 }
 
-void 	ft_parse_resolution(t_ray *ray, char *line)
+void 	ft_parse_resolution(t_data *img, char *line)
 {
 	int i;
 
@@ -27,42 +27,47 @@ void 	ft_parse_resolution(t_ray *ray, char *line)
 	while (line[i] == ' ' || line[i] == 'R')
 		i++;
 	if (ft_isdigit(line[i]))
-		ray->width = ft_atoi((const char *)&(line[i]));
+		img->win.width = ft_atoi((const char *)&(line[i]));
 	while (ft_isdigit(line[i]))
 		i++;
 	while (line[i] == ' ')
 		i++;
 	if (ft_isdigit(line[i]))
 	{
-		ray->height = ft_atoi((const char *)&(line[i]));
+		img->win.height = ft_atoi((const char *)&(line[i]));
 		i++;
 	}
-	if (ray->width > 4096)
-		ray->width = 4096;
-	if (ray->height > 2304)
-		ray->height = 2304;
-	if (ray->height < 0 || ray->width < 0)
+	if (img->win.width > 4096)
+		img->win.width = 4096;
+	if (img->win.height > 2304)
+		img->win.height = 2304;
+	if (img->win.height < 0 || img->win.width < 0)
 		ft_errors("Error wrong resolution");
 }
 
-void ft_parse_tex(char *line, int *side)
+void ft_parse_tex(char*line, char **side)
 {
 	int i;
 	int j;
-	char *tex;
+	// char *tex;
 	int fd;
 
 	i = 0;
 	j = 0;
-	if ((tex = (char*)malloc(ft_strlen(line) + 1)) == 0)
-		ft_errors("Malloc error");
+	if ((*side) != NULL)
+		ft_errors("double tex");
+	// if ((tex = (char*)malloc(ft_strlen(line) + 1)) == 0)
+	// 	ft_errors("Malloc error");
 	while (line[i] != '.' && line[i+1] != '/')
 		i++;
-	tex = ft_strtrim(&line[i], " ");
-	if ((fd = open(tex, O_RDONLY)) < 0)
+	if (line[i] == '\0')
+		ft_errors("Wrong textures");
+	*side = ft_strtrim(&line[i], " ");
+	if ((fd = open(*side, O_RDONLY)) < 0)
 		ft_errors("Error Wrong textures");
+	// *side = tex;
+	// free(tex);
 	close(fd);
-	*side = fd;
 }
 
 void ft_parse_color(char *line, int *side)
@@ -179,33 +184,47 @@ void ft_count_lines(t_data *img)
 	img->map = (char**)malloc((size+1) * sizeof(char*));
 }
 
+// void ft_init_tex(t_data *img)
+// {
+// 	img->tex.no = NULL;
+// 	img->tex.so = NULL;
+// 	img->tex.we = NULL;
+// 	img->tex.ea = NULL;
+// 	img->tex.s = NULL;
+// }
+
 void ft_parser(t_ray *ray, t_data *img)
 {
 	char *line;
 	int fd;
 
 	ft_count_lines(img);
+	// ft_init_tex(img);
+	img->tex.side = NULL;
 	fd = open("map.cub", O_RDONLY);
 	line = NULL;
 	while (get_next_line(fd, &line) != 0)
 	{
 		if (line[0] == 'R' && line[1] == ' ')
-			ft_parse_resolution(ray, line);
+			ft_parse_resolution(img, line);
 		if (line[0] == 'N' && line[1] == 'O')
-			ft_parse_tex(line, &ray->no);
+			ft_parse_tex(line, &(img->sides[0].side));
 		if (line[0] == 'S' && line[1] == 'O')
-			ft_parse_tex(line, &ray->so);
+			ft_parse_tex(line, &(img->sides[1].side));
 		if (line[0] == 'W' && line[1] == 'E')
-			ft_parse_tex(line, &ray->we);
+			ft_parse_tex(line, &(img->sides[2].side));
 		if (line[0] == 'E' && line[1] == 'A')
-			ft_parse_tex(line, &ray->ea);
+			ft_parse_tex(line, &(img->sides[3].side));
 		if (line[0] == 'S' && line[1] == ' ')
-			ft_parse_tex(line, &ray->s);
+			ft_parse_tex(line, &(img->sides[4].side));
 		if (line[0] == 'C' && line[1] == ' ')
-			ft_parse_color(line, &ray->c);
+			ft_parse_color(line,&ray->c);
 		if (line[0] == 'F' && line[1] == ' ')
-			ft_parse_color(line, &ray->f);
+			ft_parse_color(line,&ray->f);
 		if (line[0] == '0' || line[0] == '1')
 			ft_parse_map(line, ray, img);
+		free(line);
 	}
+	ft_parse_map(line, ray, img);
+	free(line);
 }
