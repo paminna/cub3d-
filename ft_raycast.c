@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/07 14:08:33 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/14 20:45:38 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/15 18:55:19 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,10 @@ void ft_raycast(t_data *img, t_ray *ray)
 	int y;
 	int i;
 	int c;
+	int d;
 	
+	if (!(img->buf = (double*)malloc(sizeof(double)*img->win.width)))
+		ft_errors("Malloc error");
 	x = -1;
 	while (++x < screenWidth)
 	{
@@ -87,14 +90,14 @@ void ft_raycast(t_data *img, t_ray *ray)
 				ray->side = 0;
 				if (ray->rayDirX < 0)  // север
 				{
-					// ray->tex_h = img->sides[0].height;
-					// ray->tex_w = img->sides[0].width;
+					ray->tex_h = img->sides[0].height;
+					ray->tex_w = img->sides[0].width;
 					c = 0;
 				}
 				if (ray->rayDirX > 0) // юг
 				{
-					// ray->tex_h = img->sides[1].height;
-					// ray->tex_w = img->sides[1].width;
+					ray->tex_h = img->sides[1].height;
+					ray->tex_w = img->sides[1].width;
 					c = 1;
 				}
 			}
@@ -105,14 +108,14 @@ void ft_raycast(t_data *img, t_ray *ray)
 				ray->side = 1;
 				if (ray->rayDirY < 0) // запад
 				{
-					// ray->tex_h = img->sides[2].height;
-					// ray->tex_w = img->sides[2].width;
+					ray->tex_h = img->sides[2].height;
+					ray->tex_w = img->sides[2].width;
 					c = 2;
 				}
 				if (ray->rayDirY > 0) // восток
 				{
-					// ray->tex_h = img->sides[3].height;
-					// ray->tex_w = img->sides[3].width;
+					ray->tex_h = img->sides[3].height;
+					ray->tex_w = img->sides[3].width;
 					c = 3;
 					
 				}
@@ -124,6 +127,7 @@ void ft_raycast(t_data *img, t_ray *ray)
 			ray->perpWallDist = ((double)img->mapX - ray->posX + (1 - (double)ray->stepX) / 2) / ray->rayDirX;
 		else
 			ray->perpWallDist = ((double)img->mapY - ray->posY + (1 - (double)ray->stepY) / 2) / ray->rayDirY;
+		img->buf[x] = ray->perpWallDist;
 		ray->lineheight = (int) (img->win.height / ray->perpWallDist);
 		ray->drawstart = -ray->lineheight / 2 + img->win.height / 2;
 		if (ray->drawstart < 0)
@@ -151,7 +155,7 @@ void ft_raycast(t_data *img, t_ray *ray)
         while (y <= ray->drawend)
         {
             // my_mlx_pixel_put(img, x, y, ray->color);
-			ray->tex_y = (int)(ray->tex_pos) & (ray->tex_h - 1);
+			ray->tex_y = (int)(ray->tex_pos); //& (ray->tex_h - 1);
 			ray->tex_pos += ray->step;
 			ray->color = my_mlx_pixel_get(&img->sides[c], ray->tex_x, ray->tex_y);
 			my_mlx_pixel_put(img, x, y, ray->color);
@@ -161,4 +165,54 @@ void ft_raycast(t_data *img, t_ray *ray)
         while (y++ < screenHeight)
             my_mlx_pixel_put(img, x, y, green);
 	}
+	i = 0;
+	img->sprites.sprite_order = (int*)malloc(sizeof(int*) * img->sprites.num_sprites);
+	img->one->spriteDistance = (double*)malloc(sizeof(t_ones) * img->sprites.num_sprites);
+	while (i < img->sprites.num_sprites)
+	{
+		img->sprites.sprite_order[i] = i;
+		img->one->spriteDistance[i] = ((ray->posX - img->one[i].x) * (ray->posX - img->one[i].x) + (ray->posY - img->one[i].y) * (ray->posY - img->one[i].y));
+	}
+	//sort sprites
+	i = 0;
+	while (i < img->sprites.num_sprites)
+	{
+		img->sprites.sprite_x = img->one[img->sprites.sprite_order[i]].x - ray->posX;
+		img->sprites.sprite_y = img->one[img->sprites.sprite_order[i]].y - ray->posY;
+		img->sprites.inv_det = 1.0 / (ray->planeX * ray->dirY - ray->dirX * ray->planeY);
+		img->sprites.transform_x = img->sprites.inv_det * (ray->dirY * img->sprites.sprite_x - ray->dirX * img->sprites.sprite_y);
+		img->sprites.transform_y = img->sprites.inv_det * (-ray->planeY * img->sprites.sprite_y + ray->planeX * img->sprites.sprite_y);
+		img->sprites.sprite_screen_x = (int)((img->win.width / 2) * (1 + img->sprites.transform_x / img->sprites.transform_y));
+		img->sprites.sprite_height = abs((int)(img->win.height / img->sprites.transform_y));
+		img->sprites.draw_start_y = -img->sprites.sprite_height / 2 + img->win.height / 2;
+      	if(img->sprites.draw_start_y < 0) 
+			img->sprites.draw_start_y = 0;
+      	img->sprites.draw_end_y = img->sprites.sprite_height / 2 + img->win.height / 2;
+      	if(img->sprites.draw_end_y >= img->win.height) 
+			img->sprites.draw_end_y = img->win.height - 1;
+      	img->sprites.sprite_width = abs((int)(img->win.height / (img->sprites.transform_y)));
+      	img->sprites.draw_start_x = -img->sprites.sprite_width / 2 + img->sprites.sprite_screen_x;
+      	if(img->sprites.draw_start_x < 0)
+			img->sprites.draw_start_x = 0;
+      	img->sprites.draw_end_x = img->sprites.sprite_width / 2 + img->sprites.sprite_screen_x;
+      	if(img->sprites.draw_end_x >= img->win.height )
+			img->sprites.draw_end_x = img->win.height  - 1;
+	}
+	img->sprites.stripe = img->sprites.draw_start_x;
+	while (img->sprites.stripe < img->sprites.draw_end_x)
+    {
+        img->sprites.tex_x = (int)(256 * (img->sprites.stripe - (-img->sprites.sprite_width / 2 + img->sprites.sprite_screen_x)) * texWidth / img->sprites.sprite_width) / 256;
+        if(img->sprites.transform_y  > 0 && img->sprites.stripe > 0 && img->sprites.stripe < img->win.width && img->sprites.transform_y  < img->buf[img->sprites.stripe])
+        y = img->sprites.draw_start_y;
+		while (y < img->sprites.draw_end_y)
+        {
+        	d = (y) * 256 - img->win.height * 128 + img->sprites.sprite_height * 128;
+        	int texY = ((d * texHeight) / img->sprites.sprite_height) / 256;
+        	ray->color = texture[sprite[spriteOrder[i]].texture][texWidth * img->sprites.tex_y + img->sprites.tex_x]; //get current color from the texture
+        	if((ray->color & 0x00FFFFFF) != 0)
+				buffer[y][img->sprites.stripe] = ray->color; //paint pixel if it isn't black, black is the invisible color
+			y++;
+		}
+		img->sprites.stripe++;
+    }
 }

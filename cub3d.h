@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:11:57 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/14 20:46:57 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/15 18:24:44 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,43 @@ typedef struct			s_ray
 	int		tex_y;
 	double	step;
 	void	*tex;
+	double	pos_s_x;
+	double	pos_s_y;
 }						t_ray;
+
+typedef	struct 			s_ones
+{
+ 	double				x;
+  	double				y;
+  	int					texture;
+	double				*spriteDistance;
+}						t_ones;
+
+typedef	struct 			s_sprites
+{
+	void        		*img;
+    char       			*addr;
+    int         		bits_per_pixel;
+    int         		line_length;
+    int         		endian;
+	int					*sprite_order;
+	int					num_sprites;
+	double				sprite_x;
+	double				sprite_y;
+	double				inv_det;
+	double				transform_x;
+	double				transform_y;
+	int					sprite_screen_x;
+	int					sprite_height;
+	int					sprite_width;
+	int					draw_start_y;
+	int					draw_end_y;
+	int					draw_start_x;
+	int					draw_end_x;
+	int					stripe;
+	int					tex_x;
+	int					tex_y;
+}						t_sprites;
 
 typedef struct			s_img
 {
@@ -104,10 +140,13 @@ typedef struct  		s_data
 	int 				mapX;
 	int 				mapY;
 	char	 			**map;
+	double				*buf;
 	t_img				tex;
-	t_img				sides[5];
+	t_img				sides[4];
 	t_img				win;		
 	t_ray				ray;
+	t_sprites			sprites;
+	t_ones				*one;
 }               		t_data;
 
 int		n_in_rem(char *str_n, char **remainder, char **line);

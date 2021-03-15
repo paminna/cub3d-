@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 16:48:04 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/14 20:47:15 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/15 15:35:43 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,6 @@ void					my_mlx_pixel_put(t_data *data, int x, int y, unsigned int color)
 
 int					my_mlx_pixel_get(t_img *data, int x, int y)
 {
-    // char    *dst;
-	// if (y < screenHeight && x < screenWidth && x >= 0 && y >= 0)
-	// {
-    // 	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
-    // 	color = (unsigned int*)dst;
-	// }
-
 	int color;
 	color = 0;
 	if (!data->width || !data->height)
@@ -155,10 +148,10 @@ void ft_init_img(t_data *img)
 		ft_errors("Wrong textures");
 	img->sides[3].addr = mlx_get_data_addr(img->sides[3].img, &img->sides[3].bits_per_pixel, &img->sides[3].line_length,
                                 &img->sides[3].endian);
-	if (!(img->sides[4].img = mlx_xpm_file_to_image(img->mlx, img->sides[4].side , &img->sides[4].width, &img->sides[4].height)))
-		ft_errors("Wrong textures");
-	img->sides[4].addr = mlx_get_data_addr(img->sides[4].img, &img->sides[4].bits_per_pixel, &img->sides[4].line_length,
-                                &img->sides[4].endian);
+	// if (!(img->sides[4].img = mlx_xpm_file_to_image(img->mlx, img->sides[4].side , &img->sides[4].width, &img->sides[4].height)))
+	// 	ft_errors("Wrong textures");
+	// img->sides[4].addr = mlx_get_data_addr(img->sides[4].img, &img->sides[4].bits_per_pixel, &img->sides[4].line_length,
+    //                             &img->sides[4].endian);
 }
 
 
