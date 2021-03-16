@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/07 14:08:33 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/15 18:55:19 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/16 15:49:48 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void ft_raycast(t_data *img, t_ray *ray)
 	int i;
 	int c;
 	int d;
-	
+		
 	if (!(img->buf = (double*)malloc(sizeof(double)*img->win.width)))
 		ft_errors("Malloc error");
 	x = -1;
@@ -172,6 +172,7 @@ void ft_raycast(t_data *img, t_ray *ray)
 	{
 		img->sprites.sprite_order[i] = i;
 		img->one->spriteDistance[i] = ((ray->posX - img->one[i].x) * (ray->posX - img->one[i].x) + (ray->posY - img->one[i].y) * (ray->posY - img->one[i].y));
+		++i;
 	}
 	//sort sprites
 	i = 0;
@@ -181,7 +182,7 @@ void ft_raycast(t_data *img, t_ray *ray)
 		img->sprites.sprite_y = img->one[img->sprites.sprite_order[i]].y - ray->posY;
 		img->sprites.inv_det = 1.0 / (ray->planeX * ray->dirY - ray->dirX * ray->planeY);
 		img->sprites.transform_x = img->sprites.inv_det * (ray->dirY * img->sprites.sprite_x - ray->dirX * img->sprites.sprite_y);
-		img->sprites.transform_y = img->sprites.inv_det * (-ray->planeY * img->sprites.sprite_y + ray->planeX * img->sprites.sprite_y);
+		img->sprites.transform_y = img->sprites.inv_det * (-ray->planeY * img->sprites.sprite_x + ray->planeX * img->sprites.sprite_y);
 		img->sprites.sprite_screen_x = (int)((img->win.width / 2) * (1 + img->sprites.transform_x / img->sprites.transform_y));
 		img->sprites.sprite_height = abs((int)(img->win.height / img->sprites.transform_y));
 		img->sprites.draw_start_y = -img->sprites.sprite_height / 2 + img->win.height / 2;
@@ -195,22 +196,26 @@ void ft_raycast(t_data *img, t_ray *ray)
       	if(img->sprites.draw_start_x < 0)
 			img->sprites.draw_start_x = 0;
       	img->sprites.draw_end_x = img->sprites.sprite_width / 2 + img->sprites.sprite_screen_x;
-      	if(img->sprites.draw_end_x >= img->win.height )
-			img->sprites.draw_end_x = img->win.height  - 1;
+      	if(img->sprites.draw_end_x >= img->win.width)
+			img->sprites.draw_end_x = img->win.width - 1;
+			++i;
 	}
 	img->sprites.stripe = img->sprites.draw_start_x;
 	while (img->sprites.stripe < img->sprites.draw_end_x)
     {
-        img->sprites.tex_x = (int)(256 * (img->sprites.stripe - (-img->sprites.sprite_width / 2 + img->sprites.sprite_screen_x)) * texWidth / img->sprites.sprite_width) / 256;
+        img->sprites.tex_x = (int)(
+			(img->sprites.stripe - (-img->sprites.sprite_width / 2 + img->sprites.sprite_screen_x)) * img->sides[4].width/ img->sprites.sprite_width) / 256;
         if(img->sprites.transform_y  > 0 && img->sprites.stripe > 0 && img->sprites.stripe < img->win.width && img->sprites.transform_y  < img->buf[img->sprites.stripe])
         y = img->sprites.draw_start_y;
 		while (y < img->sprites.draw_end_y)
         {
         	d = (y) * 256 - img->win.height * 128 + img->sprites.sprite_height * 128;
-        	int texY = ((d * texHeight) / img->sprites.sprite_height) / 256;
-        	ray->color = texture[sprite[spriteOrder[i]].texture][texWidth * img->sprites.tex_y + img->sprites.tex_x]; //get current color from the texture
+        	img->sprites.tex_y = ((d * img->sides[4].height) / img->sprites.sprite_height) / 256;
+			ray->color = my_mlx_pixel_get(&img->sides[4], img->sprites.tex_x, img->sprites.tex_y);
+        	// ray->color = texture[sprite[spriteOrder[i]].texture][&img->sides[4].width * img->sprites.tex_y + img->sprites.tex_x]; //get current color from the texture
         	if((ray->color & 0x00FFFFFF) != 0)
-				buffer[y][img->sprites.stripe] = ray->color; //paint pixel if it isn't black, black is the invisible color
+				my_mlx_pixel_put(img, img->sprites.tex_x, img->sprites.tex_y, ray->color);
+				// buffer[y][img->sprites.stripe] = ray->color; //paint pixel if it isn't black, black is the invisible color
 			y++;
 		}
 		img->sprites.stripe++;

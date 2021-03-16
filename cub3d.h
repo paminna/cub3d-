@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:11:57 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/15 18:24:44 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/16 15:23:42 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ typedef	struct 			s_sprites
 	int					stripe;
 	int					tex_x;
 	int					tex_y;
+	int					sprite_count;
 }						t_sprites;
 
 typedef struct			s_img
@@ -142,7 +143,7 @@ typedef struct  		s_data
 	char	 			**map;
 	double				*buf;
 	t_img				tex;
-	t_img				sides[4];
+	t_img				sides[5];
 	t_img				win;		
 	t_ray				ray;
 	t_sprites			sprites;

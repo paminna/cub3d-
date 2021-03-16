@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:11:09 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/15 18:26:16 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/16 15:24:41 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,15 +153,16 @@ void	ft_parse_map(char *line, t_ray *ray, t_data *img)
 			}
 			img->map[img->mapX][i] = '0';
 		}
-		if (line[i]== '2')
+		if (line[i] == '2')
 		{
-			img->one[i].x = img->mapX;
-			img->one[i].y = i;
-			img->sprites.num_sprites++;
+			img->one[img->sprites.sprite_count].x = (double)img->mapX + 0.5;
+			img->one[img->sprites.sprite_count].y = (double)i + 0.5;
+			img->sprites.sprite_count++;
 		}
 		i++;
 	}
 	img->mapX++;
+	
 }
 
 
@@ -174,6 +175,7 @@ void ft_count_lines(t_data *img)
 
 	size = 0;
 	i = 0;
+	img->sprites.num_sprites = 0;
 	fd = open("map.cub", O_RDONLY);
 	line = NULL;
 	while (get_next_line(fd, &line) != 0)
@@ -181,14 +183,19 @@ void ft_count_lines(t_data *img)
 		if ((line[i] == '1' || line[i] == '0') && (line[i] != '\0'))
 		{
 			while (line[i] == '1' || line[i] == '0' || line[i] == 'N' || line[i] == 'W' 
-			|| line[i] == 'E' || line[i] == 'S' || line[i] == '2')
+			|| line[i] == 'E' || line[i] == 'S')
 				i++;
+			while (line[i++] == '2')
+				img->sprites.num_sprites++;
 			size++;
 			i = 0;
 		}
 	}
 	close(fd);
-	img->map = (char**)malloc((size+1) * sizeof(char*));
+	if (!(img->map = (char**)malloc((size+1) * sizeof(char*))))
+		ft_errors("Malloc error");
+	if (!(img->one = (t_ones*)malloc(sizeof(t_ones) * (img->sprites.num_sprites))))
+		ft_errors("Malloc error");
 }
 
 // void ft_init_tex(t_data *img)
