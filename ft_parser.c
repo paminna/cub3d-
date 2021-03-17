@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:11:09 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/16 15:24:41 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/17 17:55:38 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,8 +118,8 @@ void	ft_parse_map(char *line, t_ray *ray, t_data *img)
 	{
 		if (line[i]== 'N' || line[i]== 'S')
 		{
-			ray->posX = img->mapX;
-			ray->posY = i;
+			ray->posX = img->mapX + 0.5;
+			ray->posY = i + 0.5;
 			ray->planeX = 0;
 			ray->dirY = 0;
 			if (line[i]== 'N')
@@ -136,8 +136,8 @@ void	ft_parse_map(char *line, t_ray *ray, t_data *img)
 		}
 		if (line[i]== 'W' || line[i]== 'E')
 		{
-			ray->posX = img->mapX;
-			ray->posY = i;
+			ray->posX = img->mapX + 0.5;
+			ray->posY = i + 0.5;
 			ray->planeY = 0;
 			ray->dirX = 0;
 		
