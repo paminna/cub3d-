@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:11:09 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/17 17:55:38 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/19 16:10:10 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,8 +213,7 @@ void ft_parser(t_ray *ray, t_data *img)
 	int fd;
 
 	ft_count_lines(img);
-	// ft_init_tex(img);
-	img->tex.side = NULL;
+	// img->tex.side = NULL;
 	fd = open("map.cub", O_RDONLY);
 	line = NULL;
 	while (get_next_line(fd, &line) != 0)

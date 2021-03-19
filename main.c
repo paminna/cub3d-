@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 16:48:04 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/16 18:22:01 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/19 16:18:57 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,29 +55,8 @@ int					my_mlx_pixel_get(t_img *data, int x, int y)
 	return (color);
 }
 
-void draw_square(t_data *img, int i, int j)
+void ft_check_w_s(t_data *img, int keycode)
 {
-	int i2 = i * scale;
-	int j2 = j * scale;
-	while (i2 < (i + 1) * scale)
-	{
-		j2 = j * scale;
-		while (j2 < (j + 1) * scale)
-		{
-			my_mlx_pixel_put(img, i2, j2, img->color);
-			j2++;
-		}
-		i2++;
-	}
-}
-
-int	win_close(int keycode, t_data *img)
-{
-	double oldDirX;
-	double oldPlaneX;
-
-	oldPlaneX = img->ray.planeX;
-	oldDirX = img->ray.dirX;
 	if (keycode == W)
 	{
 		if (img->map[(int)(img->ray.posX)][(int)(img->ray.posY + img->ray.dirY * movespeed)] != '1') 
@@ -92,6 +71,10 @@ int	win_close(int keycode, t_data *img)
 		if (img->map[(int)(img->ray.posX - img->ray.dirX * movespeed)][(int)(img->ray.posY)] != '1') 
 			img->ray.posX -= img->ray.dirX * movespeed;
 	}
+}
+
+void ft_check_d_a(t_data *img, int keycode)
+{
 	if (keycode == D)
 	{
 		if (img->map[(int)(img->ray.posX)][(int)(img->ray.posY + img->ray.planeY * movespeed)] != '1') 
@@ -106,11 +89,19 @@ int	win_close(int keycode, t_data *img)
 		if (img->map[(int)(img->ray.posX - img->ray.planeX * movespeed)][(int)(img->ray.posY)] != '1') 
 			img->ray.posX -= img->ray.planeX * movespeed;
 	}
+}
+
+void ft_check_arrows(t_data *img, int keycode)
+{
+	double oldDirX;
+	double oldPlaneX;
+
+	oldPlaneX = img->ray.planeX;
+	oldDirX = img->ray.dirX;
 	if (keycode == 124)
 	{	
       img->ray.dirX = img->ray.dirX * cos(-rotation) - img->ray.dirY * sin(-rotation);
       img->ray.dirY = oldDirX * sin(-rotation) + img->ray.dirY * cos(-rotation);
-     
       img->ray.planeX = img->ray.planeX * cos(-rotation) - img->ray.planeY * sin(-rotation);
       img->ray.planeY = oldPlaneX * sin(-rotation) + img->ray.planeY * cos(-rotation);
 	}
@@ -121,6 +112,13 @@ int	win_close(int keycode, t_data *img)
 		img->ray.planeX = img->ray.planeX * cos(rotation) - img->ray.planeY * sin(rotation);
 		img->ray.planeY = oldPlaneX * sin(rotation) + img->ray.planeY * cos(rotation);
 	}
+}
+
+int	win_close(int keycode, t_data *img)
+{
+	ft_check_w_s(img, keycode);
+	ft_check_d_a(img, keycode);
+	ft_check_arrows(img, keycode);
 	mlx_destroy_image(img->mlx, img->win.img);
 	img->win.img = mlx_new_image(img->mlx, 800, 580);
 	img->win.addr = mlx_get_data_addr(img->win.img, &img->win.bits_per_pixel, &img->win.line_length,

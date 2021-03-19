@@ -6,22 +6,35 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/07 14:08:33 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/17 17:52:32 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/19 16:19:31 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-// void ft_init(t_ray *ray)
-// {
-// 	// ray->dirX = -1;
-// 	// ray->dirY = 0;
-// 	ray->cameraX = 0;
-// 	ray->hit = 0;
-// 	ray->lineheight = 0;
-// 	ray->perpWallDist = 0;
-// 	ray->side = 0;
-// }
+void ft_sort_sprites(t_data *img, t_ones *one)
+{
+	int i;
+	int j;
+	double *help;
+
+	i = 0;
+	j = 0;
+	while (j < img->sprites.num_sprites)
+	{
+		while (i < img->sprites.num_sprites - j)
+		{
+			if (one[i].spriteDistance > one[i+1].spriteDistance)
+			{
+				help = one[i].spriteDistance;
+				one[i].spriteDistance = one[i+1].spriteDistance;
+				one[i+1].spriteDistance = help;
+			}
+			i++;
+		}
+		j++;
+	}
+}
 
 void ft_raycast(t_data *img, t_ray *ray)
 {
@@ -117,7 +130,6 @@ void ft_raycast(t_data *img, t_ray *ray)
 					ray->tex_h = img->sides[3].height;
 					ray->tex_w = img->sides[3].width;
 					c = 3;
-					
 				}
 			}
 			if (img->map[img->mapX][img->mapY] == '1')
@@ -154,8 +166,7 @@ void ft_raycast(t_data *img, t_ray *ray)
         y  = ray->drawstart;
         while (y <= ray->drawend)
         {
-            // my_mlx_pixel_put(img, x, y, ray->color);
-			ray->tex_y = (int)(ray->tex_pos); //& (ray->tex_h - 1);
+			ray->tex_y = (int)(ray->tex_pos);
 			ray->tex_pos += ray->step;
 			ray->color = my_mlx_pixel_get(&img->sides[c], ray->tex_x, ray->tex_y);
 			my_mlx_pixel_put(img, x, y, ray->color);
@@ -168,13 +179,7 @@ void ft_raycast(t_data *img, t_ray *ray)
 	i = 0;
 	img->sprites.sprite_order = (int*)malloc(sizeof(int*) * img->sprites.num_sprites);
 	img->one->spriteDistance = (double*)malloc(sizeof(t_ones) * img->sprites.num_sprites);
-	// while (i < img->sprites.num_sprites)
-	// {
-	// 	img->sprites.sprite_order[i] = i;
-	// 	img->one->spriteDistance[i] = ((ray->posX - img->one[i].x) * (ray->posX - img->one[i].x) + (ray->posY - img->one[i].y) * (ray->posY - img->one[i].y));
-	// 	++i;
-	// }
-	//sort sprites
+	ft_sort_sprites(img, img->one);
 	i = 0;
 	while (i < img->sprites.num_sprites)
 	{

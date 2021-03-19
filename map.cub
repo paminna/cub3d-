@@ -1,8 +1,8 @@
 R 800 580
-NO ./north.xpm
-SO ./south.xpm
-WE ./bears.xpm
-EA ./east.xpm
+NO ./ice.xpm
+SO ./s_bamboo.xpm
+WE ./black_bears.xpm
+EA ./e_forest.xpm
 
 S ./sprite.xpm
 F 144,238,144
