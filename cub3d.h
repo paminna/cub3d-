@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:11:57 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/16 18:22:40 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/20 21:13:35 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,12 @@ typedef	struct 			s_sprites
 	int					sprite_count;
 }						t_sprites;
 
+typedef struct			s_flag
+{
+	int r;
+	int save;
+}						t_flag;
+
 typedef struct			s_img
 {
 	void        		*img;
@@ -148,6 +154,7 @@ typedef struct  		s_data
 	t_ray				ray;
 	t_sprites			sprites;
 	t_ones				*one;
+	t_flag				flags;
 }               		t_data;
 
 int		n_in_rem(char *str_n, char **remainder, char **line);
@@ -172,6 +179,7 @@ void 	ft_parse_resolution(t_data *imgg, char *line);
 void 	ft_errors(char *ans);
 void 	ft_init_tex(t_data *img);
 int		my_mlx_pixel_get(t_img *data, int x, int y);
+void	make_screenshoot(t_data *img);
 // void 	ft_cast_ray(t_data *img);
 // void 	ft_init_ray(t_ray *ray, t_data *img);
 

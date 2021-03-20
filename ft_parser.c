@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:11:09 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/19 16:10:10 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/20 20:45:14 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,10 @@ void 	ft_parse_resolution(t_data *img, char *line)
 	int i;
 
 	i = 0;
+	if (img->flags.r == 0)
+		img->flags.r = 1;
+	else
+		ft_errors("double resolution");
 	while (line[i] == ' ' || line[i] == 'R')
 		i++;
 	if (ft_isdigit(line[i]))
@@ -79,6 +83,8 @@ void ft_parse_color(char *line, int *side)
 
 	i = 0;
 	b = 0;
+	if ((*side) != 0)
+		ft_errors("double color");
 	while (ft_isalpha(line[i]) || line[i] == ' ')
 		i++;
 	if (ft_isdigit(line[i]))
@@ -220,21 +226,21 @@ void ft_parser(t_ray *ray, t_data *img)
 	{
 		if (line[0] == 'R' && line[1] == ' ')
 			ft_parse_resolution(img, line);
-		if (line[0] == 'N' && line[1] == 'O')
+		else if (line[0] == 'N' && line[1] == 'O')
 			ft_parse_tex(line, &(img->sides[0].side));
-		if (line[0] == 'S' && line[1] == 'O')
+		else if (line[0] == 'S' && line[1] == 'O')
 			ft_parse_tex(line, &(img->sides[1].side));
-		if (line[0] == 'W' && line[1] == 'E')
+		else if (line[0] == 'W' && line[1] == 'E')
 			ft_parse_tex(line, &(img->sides[2].side));
-		if (line[0] == 'E' && line[1] == 'A')
+		else if (line[0] == 'E' && line[1] == 'A')
 			ft_parse_tex(line, &(img->sides[3].side));
-		if (line[0] == 'S' && line[1] == ' ')
+		else if (line[0] == 'S' && line[1] == ' ')
 			ft_parse_tex(line, &(img->sides[4].side));
-		if (line[0] == 'C' && line[1] == ' ')
+		else if (line[0] == 'C' && line[1] == ' ')
 			ft_parse_color(line,&ray->c);
-		if (line[0] == 'F' && line[1] == ' ')
+		else if (line[0] == 'F' && line[1] == ' ')
 			ft_parse_color(line,&ray->f);
-		if (line[0] == '0' || line[0] == '1')
+		else if (line[0] == '0' || line[0] == '1')
 			ft_parse_map(line, ray, img);
 		free(line);
 	}

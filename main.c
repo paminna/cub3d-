@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 16:48:04 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/19 16:18:57 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/20 21:13:47 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void					ft_initialize(t_data *img)
 	img->ray.side = 0;
 	img->sprites.num_sprites = 0;
 	img->sprites.sprite_count = 0;
+	img->flags.save = 0;
 }
 
 void					my_mlx_pixel_put(t_data *data, int x, int y, unsigned int color)
@@ -155,13 +156,18 @@ void ft_init_img(t_data *img)
 }
 
 
-int main(void)
+int main(int argc, char **argv)
 {
 	t_data img;
 
 	ft_initialize(&img);
 	ft_parser(&img.ray, &img);
 	img.mlx = mlx_init();
+	if (argc == 3 && ft_strncmp(argv[2],"--save",6))
+	{
+		img.flags.save = 1;
+		make_screenshoot(&img);
+	}
 	ft_init_img(&img);
 	img.mlx_win = mlx_new_window(img.mlx, img.win.width, img.win.height, "Cutie pie");
 	img.win.img = mlx_new_image(img.mlx, img.win.width, img.win.height);

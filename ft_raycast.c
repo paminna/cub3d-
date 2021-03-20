@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/07 14:08:33 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/19 16:19:31 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/20 16:26:38 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,10 +216,8 @@ void ft_raycast(t_data *img, t_ray *ray)
         	d = (y) * 256 - img->win.height * 128 + img->sprites.sprite_height * 128;
         	img->sprites.tex_y = ((d * img->sides[4].height) / img->sprites.sprite_height) / 256;
 			ray->color = my_mlx_pixel_get(&img->sides[4], img->sprites.tex_x, img->sprites.tex_y);
-        	// ray->color = texture[sprite[spriteOrder[i]].texture][&img->sides[4].width * img->sprites.tex_y + img->sprites.tex_x]; //get current color from the texture
         	if((ray->color & 0x00FFFFFF) != 0)
 				my_mlx_pixel_put(img, img->sprites.stripe, y, ray->color);
-				// buffer[y][img->sprites.stripe] = ray->color; //paint pixel if it isn't black, black is the invisible color
 			y++;
 		}
 		img->sprites.stripe++;
