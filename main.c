@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 16:48:04 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/25 14:14:56 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/25 19:05:17 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,7 @@ int main(int argc, char **argv)
 
 	ft_initialize(&img);
 	ft_parser(&img.ray, &img);
-	// ft_validate(&img);
+	ft_validate(&img);
 	img.mlx = mlx_init();
 	if (argc == 3 && ft_strncmp(argv[2],"--save",6))
 	{

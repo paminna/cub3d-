@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:11:57 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/25 14:12:21 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/25 15:54:08 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,7 @@ typedef struct			s_flag
 {
 	int r;
 	int save;
+	int pl;
 }						t_flag;
 
 typedef struct			s_img
@@ -181,6 +182,7 @@ void 	ft_init_tex(t_data *img);
 int		my_mlx_pixel_get(t_img *data, int x, int y);
 void 	ft_header(t_img *win, int fd);
 void 	ft_validate(t_data *img);
+int		ft_validator(char **map, int x, int y, int num_sprites);
 // void 	ft_cast_ray(t_data *img);
 // void 	ft_init_ray(t_ray *ray, t_data *img);
 
