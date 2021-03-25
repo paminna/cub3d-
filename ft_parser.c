@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:11:09 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/20 20:45:14 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/25 13:43:49 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ void ft_parse_tex(char*line, char **side)
 	// 	ft_errors("Malloc error");
 	while (line[i] != '.' && line[i+1] != '/')
 		i++;
-	if (line[i] == '\0')
-		ft_errors("Wrong textures");
+	// if (line[i] == '\0')
+	// 	ft_errors("Wrong textures");
 	*side = ft_strtrim(&line[i], " ");
 	if ((fd = open(*side, O_RDONLY)) < 0)
 		ft_errors("Error Wrong textures");
@@ -119,13 +119,16 @@ void	ft_parse_map(char *line, t_ray *ray, t_data *img)
 	int i;
 
 	i = 0;
+	img->mapY = 0;
 	img->map[img->mapX] = ft_strdup(line);
+	if ((int)ft_strlen(img->map[img->mapX]) > img->max_len)
+		img->max_len = (int)ft_strlen(img->map[img->mapX]);
 	while (line[i] != '\0')
 	{
 		if (line[i]== 'N' || line[i]== 'S')
 		{
 			ray->posX = img->mapX + 0.5;
-			ray->posY = i + 0.5;
+			ray->posY = i  + 0.5;
 			ray->planeX = 0;
 			ray->dirY = 0;
 			if (line[i]== 'N')
@@ -162,13 +165,13 @@ void	ft_parse_map(char *line, t_ray *ray, t_data *img)
 		if (line[i] == '2')
 		{
 			img->one[img->sprites.sprite_count].x = (double)img->mapX + 0.5;
-			img->one[img->sprites.sprite_count].y = (double)i + 0.5;
+			img->one[img->sprites.sprite_count].y = (double)i  + 0.5;
 			img->sprites.sprite_count++;
 		}
 		i++;
 	}
-	img->mapX++;
-	
+	img->mapY = i;
+	img->mapX++;	
 }
 
 
@@ -204,15 +207,6 @@ void ft_count_lines(t_data *img)
 		ft_errors("Malloc error");
 }
 
-// void ft_init_tex(t_data *img)
-// {
-// 	img->tex.no = NULL;
-// 	img->tex.so = NULL;
-// 	img->tex.we = NULL;
-// 	img->tex.ea = NULL;
-// 	img->tex.s = NULL;
-// }
-
 void ft_parser(t_ray *ray, t_data *img)
 {
 	char *line;
@@ -240,7 +234,7 @@ void ft_parser(t_ray *ray, t_data *img)
 			ft_parse_color(line,&ray->c);
 		else if (line[0] == 'F' && line[1] == ' ')
 			ft_parse_color(line,&ray->f);
-		else if (line[0] == '0' || line[0] == '1')
+		else if (line[0] == ' ' || line[0] == '0' || line[0] == '1')
 			ft_parse_map(line, ray, img);
 		free(line);
 	}

@@ -3,14 +3,14 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: paminna <paminna@stud.21-school.ru>        +#+  +:+       +#+         #
+#    By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/04 15:47:14 by paminna           #+#    #+#              #
-#    Updated: 2021/03/13 17:22:39 by paminna          ###   ########.fr        #
+#    Updated: 2021/03/23 17:42:24 by paminna          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS = main.c ft_parser.c get_next_line.c ft_raycast.c
+SRCS = main.c ft_parser.c get_next_line.c ft_raycast.c ft_screenshoot.c ft_validate.c
 
 OBJS = ${SRCS:.c=.o}
 

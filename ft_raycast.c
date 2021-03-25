@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/07 14:08:33 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/20 16:26:38 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/25 13:51:01 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,19 @@ void ft_sort_sprites(t_data *img, t_ones *one)
 {
 	int i;
 	int j;
-	double *help;
+	t_ones help;
 
 	i = 0;
-	j = 0;
-	while (j < img->sprites.num_sprites)
+	j = 1;
+	while (j <= img->sprites.num_sprites - 1)
 	{
-		while (i < img->sprites.num_sprites - j)
+		while (i <= img->sprites.num_sprites - 1 - j)
 		{
-			if (one[i].spriteDistance > one[i+1].spriteDistance)
+			if (one[i].spriteDistance < one[i+1].spriteDistance)
 			{
-				help = one[i].spriteDistance;
-				one[i].spriteDistance = one[i+1].spriteDistance;
-				one[i+1].spriteDistance = help;
+				help = one[i];
+				one[i] = one[i+1];
+				one[i+1] = help;
 			}
 			i++;
 		}
@@ -178,7 +178,12 @@ void ft_raycast(t_data *img, t_ray *ray)
 	}
 	i = 0;
 	img->sprites.sprite_order = (int*)malloc(sizeof(int*) * img->sprites.num_sprites);
-	img->one->spriteDistance = (double*)malloc(sizeof(t_ones) * img->sprites.num_sprites);
+	while(i < img->sprites.num_sprites)
+    {
+    	img->sprites.sprite_order[i] = i;
+    	img->one[i].spriteDistance = ((ray->posX - img->one[i].x) * (ray->posX - img->one[i].x) + (ray->posY - img->one[i].y) * (ray->posY - img->one[i].y));
+		i++;
+    }
 	ft_sort_sprites(img, img->one);
 	i = 0;
 	while (i < img->sprites.num_sprites)

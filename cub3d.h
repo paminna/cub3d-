@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:11:57 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/20 21:13:35 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/24 21:43:29 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ typedef	struct 			s_ones
  	double				x;
   	double				y;
   	int					texture;
-	double				*spriteDistance;
+	double				spriteDistance;
 }						t_ones;
 
 typedef	struct 			s_sprites
@@ -143,7 +143,7 @@ typedef struct  		s_data
 	void 				*mlx;
 	void 				*mlx_win;
 	// int					x;
-	// int					y;
+	int					max_len;
 	int 				mapX;
 	int 				mapY;
 	char	 			**map;
@@ -157,6 +157,7 @@ typedef struct  		s_data
 	t_flag				flags;
 }               		t_data;
 
+void	make_screenshoot(t_data *img);
 int		n_in_rem(char *str_n, char **remainder, char **line);
 int		r_less_null(char **remainder);
 int		r_null(char **line, char **remainder);
@@ -179,7 +180,8 @@ void 	ft_parse_resolution(t_data *imgg, char *line);
 void 	ft_errors(char *ans);
 void 	ft_init_tex(t_data *img);
 int		my_mlx_pixel_get(t_img *data, int x, int y);
-void	make_screenshoot(t_data *img);
+void 	ft_header(t_img *win, int fd);
+void ft_validate(t_data *img);
 // void 	ft_cast_ray(t_data *img);
 // void 	ft_init_ray(t_ray *ray, t_data *img);
 

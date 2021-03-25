@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 16:48:04 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/20 21:13:47 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/24 22:11:37 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ void					ft_initialize(t_data *img)
 	img->win.bits_per_pixel = 0;
 	img->win.endian = 0;
 	img->win.line_length = 0;
-	// img->x = 0;
-	// img->y = 0;
 	img->mapX = 0;
 	img->mapY = 0;
 	img->ray.cameraX = 0;
@@ -29,6 +27,8 @@ void					ft_initialize(t_data *img)
 	img->sprites.num_sprites = 0;
 	img->sprites.sprite_count = 0;
 	img->flags.save = 0;
+	img->flags.r = 0;
+	img->max_len = 0;
 }
 
 void					my_mlx_pixel_put(t_data *data, int x, int y, unsigned int color)
@@ -162,6 +162,7 @@ int main(int argc, char **argv)
 
 	ft_initialize(&img);
 	ft_parser(&img.ray, &img);
+	// ft_validate(&img);
 	img.mlx = mlx_init();
 	if (argc == 3 && ft_strncmp(argv[2],"--save",6))
 	{
