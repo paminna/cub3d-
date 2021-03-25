@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:11:09 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/25 13:43:49 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/25 14:21:13 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,7 +170,7 @@ void	ft_parse_map(char *line, t_ray *ray, t_data *img)
 		}
 		i++;
 	}
-	img->mapY = i;
+	// img->mapY = i;
 	img->mapX++;	
 }
 
@@ -189,9 +189,9 @@ void ft_count_lines(t_data *img)
 	line = NULL;
 	while (get_next_line(fd, &line) != 0)
 	{
-		if ((line[i] == '1' || line[i] == '0') && (line[i] != '\0'))
+		if ((line[i] == '1' || line[i] == '0' || line[i] == ' ') && (line[i] != '\0'))
 		{
-			while (line[i] == '1' || line[i] == '0' || line[i] == 'N' || line[i] == 'W' 
+			while (line[i] == '1' || line[i] == '0' || line[i] == 'N' || line[i] == 'W'
 			|| line[i] == 'E' || line[i] == 'S')
 				i++;
 			while (line[i++] == '2')

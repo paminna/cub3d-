@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:11:57 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/24 21:43:29 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/25 14:12:21 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,6 @@ typedef struct  		s_data
 	unsigned int 		color;
 	void 				*mlx;
 	void 				*mlx_win;
-	// int					x;
 	int					max_len;
 	int 				mapX;
 	int 				mapY;
@@ -181,7 +180,7 @@ void 	ft_errors(char *ans);
 void 	ft_init_tex(t_data *img);
 int		my_mlx_pixel_get(t_img *data, int x, int y);
 void 	ft_header(t_img *win, int fd);
-void ft_validate(t_data *img);
+void 	ft_validate(t_data *img);
 // void 	ft_cast_ray(t_data *img);
 // void 	ft_init_ray(t_ray *ray, t_data *img);
 
