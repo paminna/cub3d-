@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:11:57 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/25 15:54:08 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/26 14:41:22 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,7 @@ typedef struct  		s_data
 	int 				mapY;
 	char	 			**map;
 	double				*buf;
+	int					size;
 	t_img				tex;
 	t_img				sides[5];
 	t_img				win;		

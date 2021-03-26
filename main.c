@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 16:48:04 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/25 19:05:17 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/26 14:41:36 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void					ft_initialize(t_data *img)
 	img->flags.save = 0;
 	img->flags.r = 0;
 	img->max_len = 0;
+	img->size = 0;
 }
 
 void					my_mlx_pixel_put(t_data *data, int x, int y, unsigned int color)
