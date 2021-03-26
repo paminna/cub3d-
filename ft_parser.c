@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:11:09 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/26 14:41:59 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/26 20:33:23 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,43 @@ void ft_errors(char *ans)
 	exit(0);
 }
 
+int				check_long(int sign)
+{
+	if (sign == -1)
+		return (0);
+	return (-1);
+}
+
+int				ft_atoi(const char *str)
+{
+	int			i;
+	long long	res;
+	long long	tmp;
+	int			sign;
+
+	sign = 1;
+	i = 0;
+	res = 0;
+	while (str[i] == 32 || (str[i] > 8 && str[i] < 14))
+		i++;
+	if (str[i] == '-' || str[i] == '+')
+	{
+		if (str[i++] == '-')
+			sign = -1;
+	}
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		tmp = res;
+		res = res * 10 + str[i] - '0';
+		if (tmp > res && i != 0)
+			return (check_long(sign));
+		i++;
+	}
+	res = res * sign;
+	return ((int)res);
+}
+
+
 void 	ft_parse_resolution(t_data *img, char *line)
 {
 	int i;
@@ -28,19 +65,26 @@ void 	ft_parse_resolution(t_data *img, char *line)
 		img->flags.r = 1;
 	else
 		ft_errors("double resolution");
-	while (line[i] == ' ' || line[i] == 'R')
+	while (line[i] == ' ' || (line[i] == 32 || (line[i] > 8 && line[i] < 14)) || line[i] == 'R')
 		i++;
 	if (ft_isdigit(line[i]))
 		img->win.width = ft_atoi((const char *)&(line[i]));
+	// if (img->win.width == 0)
+	// 	ft_errors("Wrong width in resolution");
 	while (ft_isdigit(line[i]))
 		i++;
 	while (line[i] == ' ')
 		i++;
 	if (ft_isdigit(line[i]))
-	{
 		img->win.height = ft_atoi((const char *)&(line[i]));
+	while (ft_isdigit(line[i]))
 		i++;
-	}
+	while (line[i] == ' ')
+		i++;
+	if (ft_isdigit(line[i]))
+		ft_errors("Wrong resolution");
+	// if (img->win.height == 0)
+	// 	ft_errors("Wrong heigth in resolution");
 	if (img->win.width > 4096)
 		img->win.width = 4096;
 	if (img->win.height > 2304)
@@ -142,6 +186,7 @@ void	ft_parse_map(char *line, t_ray *ray, t_data *img)
 				ray->dirX = 1;
 			}
 			img->map[img->mapX][i] = '0';
+			img->flags.pl++;
 		}
 		if (line[i]== 'W' || line[i]== 'E')
 		{
@@ -149,7 +194,6 @@ void	ft_parse_map(char *line, t_ray *ray, t_data *img)
 			ray->posY = i + 0.5;
 			ray->planeY = 0;
 			ray->dirX = 0;
-		
 			if (line[i]== 'W')
 			{
 				ray->planeX = -1;
@@ -161,6 +205,7 @@ void	ft_parse_map(char *line, t_ray *ray, t_data *img)
 				ray->dirY = 0.66;
 			}
 			img->map[img->mapX][i] = '0';
+			img->flags.pl++;
 		}
 		if (line[i] == '2')
 		{
@@ -200,6 +245,7 @@ void ft_count_lines(t_data *img)
 			i = 0;
 		}
 	}
+	img->size++;
 	close(fd);
 	if (!(img->map = (char**)malloc((img->size+1) * sizeof(char*))))
 		ft_errors("Malloc error");
@@ -240,4 +286,6 @@ void ft_parser(t_ray *ray, t_data *img)
 	}
 	ft_parse_map(line, ray, img);
 	free(line);
+	if (img->flags.pl != 1)
+		ft_errors("Wrong amount player");
 }

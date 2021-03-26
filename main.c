@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 16:48:04 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/26 14:41:36 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/26 20:36:33 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void					ft_initialize(t_data *img)
 void					my_mlx_pixel_put(t_data *data, int x, int y, unsigned int color)
 {
     char    *dst;
-	if (y < screenHeight && x < screenWidth && x >= 0 && y >= 0)
+	if (y < data->win.height && x < data->win.width && x >= 0 && y >= 0)
 	{
     	dst = data->win.addr + (y * data->win.line_length + x * (data->win.bits_per_pixel / 8));
     	*(unsigned int*)dst = color;
@@ -122,7 +122,7 @@ int	win_close(int keycode, t_data *img)
 	ft_check_d_a(img, keycode);
 	ft_check_arrows(img, keycode);
 	mlx_destroy_image(img->mlx, img->win.img);
-	img->win.img = mlx_new_image(img->mlx, 800, 580);
+	img->win.img = mlx_new_image(img->mlx, img->win.width, img->win.height);
 	img->win.addr = mlx_get_data_addr(img->win.img, &img->win.bits_per_pixel, &img->win.line_length,
                                  &img->win.endian);
 	ft_raycast(img, &img->ray);
@@ -132,30 +132,59 @@ int	win_close(int keycode, t_data *img)
 	return (0);
 }
 
-void ft_init_img(t_data *img)
+void ft_get_img(t_data *img, int i)
 {
-	if (!(img->sides[0].img = mlx_xpm_file_to_image(img->mlx, img->sides[0].side , &img->sides[0].width, &img->sides[0].height)))
+	if (!(img->sides[i].img = mlx_xpm_file_to_image(img->mlx, img->sides[i].side , &img->sides[i].width, &img->sides[i].height)))
 		ft_errors("Wrong textures");
-	img->sides[0].addr = mlx_get_data_addr(img->sides[0].img, &img->sides[0].bits_per_pixel, &img->sides[0].line_length,
-                                &img->sides[0].endian);
-	if (!(img->sides[1].img = mlx_xpm_file_to_image(img->mlx, img->sides[1].side , &img->sides[1].width, &img->sides[1].height)))
-		ft_errors("Wrong textures");
-	img->sides[1].addr = mlx_get_data_addr(img->sides[1].img, &img->sides[1].bits_per_pixel, &img->sides[1].line_length,
-                                &img->sides[1].endian);
-	if (!(img->sides[2].img = mlx_xpm_file_to_image(img->mlx, img->sides[2].side , &img->sides[2].width, &img->sides[2].height)))
-		ft_errors("Wrong textures");
-	img->sides[2].addr = mlx_get_data_addr(img->sides[2].img, &img->sides[2].bits_per_pixel, &img->sides[2].line_length,
-                                &img->sides[2].endian);
-	if (!(img->sides[3].img = mlx_xpm_file_to_image(img->mlx, img->sides[3].side , &img->sides[3].width, &img->sides[3].height)))
-		ft_errors("Wrong textures");
-	img->sides[3].addr = mlx_get_data_addr(img->sides[3].img, &img->sides[3].bits_per_pixel, &img->sides[3].line_length,
-                                &img->sides[3].endian);
-	if (!(img->sides[4].img = mlx_xpm_file_to_image(img->mlx, img->sides[4].side , &img->sides[4].width, &img->sides[4].height)))
-		ft_errors("Wrong textures");
-	img->sides[4].addr = mlx_get_data_addr(img->sides[4].img, &img->sides[4].bits_per_pixel, &img->sides[4].line_length,
-                                &img->sides[4].endian);
+	img->sides[i].addr = mlx_get_data_addr(img->sides[i].img, &img->sides[i].bits_per_pixel, &img->sides[i].line_length,
+                                &img->sides[i].endian);
 }
 
+void ft_init_img(t_data *img)
+{
+	int i;
+
+	i = 0;
+	while (i < 5)
+	{
+		ft_get_img(img, i);
+		i++;
+	}
+// 	if (!(img->sides[0].img = mlx_xpm_file_to_image(img->mlx, img->sides[0].side , &img->sides[0].width, &img->sides[0].height)))
+// 		ft_errors("Wrong textures");
+// 	img->sides[0].addr = mlx_get_data_addr(img->sides[0].img, &img->sides[0].bits_per_pixel, &img->sides[0].line_length,
+//                                 &img->sides[0].endian);
+// 	if (!(img->sides[1].img = mlx_xpm_file_to_image(img->mlx, img->sides[1].side , &img->sides[1].width, &img->sides[1].height)))
+// 		ft_errors("Wrong textures");
+// 	img->sides[1].addr = mlx_get_data_addr(img->sides[1].img, &img->sides[1].bits_per_pixel, &img->sides[1].line_length,
+//                                 &img->sides[1].endian);
+// 	if (!(img->sides[2].img = mlx_xpm_file_to_image(img->mlx, img->sides[2].side , &img->sides[2].width, &img->sides[2].height)))
+// 		ft_errors("Wrong textures");
+// 	img->sides[2].addr = mlx_get_data_addr(img->sides[2].img, &img->sides[2].bits_per_pixel, &img->sides[2].line_length,
+//                                 &img->sides[2].endian);
+// 	if (!(img->sides[3].img = mlx_xpm_file_to_image(img->mlx, img->sides[3].side , &img->sides[3].width, &img->sides[3].height)))
+// 		ft_errors("Wrong textures");
+// 	img->sides[3].addr = mlx_get_data_addr(img->sides[3].img, &img->sides[3].bits_per_pixel, &img->sides[3].line_length,
+//                                 &img->sides[3].endian);
+// 	if (!(img->sides[4].img = mlx_xpm_file_to_image(img->mlx, img->sides[4].side , &img->sides[4].width, &img->sides[4].height)))
+// 		ft_errors("Wrong textures");
+// 	img->sides[4].addr = mlx_get_data_addr(img->sides[4].img, &img->sides[4].bits_per_pixel, &img->sides[4].line_length,
+//                                 &img->sides[4].endian);
+}
+
+void ft_check_file(const char *str)
+{
+	int i;
+
+	i = 0;
+	while (str[i] != '\0')
+		i++;
+	i -= 4;
+	if (str[i] != '.' && str[i] != 'c' && str[i] != 'u' && str[i] != 'b')
+		ft_errors("wrong type of file");
+	if ((i = open(str,O_DIRECTORY)) > 0)
+		ft_errors("file is a directory");
+}
 
 int main(int argc, char **argv)
 {
@@ -164,12 +193,15 @@ int main(int argc, char **argv)
 	ft_initialize(&img);
 	ft_parser(&img.ray, &img);
 	ft_validate(&img);
-	img.mlx = mlx_init();
-	if (argc == 3 && ft_strncmp(argv[2],"--save",6))
+	if (argc < 2 || argc > 3)
+		ft_errors("Wrong amount of arguments");
+	img.mlx = mlx_init(); 
+	if (argc == 3 && ft_strncmp(argv[2],"--save", 7))
 	{
 		img.flags.save = 1;
 		make_screenshoot(&img);
 	}
+	ft_check_file(argv[1]);
 	ft_init_img(&img);
 	img.mlx_win = mlx_new_window(img.mlx, img.win.width, img.win.height, "Cutie pie");
 	img.win.img = mlx_new_image(img.mlx, img.win.width, img.win.height);

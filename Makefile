@@ -6,7 +6,7 @@
 #    By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/04 15:47:14 by paminna           #+#    #+#              #
-#    Updated: 2021/03/23 17:42:24 by paminna          ###   ########.fr        #
+#    Updated: 2021/03/26 18:46:45 by paminna          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,8 +26,8 @@ LIBFLAG = -L. -lmlx -framework OpenGL -framework AppKit
 .c.o:
 			 	${CC} ${CFLAGS} ${LIBFLAGS} -c $< 
 init : 
-			$(MAKE) -C libft
-			$(MAKE) -C minilibx
+				$(MAKE) -C libft
+				$(MAKE) -C minilibx
 			
 $(NAME):		${OBJS}
 				mv minilibx/libmlx.a . && rm -rf minilibx/libmlx.a

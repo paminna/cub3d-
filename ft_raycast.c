@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/07 14:08:33 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/25 13:51:01 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/26 20:06:22 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void ft_raycast(t_data *img, t_ray *ray)
 	if (!(img->buf = (double*)malloc(sizeof(double)*img->win.width)))
 		ft_errors("Malloc error");
 	x = -1;
-	while (++x < screenWidth)
+	while (++x < img->win.width)
 	{
 		ray->cameraX = 2 * x / (double)img->win.width - 1;
 		ray->rayDirX = ray->dirX + ray->planeX * ray->cameraX;
@@ -173,7 +173,7 @@ void ft_raycast(t_data *img, t_ray *ray)
             y++;
         }
         y = i;
-        while (y++ < screenHeight)
+        while (y++ < img->win.height)
             my_mlx_pixel_put(img, x, y, green);
 	}
 	i = 0;
