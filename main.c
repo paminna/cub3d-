@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 16:48:04 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/26 20:36:33 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/26 20:38:08 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,14 +132,6 @@ int	win_close(int keycode, t_data *img)
 	return (0);
 }
 
-void ft_get_img(t_data *img, int i)
-{
-	if (!(img->sides[i].img = mlx_xpm_file_to_image(img->mlx, img->sides[i].side , &img->sides[i].width, &img->sides[i].height)))
-		ft_errors("Wrong textures");
-	img->sides[i].addr = mlx_get_data_addr(img->sides[i].img, &img->sides[i].bits_per_pixel, &img->sides[i].line_length,
-                                &img->sides[i].endian);
-}
-
 void ft_init_img(t_data *img)
 {
 	int i;
@@ -147,29 +139,12 @@ void ft_init_img(t_data *img)
 	i = 0;
 	while (i < 5)
 	{
-		ft_get_img(img, i);
+		if (!(img->sides[i].img = mlx_xpm_file_to_image(img->mlx, img->sides[i].side , &img->sides[i].width, &img->sides[i].height)))
+			ft_errors("Wrong textures");
+		img->sides[i].addr = mlx_get_data_addr(img->sides[i].img, &img->sides[i].bits_per_pixel, &img->sides[i].line_length,
+                                &img->sides[i].endian);
 		i++;
 	}
-// 	if (!(img->sides[0].img = mlx_xpm_file_to_image(img->mlx, img->sides[0].side , &img->sides[0].width, &img->sides[0].height)))
-// 		ft_errors("Wrong textures");
-// 	img->sides[0].addr = mlx_get_data_addr(img->sides[0].img, &img->sides[0].bits_per_pixel, &img->sides[0].line_length,
-//                                 &img->sides[0].endian);
-// 	if (!(img->sides[1].img = mlx_xpm_file_to_image(img->mlx, img->sides[1].side , &img->sides[1].width, &img->sides[1].height)))
-// 		ft_errors("Wrong textures");
-// 	img->sides[1].addr = mlx_get_data_addr(img->sides[1].img, &img->sides[1].bits_per_pixel, &img->sides[1].line_length,
-//                                 &img->sides[1].endian);
-// 	if (!(img->sides[2].img = mlx_xpm_file_to_image(img->mlx, img->sides[2].side , &img->sides[2].width, &img->sides[2].height)))
-// 		ft_errors("Wrong textures");
-// 	img->sides[2].addr = mlx_get_data_addr(img->sides[2].img, &img->sides[2].bits_per_pixel, &img->sides[2].line_length,
-//                                 &img->sides[2].endian);
-// 	if (!(img->sides[3].img = mlx_xpm_file_to_image(img->mlx, img->sides[3].side , &img->sides[3].width, &img->sides[3].height)))
-// 		ft_errors("Wrong textures");
-// 	img->sides[3].addr = mlx_get_data_addr(img->sides[3].img, &img->sides[3].bits_per_pixel, &img->sides[3].line_length,
-//                                 &img->sides[3].endian);
-// 	if (!(img->sides[4].img = mlx_xpm_file_to_image(img->mlx, img->sides[4].side , &img->sides[4].width, &img->sides[4].height)))
-// 		ft_errors("Wrong textures");
-// 	img->sides[4].addr = mlx_get_data_addr(img->sides[4].img, &img->sides[4].bits_per_pixel, &img->sides[4].line_length,
-//                                 &img->sides[4].endian);
 }
 
 void ft_check_file(const char *str)

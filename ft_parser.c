@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:11:09 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/26 20:33:23 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/26 21:47:28 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,46 +19,10 @@ void ft_errors(char *ans)
 	exit(0);
 }
 
-int				check_long(int sign)
-{
-	if (sign == -1)
-		return (0);
-	return (-1);
-}
-
-int				ft_atoi(const char *str)
-{
-	int			i;
-	long long	res;
-	long long	tmp;
-	int			sign;
-
-	sign = 1;
-	i = 0;
-	res = 0;
-	while (str[i] == 32 || (str[i] > 8 && str[i] < 14))
-		i++;
-	if (str[i] == '-' || str[i] == '+')
-	{
-		if (str[i++] == '-')
-			sign = -1;
-	}
-	while (str[i] >= '0' && str[i] <= '9')
-	{
-		tmp = res;
-		res = res * 10 + str[i] - '0';
-		if (tmp > res && i != 0)
-			return (check_long(sign));
-		i++;
-	}
-	res = res * sign;
-	return ((int)res);
-}
-
-
 void 	ft_parse_resolution(t_data *img, char *line)
 {
 	int i;
+	// char *res;
 
 	i = 0;
 	if (img->flags.r == 0)
@@ -67,6 +31,13 @@ void 	ft_parse_resolution(t_data *img, char *line)
 		ft_errors("double resolution");
 	while (line[i] == ' ' || (line[i] == 32 || (line[i] > 8 && line[i] < 14)) || line[i] == 'R')
 		i++;
+	// res = ft_strdup(&line[i]);
+	// while (res[i] != '\0')
+	// {
+	// 	if (!ft_isdigit(res[i]) && res[i] != ' ')
+	// 		ft_errors("Wrong resolution");
+	// 	i++;
+	// }
 	if (ft_isdigit(line[i]))
 		img->win.width = ft_atoi((const char *)&(line[i]));
 	// if (img->win.width == 0)

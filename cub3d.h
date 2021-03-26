@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:11:57 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/26 14:41:22 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/26 20:51:56 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,6 +184,8 @@ int		my_mlx_pixel_get(t_img *data, int x, int y);
 void 	ft_header(t_img *win, int fd);
 void 	ft_validate(t_data *img);
 int		ft_validator(char **map, int x, int y, int num_sprites);
+void 	ft_draw_spr(t_data *img, t_ray *ray);
+void 	ft_sort_sprites(t_data *img, t_ones *one);
 // void 	ft_cast_ray(t_data *img);
 // void 	ft_init_ray(t_ray *ray, t_data *img);
 
