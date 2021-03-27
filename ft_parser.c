@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:11:09 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/26 21:47:28 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/27 21:06:29 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,22 @@ void ft_errors(char *ans)
 	exit(0);
 }
 
+void ft_check_string(char *str)
+{
+	int i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (!(ft_isdigit(str[i])) && !(str[i] == 32 || (str[i] > 8 && str[i] < 14)))
+			ft_errors("Wrong symbols");
+		i++;
+	}
+}
+
 void 	ft_parse_resolution(t_data *img, char *line)
 {
 	int i;
-	// char *res;
 
 	i = 0;
 	if (img->flags.r == 0)
@@ -31,31 +43,27 @@ void 	ft_parse_resolution(t_data *img, char *line)
 		ft_errors("double resolution");
 	while (line[i] == ' ' || (line[i] == 32 || (line[i] > 8 && line[i] < 14)) || line[i] == 'R')
 		i++;
-	// res = ft_strdup(&line[i]);
-	// while (res[i] != '\0')
-	// {
-	// 	if (!ft_isdigit(res[i]) && res[i] != ' ')
-	// 		ft_errors("Wrong resolution");
-	// 	i++;
-	// }
+	ft_check_string(&line[i]);
 	if (ft_isdigit(line[i]))
+	{
 		img->win.width = ft_atoi((const char *)&(line[i]));
-	// if (img->win.width == 0)
-	// 	ft_errors("Wrong width in resolution");
+		img->flags.r++;
+	}
 	while (ft_isdigit(line[i]))
 		i++;
 	while (line[i] == ' ')
 		i++;
 	if (ft_isdigit(line[i]))
+	{
 		img->win.height = ft_atoi((const char *)&(line[i]));
+		img->flags.r++;
+	}
 	while (ft_isdigit(line[i]))
 		i++;
 	while (line[i] == ' ')
 		i++;
 	if (ft_isdigit(line[i]))
 		ft_errors("Wrong resolution");
-	// if (img->win.height == 0)
-	// 	ft_errors("Wrong heigth in resolution");
 	if (img->win.width > 4096)
 		img->win.width = 4096;
 	if (img->win.height > 2304)
@@ -79,8 +87,8 @@ void ft_parse_tex(char*line, char **side)
 	// 	ft_errors("Malloc error");
 	while (line[i] != '.' && line[i+1] != '/')
 		i++;
-	// if (line[i] == '\0')
-	// 	ft_errors("Wrong textures");
+	if (line[i] == '\0')
+		ft_errors("Wrong textures");
 	*side = ft_strtrim(&line[i], " ");
 	if ((fd = open(*side, O_RDONLY)) < 0)
 		ft_errors("Error Wrong textures");
@@ -135,9 +143,21 @@ void	ft_parse_map(char *line, t_ray *ray, t_data *img)
 
 	i = 0;
 	img->mapY = 0;
-	img->map[img->mapX] = ft_strdup(line);
-	if ((int)ft_strlen(img->map[img->mapX]) > img->max_len)
-		img->max_len = (int)ft_strlen(img->map[img->mapX]);
+	img->map[img->mapX] = (char*)malloc(img->max_len + 1);
+	while (img->mapY < img->max_len)
+	{
+		while (img->mapY < (int)ft_strlen(line))
+		{
+			img->map[img->mapX][img->mapY] = line[i++];
+			img->mapY++;
+		}
+		if (img->mapY < img->max_len)
+			img->map[img->mapX][img->mapY] = ' ';
+		img->mapY++;
+		img->map[img->mapX][img->mapY] = '\0';
+	}
+	i = 0;
+	// printf("%s|\n", img->map[img->mapX]);
 	while (line[i] != '\0')
 	{
 		if (line[i]== 'N' || line[i]== 'S')
@@ -186,6 +206,7 @@ void	ft_parse_map(char *line, t_ray *ray, t_data *img)
 		}
 		i++;
 	}
+	// printf("not here\n");
 	// img->mapY = i;
 	img->mapX++;	
 }
@@ -205,7 +226,9 @@ void ft_count_lines(t_data *img)
 	line = NULL;
 	while (get_next_line(fd, &line) != 0)
 	{
-		if ((line[i] == '1' || line[i] == '0' || line[i] == ' ') && (line[i] != '\0'))
+		if ((int)ft_strlen(line) > img->max_len)
+			img->max_len = (int)ft_strlen(line);
+		if ((line[i] == '1' || line[i] == '2'|| line[i] == '0' || line[i] == ' ' || line[i] == 32 || (line[i] > 8 && line[i] < 14)) && (line[i] != '\0'))
 		{
 			while (line[i] == '1' || line[i] == '0' || line[i] == 'N' || line[i] == 'W'
 			|| line[i] == 'E' || line[i] == 'S')
@@ -222,6 +245,26 @@ void ft_count_lines(t_data *img)
 		ft_errors("Malloc error");
 	if (!(img->one = (t_ones*)malloc(sizeof(t_ones) * (img->sprites.num_sprites))))
 		ft_errors("Malloc error");
+}
+
+void ft_check_map(t_data *img)
+{
+	img->mapY = 0;
+	img->mapX = 0;
+	while (img->mapX < img->size)
+	{
+		while (img->mapY < img->max_len)
+		{
+			if (img->map[img->mapX][img->mapY] != '1' && img->map[img->mapX][img->mapY] != '2' 
+			&& img->map[img->mapX][img->mapY] != '0' && img->map[img->mapX][img->mapY] != ' ' 
+			&& img->map[img->mapX][img->mapY] != 'N' && img->map[img->mapX][img->mapY] != 'E' 
+			&& img->map[img->mapX][img->mapY] != 'W' && img->map[img->mapX][img->mapY] != 'S')
+				ft_errors("wrong map");
+			img->mapY++;
+		}
+		img->mapY = 0;
+		img->mapX++;
+	}
 }
 
 void ft_parser(t_ray *ray, t_data *img)
@@ -257,6 +300,7 @@ void ft_parser(t_ray *ray, t_data *img)
 	}
 	ft_parse_map(line, ray, img);
 	free(line);
+	ft_check_map(img);
 	if (img->flags.pl != 1)
 		ft_errors("Wrong amount player");
 }

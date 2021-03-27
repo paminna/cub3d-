@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/20 19:52:30 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/26 19:16:02 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/27 13:44:46 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ void make_screenshoot(t_data *img)
 		i++;
 	}
 	close (fd);
+	while (1)
+		
 	// mlx_destroy_image(img->mlx, img->win.img);
 	exit(0);
 }

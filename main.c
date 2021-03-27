@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 16:48:04 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/26 20:38:08 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/27 18:52:26 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void					ft_initialize(t_data *img)
 	img->sprites.sprite_count = 0;
 	img->flags.save = 0;
 	img->flags.r = 0;
-	img->max_len = 0;
+	img->max_len = -1;
 	img->size = 0;
 }
 
@@ -167,6 +167,13 @@ int main(int argc, char **argv)
 
 	ft_initialize(&img);
 	ft_parser(&img.ray, &img);
+	// img.mapX = 0;
+	// img.mapY = 0;
+	// while (img.mapX < img.size)
+	// {
+	// 	printf("%s|\n", img.map[img.mapX]);
+	// 	img.mapX++;
+	// }
 	ft_validate(&img);
 	if (argc < 2 || argc > 3)
 		ft_errors("Wrong amount of arguments");
