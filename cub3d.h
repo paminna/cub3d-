@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:11:57 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/27 18:18:04 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/28 20:43:21 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,12 @@ typedef struct			s_flag
 	int r;
 	int save;
 	int pl;
+	int color;
+	int coma;
+	int count_c;
+	int t;
+	int s;
+	int c;
 }						t_flag;
 
 typedef struct			s_img
@@ -158,35 +164,62 @@ typedef struct  		s_data
 	t_flag				flags;
 }               		t_data;
 
-void	make_screenshoot(t_data *img);
-int		n_in_rem(char *str_n, char **remainder, char **line);
-int		r_less_null(char **remainder);
-int		r_null(char **line, char **remainder);
-int		get_next_line(int fd, char **line);
-t_data	*make_map(t_list **head, int size, t_data *img);
-void 	find_player(t_data *img, t_ray *player);
-void 	redraw(t_data *img);
-void	ft_initialize(t_data *img);
-void	my_mlx_pixel_put(t_data *data, int x, int y, unsigned int color);
-void 	draw_square(t_data *img, int i, int j);
-void 	draw_map(t_data *img);
-int		win_close(int keycode, t_data *img);
-void	ft_raycast(t_data *img, t_ray *ray);
-void 	ft_init(t_ray *ray);
-void 	ft_parser(t_ray *ray, t_data *img);
-void	ft_parse_map(char *line, t_ray *ray, t_data *img);
-void 	ft_parse_color(char *line, int *side);
-void 	ft_parse_tex(char *line, char **side);
-void 	ft_parse_resolution(t_data *imgg, char *line);
-void 	ft_errors(char *ans);
-void 	ft_init_tex(t_data *img);
-int		my_mlx_pixel_get(t_img *data, int x, int y);
-void 	ft_header(t_img *win, int fd);
-void 	ft_validate(t_data *img);
-int		ft_validator(char **map, int x, int y, int num_sprites);
-void 	ft_draw_spr(t_data *img, t_ray *ray);
-void 	ft_sort_sprites(t_data *img, t_ones *one);
-// void 	ft_cast_ray(t_data *img);
-// void 	ft_init_ray(t_ray *ray, t_data *img);
+// void	make_screenshoot(t_data *img);
+// int		n_in_rem(char *str_n, char **remainder, char **line);
+// int		r_less_null(char **remainder);
+// int		r_null(char **line, char **remainder);
+// int		get_next_line(int fd, char **line);
+// t_data	*make_map(t_list **head, int size, t_data *img);
+// void 	find_player(t_data *img, t_ray *player);
+// void 	redraw(t_data *img);
+// void	ft_initialize(t_data *img);
+// void	my_mlx_pixel_put(t_data *data, int x, int y, unsigned int color);
+// void 	draw_square(t_data *img, int i, int j);
+// void 	draw_map(t_data *img);
+// int		win_close(int keycode, t_data *img);
+// void	ft_raycast(t_data *img, t_ray *ray);
+// void 	ft_init(t_ray *ray);
+// void 	ft_parser(t_ray *ray, t_data *img, char *file);
+// void	ft_parse_map(char *line, t_ray *ray, t_data *img);
+// void 	ft_parse_color(char *line, int *side, t_data *img);
+// void 	ft_parse_tex(char*line, char **side, t_data *img);
+// void 	ft_parse_resolution(t_data *imgg, char *line);
+// void 	ft_errors(char *ans);
+// void 	ft_init_tex(t_data *img);
+// int		my_mlx_pixel_get(t_img *data, int x, int y);
+// void 	ft_header(t_img *win, int fd);
+// void 	ft_validate(t_data *img);
+// int		ft_validator(char **map, int x, int y, int num_sprites);
+// void 	ft_draw_spr(t_data *img, t_ray *ray);
+// void 	ft_sort_sprites(t_data *img, t_ones *one);
+
+void					ft_initialize(t_data *img);
+void					my_mlx_pixel_put(t_data *data, int x, int y, unsigned int color);
+int					my_mlx_pixel_get(t_img *data, int x, int y);
+void 				ft_check_w_s(t_data *img, int keycode);
+void 				ft_check_arrows(t_data *img, int keycode);
+int					win_close(int keycode, t_data *img);
+void				ft_init_img(t_data *img);
+void				ft_check_file(const char *str);
+void 				ft_errors(char *ans);
+void 				ft_check_string(char *str);
+void 				ft_parse_resolution(t_data *img, char *line);
+void				ft_parse_tex(char*line, char **side, t_data *img);
+void				ft_parse_color(char *line, int *side, t_data *img);
+void				ft_parse_map(char *line, t_ray *ray, t_data *img);
+void				ft_count_lines(t_data *img);
+void 				ft_check_map(t_data *img);
+void 				ft_parser(t_ray *ray, t_data *img, char *file);
+void 				ft_sort_sprites(t_data *img, t_ones *one);
+void				ft_raycast(t_data *img, t_ray *ray);
+void				make_screenshoot(t_data *img);
+void				ft_header(t_img *win, int fd);
+void				ft_draw_spr(t_data *img, t_ray *ray);
+int					ft_validator(char **map, int x, int y, int num_lines);
+void				ft_validate(t_data *img);
+int					get_next_line(int fd, char **line);
+int					r_null(char **line, char **remainder);
+int					r_less_null(char **remainder);
+int					n_in_rem(char *str_n, char **remainder, char **line);
 
 #endif

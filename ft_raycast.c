@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/07 14:08:33 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/26 20:49:14 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/28 20:55:25 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,7 @@ void ft_raycast(t_data *img, t_ray *ray)
 	 	y = 0;
         i = ray->drawend;
         while (y++ < ray->drawstart)
-            my_mlx_pixel_put(img, x, y, 28369126);
+            my_mlx_pixel_put(img, x, y, ray->c);
         y  = ray->drawstart;
         while (y <= ray->drawend)
         {
@@ -174,7 +174,7 @@ void ft_raycast(t_data *img, t_ray *ray)
         }
         y = i;
         while (y++ < img->win.height)
-            my_mlx_pixel_put(img, x, y, green);
+            my_mlx_pixel_put(img, x, y, ray->f);
 	}
 	ft_draw_spr(img, ray);
 	// i = 0;

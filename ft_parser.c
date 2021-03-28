@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:11:09 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/27 21:06:29 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/28 21:20:22 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,32 +72,33 @@ void 	ft_parse_resolution(t_data *img, char *line)
 		ft_errors("Error wrong resolution");
 }
 
-void ft_parse_tex(char*line, char **side)
+void ft_parse_tex(char*line, char **side, t_data *img)
 {
 	int i;
 	int j;
-	// char *tex;
 	int fd;
 
 	i = 0;
 	j = 0;
 	if ((*side) != NULL)
 		ft_errors("double tex");
-	// if ((tex = (char*)malloc(ft_strlen(line) + 1)) == 0)
-	// 	ft_errors("Malloc error");
+	if (ft_isalnum(line[3]))
+		ft_errors("wrong line in tex");
 	while (line[i] != '.' && line[i+1] != '/')
+	{
+		
 		i++;
+	}
 	if (line[i] == '\0')
 		ft_errors("Wrong textures");
 	*side = ft_strtrim(&line[i], " ");
 	if ((fd = open(*side, O_RDONLY)) < 0)
 		ft_errors("Error Wrong textures");
-	// *side = tex;
-	// free(tex);
 	close(fd);
+	img->flags.t++;
 }
 
-void ft_parse_color(char *line, int *side)
+void ft_parse_color(char *line, int *side, t_data *img)
 {
 	int r;
 	int g;
@@ -108,33 +109,64 @@ void ft_parse_color(char *line, int *side)
 	b = 0;
 	if ((*side) != 0)
 		ft_errors("double color");
-	while (ft_isalpha(line[i]) || line[i] == ' ')
+	while (line[i] != '\0')
+	{
+		if (!(ft_isdigit(line[i])) && line[i] != 'C' && line[i] != 'F' && line[i] != ' ' && line[i] != ',')
+			ft_errors("wrong symbols in color");
+		i++;
+	}
+	i = 0;
+	while (line[i] == 'C' || line[i] == 'F' || line[i] == ' ')
 		i++;
 	if (ft_isdigit(line[i]))
+	{
 		r = ft_atoi(&line[i]);
+		// img->flags.count_c++;
+	}
+	else
+		ft_errors("wrong color");
 	while (ft_isdigit(line[i]))
 		i++;
 	while (line[i] == ' ')
 		i++;
 	if (line[i] == ',')
+	{
 		i++;
+		img->flags.coma = 1;
+	}
 	while (line[i] == ' ')
 		i++;
-	if (ft_isdigit(line[i]))
+	if (ft_isdigit(line[i])&& (img->flags.coma == 1))
 		g = ft_atoi(&line[i]);
+	else
+		ft_errors("wrong color");
 	while (ft_isdigit(line[i]))
 		i++;
 	while (line[i] == ' ')
 		i++;
 	if (line[i] == ',')
+	{
 		i++;
+		img->flags.coma = 2;
+	}
 	while (line[i] == ' ')
 		i++;
-	if (ft_isdigit(line[i]))
+	if (ft_isdigit(line[i]) && (img->flags.coma == 2))
 		b = ft_atoi(&line[i]);
+	else
+		ft_errors("wrong color");
+	while (ft_isdigit(line[i]))
+		i++;
+	while (line[i] != '\0')
+	{
+		if (ft_isdigit(line[i]) || line[i] == ',')
+			ft_errors("wrong color");
+		i++;
+	}
 	if (r < 0 || g < 0 || b < 0 || r > 255 || g > 255 || b > 255)
 		ft_errors("Color error");
 	*side = (1 << 24 | r << 16 | g << 8 | b);
+	img->flags.c++;
 }
 
 void	ft_parse_map(char *line, t_ray *ray, t_data *img)
@@ -142,6 +174,8 @@ void	ft_parse_map(char *line, t_ray *ray, t_data *img)
 	int i;
 
 	i = 0;
+	if (img->flags.t != 5 || img->flags.c != 2)
+		ft_errors("wrong data in file");
 	img->mapY = 0;
 	img->map[img->mapX] = (char*)malloc(img->max_len + 1);
 	while (img->mapY < img->max_len)
@@ -157,7 +191,6 @@ void	ft_parse_map(char *line, t_ray *ray, t_data *img)
 		img->map[img->mapX][img->mapY] = '\0';
 	}
 	i = 0;
-	// printf("%s|\n", img->map[img->mapX]);
 	while (line[i] != '\0')
 	{
 		if (line[i]== 'N' || line[i]== 'S')
@@ -206,8 +239,6 @@ void	ft_parse_map(char *line, t_ray *ray, t_data *img)
 		}
 		i++;
 	}
-	// printf("not here\n");
-	// img->mapY = i;
 	img->mapX++;	
 }
 
@@ -256,7 +287,8 @@ void ft_check_map(t_data *img)
 		while (img->mapY < img->max_len)
 		{
 			if (img->map[img->mapX][img->mapY] != '1' && img->map[img->mapX][img->mapY] != '2' 
-			&& img->map[img->mapX][img->mapY] != '0' && img->map[img->mapX][img->mapY] != ' ' 
+			&& img->map[img->mapX][img->mapY] != '0' && img->map[img->mapX][img->mapY] != ' '
+			&& img->map[img->mapX][img->mapY] != '\t'
 			&& img->map[img->mapX][img->mapY] != 'N' && img->map[img->mapX][img->mapY] != 'E' 
 			&& img->map[img->mapX][img->mapY] != 'W' && img->map[img->mapX][img->mapY] != 'S')
 				ft_errors("wrong map");
@@ -265,36 +297,37 @@ void ft_check_map(t_data *img)
 		img->mapY = 0;
 		img->mapX++;
 	}
+	if (img->flags.r == 0 || img->flags.t != 5 || img->flags.c == 0)
+		ft_errors("not enought data");
 }
 
-void ft_parser(t_ray *ray, t_data *img)
+void ft_parser(t_ray *ray, t_data *img, char *file)
 {
 	char *line;
 	int fd;
 
 	ft_count_lines(img);
-	// img->tex.side = NULL;
-	fd = open("map.cub", O_RDONLY);
+	fd = open(file, O_RDONLY);
 	line = NULL;
 	while (get_next_line(fd, &line) != 0)
 	{
 		if (line[0] == 'R' && line[1] == ' ')
 			ft_parse_resolution(img, line);
 		else if (line[0] == 'N' && line[1] == 'O')
-			ft_parse_tex(line, &(img->sides[0].side));
+			ft_parse_tex(line, &(img->sides[0].side), img);
 		else if (line[0] == 'S' && line[1] == 'O')
-			ft_parse_tex(line, &(img->sides[1].side));
+			ft_parse_tex(line, &(img->sides[1].side), img);
 		else if (line[0] == 'W' && line[1] == 'E')
-			ft_parse_tex(line, &(img->sides[2].side));
+			ft_parse_tex(line, &(img->sides[2].side), img);
 		else if (line[0] == 'E' && line[1] == 'A')
-			ft_parse_tex(line, &(img->sides[3].side));
+			ft_parse_tex(line, &(img->sides[3].side), img);
 		else if (line[0] == 'S' && line[1] == ' ')
-			ft_parse_tex(line, &(img->sides[4].side));
+			ft_parse_tex(line, &(img->sides[4].side), img);
 		else if (line[0] == 'C' && line[1] == ' ')
-			ft_parse_color(line,&ray->c);
+			ft_parse_color(line,&ray->c, img);
 		else if (line[0] == 'F' && line[1] == ' ')
-			ft_parse_color(line,&ray->f);
-		else if (line[0] == ' ' || line[0] == '0' || line[0] == '1')
+			ft_parse_color(line,&ray->f, img);
+		else if (line[0] == ' ' || line[0] == '0' || line[0] == '1' || (line[0] > 8 && line[0] < 14))
 			ft_parse_map(line, ray, img);
 		free(line);
 	}

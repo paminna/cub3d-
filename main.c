@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 16:48:04 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/27 18:52:26 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/28 20:28:22 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,11 @@ void					ft_initialize(t_data *img)
 	img->flags.r = 0;
 	img->max_len = -1;
 	img->size = 0;
+	img->flags.coma = 0;
+	img->color = 0;
+	img->flags.count_c = 0;
+	img->flags.t = 0;
+	img->flags.c = 0;
 }
 
 void					my_mlx_pixel_put(t_data *data, int x, int y, unsigned int color)
@@ -159,38 +164,39 @@ void ft_check_file(const char *str)
 		ft_errors("wrong type of file");
 	if ((i = open(str,O_DIRECTORY)) > 0)
 		ft_errors("file is a directory");
+	if ((i = open(str, O_RDONLY)) < 0)
+	{
+		ft_errors("Can't open file");
+		close(i);
+	}
+	
 }
 
 int main(int argc, char **argv)
 {
 	t_data img;
 
-	ft_initialize(&img);
-	ft_parser(&img.ray, &img);
-	// img.mapX = 0;
-	// img.mapY = 0;
-	// while (img.mapX < img.size)
-	// {
-	// 	printf("%s|\n", img.map[img.mapX]);
-	// 	img.mapX++;
-	// }
-	ft_validate(&img);
 	if (argc < 2 || argc > 3)
 		ft_errors("Wrong amount of arguments");
-	img.mlx = mlx_init(); 
-	if (argc == 3 && ft_strncmp(argv[2],"--save", 7))
-	{
-		img.flags.save = 1;
-		make_screenshoot(&img);
-	}
 	ft_check_file(argv[1]);
+	ft_initialize(&img);
+	ft_parser(&img.ray, &img, argv[1]);
+	ft_validate(&img);
+	// printf("%d",ft_strncmp(argv[2],"--save", 7));
+	if (argc == 3 && !(ft_strncmp(argv[2],"--save", ft_strlen(argv[2]))))
+		img.flags.save = 1;
+	img.mlx = mlx_init(); 
 	ft_init_img(&img);
-	img.mlx_win = mlx_new_window(img.mlx, img.win.width, img.win.height, "Cutie pie");
+	if (img.flags.save != 1)
+		img.mlx_win = mlx_new_window(img.mlx, img.win.width, img.win.height, "Cutie pie");
 	img.win.img = mlx_new_image(img.mlx, img.win.width, img.win.height);
 	img.win.addr = mlx_get_data_addr(img.win.img, &img.win.bits_per_pixel, &img.win.line_length,
                                  &img.win.endian);
 	ft_raycast(&img, &img.ray);
+	if (img.flags.save == 1)
+		make_screenshoot(&img);
 	mlx_put_image_to_window(img.mlx, img.mlx_win, img.win.img, 0, 0);
 	mlx_hook(img.mlx_win, 2, 1L<<0, &win_close, &img);
 	mlx_loop(img.mlx);
+	return (0);
 }
