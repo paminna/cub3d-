@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 16:48:04 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/28 20:28:22 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/29 18:18:25 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void					ft_initialize(t_data *img)
 	img->flags.count_c = 0;
 	img->flags.t = 0;
 	img->flags.c = 0;
+	img->flags.pl = 0;
 }
 
 void					my_mlx_pixel_put(t_data *data, int x, int y, unsigned int color)
@@ -62,57 +63,59 @@ int					my_mlx_pixel_get(t_img *data, int x, int y)
 	return (color);
 }
 
-void ft_check_w_s(t_data *img, int keycode)
+void ft_check_w_s(t_data *img)
 {
-	if (keycode == W)
+	if (img->flags.forward == 1)
 	{
 		if (img->map[(int)(img->ray.posX)][(int)(img->ray.posY + img->ray.dirY * movespeed)] != '1') 
 			img->ray.posY += img->ray.dirY * movespeed;
 		if (img->map[(int)(img->ray.posX + img->ray.dirX * movespeed)][(int)(img->ray.posY)] != '1') 
 			img->ray.posX += img->ray.dirX * movespeed;
 	}
-	if (keycode == S)
+	if (img->flags.back == 1)
 	{
 		if (img->map[(int)(img->ray.posX)][(int)(img->ray.posY - img->ray.dirY * movespeed)] != '1') 
 			img->ray.posY -= img->ray.dirY * movespeed;
 		if (img->map[(int)(img->ray.posX - img->ray.dirX * movespeed)][(int)(img->ray.posY)] != '1') 
 			img->ray.posX -= img->ray.dirX * movespeed;
 	}
+	ft_check_d_a(img);
 }
 
-void ft_check_d_a(t_data *img, int keycode)
+void ft_check_d_a(t_data *img)
 {
-	if (keycode == D)
+	if (img->flags.right == 1)
 	{
 		if (img->map[(int)(img->ray.posX)][(int)(img->ray.posY + img->ray.planeY * movespeed)] != '1') 
 			img->ray.posY += img->ray.planeY * movespeed;
 		if (img->map[(int)(img->ray.posX + img->ray.planeX * movespeed)][(int)(img->ray.posY)] != '1') 
 			img->ray.posX += img->ray.planeX * movespeed;
 	}
-	if (keycode == A)
+	if (img->flags.left == 1)
 	{
 		if (img->map[(int)(img->ray.posX)][(int)(img->ray.posY - img->ray.planeY * movespeed)] != '1') 
 			img->ray.posY -= img->ray.planeY * movespeed;
 		if (img->map[(int)(img->ray.posX - img->ray.planeX * movespeed)][(int)(img->ray.posY)] != '1') 
 			img->ray.posX -= img->ray.planeX * movespeed;
 	}
+	ft_check_arrows(img);
 }
 
-void ft_check_arrows(t_data *img, int keycode)
+void ft_check_arrows(t_data *img)
 {
 	double oldDirX;
 	double oldPlaneX;
 
 	oldPlaneX = img->ray.planeX;
 	oldDirX = img->ray.dirX;
-	if (keycode == 124)
+	if (img->flags.rright == 1)
 	{	
       img->ray.dirX = img->ray.dirX * cos(-rotation) - img->ray.dirY * sin(-rotation);
       img->ray.dirY = oldDirX * sin(-rotation) + img->ray.dirY * cos(-rotation);
       img->ray.planeX = img->ray.planeX * cos(-rotation) - img->ray.planeY * sin(-rotation);
       img->ray.planeY = oldPlaneX * sin(-rotation) + img->ray.planeY * cos(-rotation);
 	}
-	if (keycode == 123)
+	if (img->flags.rleft == 1)
 	{
 		img->ray.dirX = img->ray.dirX * cos(rotation) - img->ray.dirY * sin(rotation);
 		img->ray.dirY = oldDirX * sin(rotation) + img->ray.dirY * cos(rotation);
@@ -121,19 +124,20 @@ void ft_check_arrows(t_data *img, int keycode)
 	}
 }
 
-int	win_close(int keycode, t_data *img)
+int	win_close(t_data *img)
 {
-	ft_check_w_s(img, keycode);
-	ft_check_d_a(img, keycode);
-	ft_check_arrows(img, keycode);
-	mlx_destroy_image(img->mlx, img->win.img);
+	ft_check_w_s(img);
+	// ft_check_d_a(img);
+	// ft_check_arrows(img);
+	// if (img->win.img)
+	// 	mlx_destroy_image(img->mlx, img->win.img);
 	img->win.img = mlx_new_image(img->mlx, img->win.width, img->win.height);
 	img->win.addr = mlx_get_data_addr(img->win.img, &img->win.bits_per_pixel, &img->win.line_length,
                                  &img->win.endian);
 	ft_raycast(img, &img->ray);
 	mlx_put_image_to_window(img->mlx, img->mlx_win, img->win.img, 0, 0);
-	if (keycode == ESC)
-		exit(0);
+	// if (keycode == ESC)
+	// 	exit(0);
 	return (0);
 }
 
@@ -172,31 +176,101 @@ void ft_check_file(const char *str)
 	
 }
 
+int key_up(int keycode, t_data *img)
+{
+	if (keycode == 13)
+		img->flags.forward = 0;
+	if (keycode == 1)
+		img->flags.back = 0;
+	if (keycode == 0)
+		img->flags.left = 0;
+	if (keycode == 2)
+		img->flags.right = 0;
+	if (keycode == 123)
+		img->flags.rleft = 0;
+	if (keycode == 124)
+		img->flags.rright = 0;
+	if (keycode == ESC)
+		exit(0);
+	return (0);
+}
+
+int key_down(int keycode, t_data *img)
+{
+	if (keycode == 13)
+		img->flags.forward = 1;
+	if (keycode == 1)
+		img->flags.back = 1;
+	if (keycode == 0)
+		img->flags.left = 1;
+	if (keycode == 2)
+		img->flags.right = 1;
+	if (keycode == 123)
+		img->flags.rleft = 1;
+	if (keycode == 124)
+		img->flags.rright = 1;
+	if (keycode == ESC)
+		exit(0);
+	return (0);
+}
+
+void play(t_data *img, char *str)
+{
+	ft_check_file(str);
+	ft_initialize(img);
+	ft_parser(&img->ray, img, str);
+	ft_validate(img);
+	img->mlx = mlx_init(); 
+	if (img->flags.save != 1)
+		img->mlx_win = mlx_new_window(img->mlx, img->win.width, img->win.height, "Cutie pie");
+	ft_init_img(img);
+	img->win.img = mlx_new_image(img->mlx, img->win.width, img->win.height);
+	img->win.addr = mlx_get_data_addr(img->win.img, &img->win.bits_per_pixel, &img->win.line_length,
+                                 &img->win.endian);
+	ft_raycast(img, &img->ray);
+	if (img->flags.save == 1)
+		make_screenshoot(img);
+	mlx_put_image_to_window(img->mlx, img->mlx_win, img->win.img, 0, 0);
+	mlx_hook(img->mlx_win, 2, 1L<<0, &key_down, &img);
+	mlx_loop_hook(img->mlx, &win_close, &img);
+	mlx_hook(img->mlx_win, 3, 1L<<1, &key_up, &img);
+	mlx_loop(img->mlx);
+}
+
 int main(int argc, char **argv)
 {
 	t_data img;
 
 	if (argc < 2 || argc > 3)
 		ft_errors("Wrong amount of arguments");
-	ft_check_file(argv[1]);
-	ft_initialize(&img);
-	ft_parser(&img.ray, &img, argv[1]);
-	ft_validate(&img);
+	if (argc == 2)
+		play(&img, argv[1]);
 	// printf("%d",ft_strncmp(argv[2],"--save", 7));
 	if (argc == 3 && !(ft_strncmp(argv[2],"--save", ft_strlen(argv[2]))))
+	{
 		img.flags.save = 1;
-	img.mlx = mlx_init(); 
-	ft_init_img(&img);
-	if (img.flags.save != 1)
-		img.mlx_win = mlx_new_window(img.mlx, img.win.width, img.win.height, "Cutie pie");
-	img.win.img = mlx_new_image(img.mlx, img.win.width, img.win.height);
-	img.win.addr = mlx_get_data_addr(img.win.img, &img.win.bits_per_pixel, &img.win.line_length,
-                                 &img.win.endian);
-	ft_raycast(&img, &img.ray);
-	if (img.flags.save == 1)
-		make_screenshoot(&img);
-	mlx_put_image_to_window(img.mlx, img.mlx_win, img.win.img, 0, 0);
-	mlx_hook(img.mlx_win, 2, 1L<<0, &win_close, &img);
-	mlx_loop(img.mlx);
+		play(&img, argv[1]);
+	}
+	else
+		ft_errors("wrong arguments");
+	// ft_check_file(argv[1]);
+	// ft_initialize(&img);
+	// ft_parser(&img.ray, &img, argv[1]);
+	// ft_validate(&img);
+	// img.mlx = mlx_init(); 
+	// ft_init_img(&img);
+	// if (img.flags.save != 1)
+	// 	img.mlx_win = mlx_new_window(img.mlx, img.win.width, img.win.height, "Cutie pie");
+	// img.win.img = mlx_new_image(img.mlx, img.win.width, img.win.height);
+	// img.win.addr = mlx_get_data_addr(img.win.img, &img.win.bits_per_pixel, &img.win.line_length,
+    //                              &img.win.endian);
+	// ft_raycast(&img, &img.ray);
+	// if (img.flags.save == 1)
+	// 	make_screenshoot(&img);
+	// mlx_put_image_to_window(img.mlx, img.mlx_win, img.win.img, 0, 0);
+	// mlx_hook(img.mlx_win, 2, 1L<<0, &key_down, &img);
+	// mlx_loop_hook(img.mlx, &win_close, &img);
+	// mlx_hook(img.mlx_win, 3, 2L<<0, &key_up, &img);
+	// mlx_loop(img.mlx);
 	return (0);
 }

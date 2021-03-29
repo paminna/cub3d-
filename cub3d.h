@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:11:57 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/28 20:43:21 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/29 15:24:39 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,12 @@ typedef struct			s_flag
 	int t;
 	int s;
 	int c;
+	int forward;
+	int left;
+	int back;
+	int right;
+	int rleft;
+	int rright;
 }						t_flag;
 
 typedef struct			s_img
@@ -196,9 +202,9 @@ typedef struct  		s_data
 void					ft_initialize(t_data *img);
 void					my_mlx_pixel_put(t_data *data, int x, int y, unsigned int color);
 int					my_mlx_pixel_get(t_img *data, int x, int y);
-void 				ft_check_w_s(t_data *img, int keycode);
-void 				ft_check_arrows(t_data *img, int keycode);
-int					win_close(int keycode, t_data *img);
+void				ft_check_w_s(t_data *img);
+void 				ft_check_arrows(t_data *img);
+int					win_close(t_data *img);
 void				ft_init_img(t_data *img);
 void				ft_check_file(const char *str);
 void 				ft_errors(char *ans);
@@ -221,5 +227,7 @@ int					get_next_line(int fd, char **line);
 int					r_null(char **line, char **remainder);
 int					r_less_null(char **remainder);
 int					n_in_rem(char *str_n, char **remainder, char **line);
+void 				ft_check_d_a(t_data *img);
+
 
 #endif
