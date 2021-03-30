@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:11:09 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/29 15:56:33 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/30 20:52:17 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -260,15 +260,16 @@ void ft_count_lines(t_data *img)
 		if ((int)ft_strlen(line) > img->max_len)
 			img->max_len = (int)ft_strlen(line);
 		if ((line[i] == '1' || line[i] == '2'|| line[i] == '0' || line[i] == ' ' || line[i] == 32 || (line[i] > 8 && line[i] < 14)) && (line[i] != '\0'))
+			img->size++;
+		while ((line[i] == '1' || line[i] == '2'|| line[i] == '0' || line[i] == ' ' || line[i] == 32 || (line[i] > 8 && line[i] < 14)) && (line[i] != '\0'))
 		{
 			while (line[i] == '1' || line[i] == '0' || line[i] == 'N' || line[i] == 'W'
-			|| line[i] == 'E' || line[i] == 'S')
+			|| line[i] == 'E' || line[i] == 'S' || line[i] == ' ' || (line[i] > 8 && line[i] < 14))
 				i++;
 			while (line[i++] == '2')
 				img->sprites.num_sprites++;
-			img->size++;
-			i = 0;
 		}
+		i = 0;
 	}
 	img->size++;
 	close(fd);

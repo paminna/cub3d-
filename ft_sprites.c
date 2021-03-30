@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/26 20:46:01 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/26 22:06:38 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/30 21:03:54 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ void ft_draw_spr(t_data *img, t_ray *ray)
 	int y;
 	
 	i = 0;
-	img->sprites.sprite_order = (int*)malloc(sizeof(int*) * img->sprites.num_sprites);
+	if (!(img->sprites.sprite_order = (int*)malloc(sizeof(int*) * img->sprites.num_sprites))) 
+		ft_errors("Malloc trouble");
 	while(i < img->sprites.num_sprites)
     {
     	img->sprites.sprite_order[i] = i;
@@ -43,7 +44,7 @@ void ft_draw_spr(t_data *img, t_ray *ray)
       	img->sprites.draw_end_y = img->sprites.sprite_height / 2 + img->win.height / 2;
       	if(img->sprites.draw_end_y >= img->win.height) 
 			img->sprites.draw_end_y = img->win.height - 1;
-      	img->sprites.sprite_width = abs((int)(img->win.height / (img->sprites.transform_y)));
+      	img->sprites.sprite_width = abs((int)(img->win.height / (img->sprites.transform_y))) / 2;
       	img->sprites.draw_start_x = -img->sprites.sprite_width / 2 + img->sprites.sprite_screen_x;
       	if(img->sprites.draw_start_x < 0)
 			img->sprites.draw_start_x = 0;
@@ -51,14 +52,14 @@ void ft_draw_spr(t_data *img, t_ray *ray)
       	if(img->sprites.draw_end_x >= img->win.width)
 			img->sprites.draw_end_x = img->win.width - 1;
 		++i;
-	img->sprites.stripe = img->sprites.draw_start_x;
-	while (img->sprites.stripe < img->sprites.draw_end_x)
-    {
+		img->sprites.stripe = img->sprites.draw_start_x;
+		while (img->sprites.stripe < img->sprites.draw_end_x)
+   		{
         img->sprites.tex_x = (int)(256 *
 			(img->sprites.stripe - (-img->sprites.sprite_width / 2 + img->sprites.sprite_screen_x)) * img->sides[4].width / img->sprites.sprite_width) / 256;
         if(img->sprites.transform_y  > 0 && img->sprites.stripe >= 0 && img->sprites.stripe < img->win.width && img->sprites.transform_y  < img->buf[img->sprites.stripe])
         y = img->sprites.draw_start_y;
-		while (y < img->sprites.draw_end_y)
+		while (y < img->sprites.draw_end_y - 1)
         {
         	d = (y) * 256 - img->win.height * 128 + img->sprites.sprite_height * 128;
         	img->sprites.tex_y = ((d * img->sides[4].height) / img->sprites.sprite_height) / 256;
@@ -68,6 +69,7 @@ void ft_draw_spr(t_data *img, t_ray *ray)
 			y++;
 		}
 		img->sprites.stripe++;
-    }
-}
+    	}
+	}
+	free(img->sprites.sprite_order);
 }	

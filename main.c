@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 16:48:04 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/29 18:18:25 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/30 17:28:11 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void					ft_initialize(t_data *img)
 {
+	img->win.img = NULL;
+	img->win.addr = NULL;
 	img->win.bits_per_pixel = 0;
 	img->win.endian = 0;
 	img->win.line_length = 0;
@@ -26,7 +28,7 @@ void					ft_initialize(t_data *img)
 	img->ray.side = 0;
 	img->sprites.num_sprites = 0;
 	img->sprites.sprite_count = 0;
-	img->flags.save = 0;
+	// img->flags.save = 0;
 	img->flags.r = 0;
 	img->max_len = -1;
 	img->size = 0;
@@ -36,6 +38,14 @@ void					ft_initialize(t_data *img)
 	img->flags.t = 0;
 	img->flags.c = 0;
 	img->flags.pl = 0;
+	img->flags.back = 0;
+	img->flags.forward = 0;
+	img->flags.right = 0;
+	img->flags.rright = 0;
+	img->flags.rleft = 0;
+	img->flags.left = 0;
+	img->map = NULL;
+
 }
 
 void					my_mlx_pixel_put(t_data *data, int x, int y, unsigned int color)
@@ -79,7 +89,7 @@ void ft_check_w_s(t_data *img)
 		if (img->map[(int)(img->ray.posX - img->ray.dirX * movespeed)][(int)(img->ray.posY)] != '1') 
 			img->ray.posX -= img->ray.dirX * movespeed;
 	}
-	ft_check_d_a(img);
+	// ft_check_d_a(img);
 }
 
 void ft_check_d_a(t_data *img)
@@ -98,7 +108,7 @@ void ft_check_d_a(t_data *img)
 		if (img->map[(int)(img->ray.posX - img->ray.planeX * movespeed)][(int)(img->ray.posY)] != '1') 
 			img->ray.posX -= img->ray.planeX * movespeed;
 	}
-	ft_check_arrows(img);
+	// ft_check_arrows(img);
 }
 
 void ft_check_arrows(t_data *img)
@@ -108,14 +118,14 @@ void ft_check_arrows(t_data *img)
 
 	oldPlaneX = img->ray.planeX;
 	oldDirX = img->ray.dirX;
-	if (img->flags.rright == 1)
+	if (img->flags.rright == 1 && img->flags.rleft != 1)
 	{	
       img->ray.dirX = img->ray.dirX * cos(-rotation) - img->ray.dirY * sin(-rotation);
       img->ray.dirY = oldDirX * sin(-rotation) + img->ray.dirY * cos(-rotation);
       img->ray.planeX = img->ray.planeX * cos(-rotation) - img->ray.planeY * sin(-rotation);
       img->ray.planeY = oldPlaneX * sin(-rotation) + img->ray.planeY * cos(-rotation);
 	}
-	if (img->flags.rleft == 1)
+	if (img->flags.rleft == 1 && img->flags.rright != 1)
 	{
 		img->ray.dirX = img->ray.dirX * cos(rotation) - img->ray.dirY * sin(rotation);
 		img->ray.dirY = oldDirX * sin(rotation) + img->ray.dirY * cos(rotation);
@@ -127,14 +137,15 @@ void ft_check_arrows(t_data *img)
 int	win_close(t_data *img)
 {
 	ft_check_w_s(img);
-	// ft_check_d_a(img);
-	// ft_check_arrows(img);
-	// if (img->win.img)
-	// 	mlx_destroy_image(img->mlx, img->win.img);
+	ft_check_d_a(img);
+	ft_check_arrows(img);
+	mlx_destroy_image(img->mlx, img->win.img);
 	img->win.img = mlx_new_image(img->mlx, img->win.width, img->win.height);
 	img->win.addr = mlx_get_data_addr(img->win.img, &img->win.bits_per_pixel, &img->win.line_length,
                                  &img->win.endian);
 	ft_raycast(img, &img->ray);
+	if (img->flags.save == 1)
+		make_screenshoot(img);
 	mlx_put_image_to_window(img->mlx, img->mlx_win, img->win.img, 0, 0);
 	// if (keycode == ESC)
 	// 	exit(0);
@@ -180,11 +191,11 @@ int key_up(int keycode, t_data *img)
 {
 	if (keycode == 13)
 		img->flags.forward = 0;
-	if (keycode == 1)
+	else if (keycode == 1)
 		img->flags.back = 0;
-	if (keycode == 0)
+	else if (keycode == 0)
 		img->flags.left = 0;
-	if (keycode == 2)
+	else if (keycode == 2)
 		img->flags.right = 0;
 	if (keycode == 123)
 		img->flags.rleft = 0;
@@ -199,11 +210,11 @@ int key_down(int keycode, t_data *img)
 {
 	if (keycode == 13)
 		img->flags.forward = 1;
-	if (keycode == 1)
+	else if (keycode == 1)
 		img->flags.back = 1;
-	if (keycode == 0)
+	else if (keycode == 0)
 		img->flags.left = 1;
-	if (keycode == 2)
+	else if (keycode == 2)
 		img->flags.right = 1;
 	if (keycode == 123)
 		img->flags.rleft = 1;
@@ -216,8 +227,8 @@ int key_down(int keycode, t_data *img)
 
 void play(t_data *img, char *str)
 {
-	ft_check_file(str);
 	ft_initialize(img);
+	ft_check_file(str);
 	ft_parser(&img->ray, img, str);
 	ft_validate(img);
 	img->mlx = mlx_init(); 
@@ -227,13 +238,14 @@ void play(t_data *img, char *str)
 	img->win.img = mlx_new_image(img->mlx, img->win.width, img->win.height);
 	img->win.addr = mlx_get_data_addr(img->win.img, &img->win.bits_per_pixel, &img->win.line_length,
                                  &img->win.endian);
+	win_close(img);
 	ft_raycast(img, &img->ray);
-	if (img->flags.save == 1)
-		make_screenshoot(img);
+	// if (img->flags.save == 1)
+	// 	make_screenshoot(img);
 	mlx_put_image_to_window(img->mlx, img->mlx_win, img->win.img, 0, 0);
-	mlx_hook(img->mlx_win, 2, 1L<<0, &key_down, &img);
-	mlx_loop_hook(img->mlx, &win_close, &img);
-	mlx_hook(img->mlx_win, 3, 1L<<1, &key_up, &img);
+	mlx_hook(img->mlx_win, 2, 1L<<0, &key_down, img);
+	mlx_loop_hook(img->mlx, win_close, img);
+	mlx_hook(img->mlx_win, 3, 1L<<1, &key_up, img);
 	mlx_loop(img->mlx);
 }
 
@@ -243,10 +255,11 @@ int main(int argc, char **argv)
 
 	if (argc < 2 || argc > 3)
 		ft_errors("Wrong amount of arguments");
+	img.flags.save = 0;
 	if (argc == 2)
 		play(&img, argv[1]);
 	// printf("%d",ft_strncmp(argv[2],"--save", 7));
-	if (argc == 3 && !(ft_strncmp(argv[2],"--save", ft_strlen(argv[2]))))
+	if (argc == 3 && !(ft_strncmp(argv[2],"--save", ft_strlen(argv[2])+1)))
 	{
 		img.flags.save = 1;
 		play(&img, argv[1]);
