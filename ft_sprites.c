@@ -6,12 +6,34 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/26 20:46:01 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/30 21:03:54 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/31 22:00:52 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
+void ft_calc_sprite(t_data *img, t_ray *ray, int *i)
+{
+	img->sprites.sprite_x = img->one[*i].x - ray->posX;
+	img->sprites.sprite_y = img->one[*i].y - ray->posY;
+	img->sprites.inv_det = 1.0 / (ray->planeX * ray->dirY - ray->dirX * ray->planeY);
+	img->sprites.transform_x = img->sprites.inv_det * (ray->dirY * img->sprites.sprite_x - ray->dirX * img->sprites.sprite_y);
+	img->sprites.transform_y = img->sprites.inv_det * (-ray->planeY * img->sprites.sprite_x + ray->planeX * img->sprites.sprite_y);
+	img->sprites.sprite_screen_x = (int)((img->win.width / 2) * (1 + img->sprites.transform_x / img->sprites.transform_y));
+	img->sprites.sprite_height = abs((int)(img->win.height / img->sprites.transform_y));
+	img->sprites.draw_start_y = -img->sprites.sprite_height / 2 + img->win.height / 2;
+    if(img->sprites.draw_start_y < 0) 
+		img->sprites.draw_start_y = 0;
+    img->sprites.draw_end_y = img->sprites.sprite_height / 2 + img->win.height / 2;
+    if(img->sprites.draw_end_y >= img->win.height) 
+		img->sprites.draw_end_y = img->win.height - 1;
+    img->sprites.sprite_width = abs((int)(img->win.height / (img->sprites.transform_y))) / 2;
+    img->sprites.draw_start_x = -img->sprites.sprite_width / 2 + img->sprites.sprite_screen_x;
+    if(img->sprites.draw_start_x < 0)
+		img->sprites.draw_start_x = 0;
+    img->sprites.draw_end_x = img->sprites.sprite_width / 2 + img->sprites.sprite_screen_x;
+    if(img->sprites.draw_end_x >= img->win.width)
+		img->sprites.draw_end_x = img->win.width - 1;
+}
 void ft_draw_spr(t_data *img, t_ray *ray)
 {
 	int i;
@@ -31,26 +53,7 @@ void ft_draw_spr(t_data *img, t_ray *ray)
 	i = 0;
 	while (i < img->sprites.num_sprites)
 	{
-		img->sprites.sprite_x = img->one[i].x - ray->posX;
-		img->sprites.sprite_y = img->one[i].y - ray->posY;
-		img->sprites.inv_det = 1.0 / (ray->planeX * ray->dirY - ray->dirX * ray->planeY);
-		img->sprites.transform_x = img->sprites.inv_det * (ray->dirY * img->sprites.sprite_x - ray->dirX * img->sprites.sprite_y);
-		img->sprites.transform_y = img->sprites.inv_det * (-ray->planeY * img->sprites.sprite_x + ray->planeX * img->sprites.sprite_y);
-		img->sprites.sprite_screen_x = (int)((img->win.width / 2) * (1 + img->sprites.transform_x / img->sprites.transform_y));
-		img->sprites.sprite_height = abs((int)(img->win.height / img->sprites.transform_y));
-		img->sprites.draw_start_y = -img->sprites.sprite_height / 2 + img->win.height / 2;
-      	if(img->sprites.draw_start_y < 0) 
-			img->sprites.draw_start_y = 0;
-      	img->sprites.draw_end_y = img->sprites.sprite_height / 2 + img->win.height / 2;
-      	if(img->sprites.draw_end_y >= img->win.height) 
-			img->sprites.draw_end_y = img->win.height - 1;
-      	img->sprites.sprite_width = abs((int)(img->win.height / (img->sprites.transform_y))) / 2;
-      	img->sprites.draw_start_x = -img->sprites.sprite_width / 2 + img->sprites.sprite_screen_x;
-      	if(img->sprites.draw_start_x < 0)
-			img->sprites.draw_start_x = 0;
-      	img->sprites.draw_end_x = img->sprites.sprite_width / 2 + img->sprites.sprite_screen_x;
-      	if(img->sprites.draw_end_x >= img->win.width)
-			img->sprites.draw_end_x = img->win.width - 1;
+		ft_calc_sprite(img, ray, &i);
 		++i;
 		img->sprites.stripe = img->sprites.draw_start_x;
 		while (img->sprites.stripe < img->sprites.draw_end_x)

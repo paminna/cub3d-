@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:11:57 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/29 15:24:39 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/31 21:59:07 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,8 +207,8 @@ void 				ft_check_arrows(t_data *img);
 int					win_close(t_data *img);
 void				ft_init_img(t_data *img);
 void				ft_check_file(const char *str);
-void 				ft_errors(char *ans);
-void 				ft_check_string(char *str);
+void				ft_errors(char *ans);
+void				ft_check_string(char *str);
 void 				ft_parse_resolution(t_data *img, char *line);
 void				ft_parse_tex(char*line, char **side, t_data *img);
 void				ft_parse_color(char *line, int *side, t_data *img);
@@ -228,6 +228,6 @@ int					r_null(char **line, char **remainder);
 int					r_less_null(char **remainder);
 int					n_in_rem(char *str_n, char **remainder, char **line);
 void 				ft_check_d_a(t_data *img);
-
+int					ft_close();
 
 #endif

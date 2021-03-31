@@ -1,5 +1,5 @@
-R   1000 1000
-NO ./ice.xpm
+R      1000       1000
+NO       ./ice.xpm
 SO ./s_bamboo.xpm
 WE ./black_bears.xpm
 EA ./e_forest.xpm

@@ -6,14 +6,24 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:11:09 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/30 20:52:17 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/31 21:59:00 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+int ft_close()
+{
+	exit(0);
+	return (0);	
+}
+
 void ft_errors(char *ans)
 {
+	int i;
+
+	i = 0;
+	write(1, "Error\n", 6);
 	while (*ans != '\0')
 		write(1, &(*ans++), 1);
 	exit(0);
@@ -270,7 +280,9 @@ void ft_count_lines(t_data *img)
 				img->sprites.num_sprites++;
 		}
 		i = 0;
+		free(line);
 	}
+	free(line);
 	img->size++;
 	close(fd);
 	if (!(img->map = (char**)malloc((img->size+1) * sizeof(char*))))

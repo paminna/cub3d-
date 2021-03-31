@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 16:48:04 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/30 17:28:11 by paminna          ###   ########.fr       */
+/*   Updated: 2021/03/31 21:58:36 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -244,6 +244,7 @@ void play(t_data *img, char *str)
 	// 	make_screenshoot(img);
 	mlx_put_image_to_window(img->mlx, img->mlx_win, img->win.img, 0, 0);
 	mlx_hook(img->mlx_win, 2, 1L<<0, &key_down, img);
+	mlx_hook(img->mlx_win, 17, 1L<<17, ft_close, img);
 	mlx_loop_hook(img->mlx, win_close, img);
 	mlx_hook(img->mlx_win, 3, 1L<<1, &key_up, img);
 	mlx_loop(img->mlx);
