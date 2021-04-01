@@ -6,73 +6,81 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/26 20:46:01 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/31 22:00:52 by paminna          ###   ########.fr       */
+/*   Updated: 2021/04/01 15:55:28 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-void ft_calc_sprite(t_data *img, t_ray *ray, int *i)
+
+void	ft_calc_sprite(t_data *img, t_ray *ray, int *i)
 {
-	img->sprites.sprite_x = img->one[*i].x - ray->posX;
-	img->sprites.sprite_y = img->one[*i].y - ray->posY;
-	img->sprites.inv_det = 1.0 / (ray->planeX * ray->dirY - ray->dirX * ray->planeY);
-	img->sprites.transform_x = img->sprites.inv_det * (ray->dirY * img->sprites.sprite_x - ray->dirX * img->sprites.sprite_y);
-	img->sprites.transform_y = img->sprites.inv_det * (-ray->planeY * img->sprites.sprite_x + ray->planeX * img->sprites.sprite_y);
-	img->sprites.sprite_screen_x = (int)((img->win.width / 2) * (1 + img->sprites.transform_x / img->sprites.transform_y));
-	img->sprites.sprite_height = abs((int)(img->win.height / img->sprites.transform_y));
-	img->sprites.draw_start_y = -img->sprites.sprite_height / 2 + img->win.height / 2;
-    if(img->sprites.draw_start_y < 0) 
-		img->sprites.draw_start_y = 0;
-    img->sprites.draw_end_y = img->sprites.sprite_height / 2 + img->win.height / 2;
-    if(img->sprites.draw_end_y >= img->win.height) 
-		img->sprites.draw_end_y = img->win.height - 1;
-    img->sprites.sprite_width = abs((int)(img->win.height / (img->sprites.transform_y))) / 2;
-    img->sprites.draw_start_x = -img->sprites.sprite_width / 2 + img->sprites.sprite_screen_x;
-    if(img->sprites.draw_start_x < 0)
-		img->sprites.draw_start_x = 0;
-    img->sprites.draw_end_x = img->sprites.sprite_width / 2 + img->sprites.sprite_screen_x;
-    if(img->sprites.draw_end_x >= img->win.width)
-		img->sprites.draw_end_x = img->win.width - 1;
+	img->spr.spr_x = img->one[*i].x - ray->posX;
+	img->spr.spr_y = img->one[*i].y - ray->posY;
+	img->spr.inv_det = 1.0 /
+			(ray->planeX * ray->dirY - ray->dirX * ray->planeY);
+	img->spr.transform_x = img->spr.inv_det *
+			(ray->dirY * img->spr.spr_x - ray->dirX * img->spr.spr_y);
+	img->spr.transform_y = img->spr.inv_det *
+	(-ray->planeY * img->spr.spr_x + ray->planeX * img->spr.spr_y);
+	img->spr.spr_screen_x = (int)((img->win.width / 2) *
+	(1 + img->spr.transform_x / img->spr.transform_y));
+	img->spr.sprite_height = abs((int)
+	(img->win.height / img->spr.transform_y));
+	img->spr.draw_start_y = -img->spr.sprite_height / 2 + img->win.height / 2;
+	if (img->spr.draw_start_y < 0)
+		img->spr.draw_start_y = 0;
+	img->spr.draw_end_y = img->spr.sprite_height / 2 + img->win.height / 2;
+	if (img->spr.draw_end_y >= img->win.height)
+		img->spr.draw_end_y = img->win.height - 1;
+	img->spr.sprite_width = img->spr.sprite_height;
+	img->spr.draw_start_x = -img->spr.sprite_width / 2 + img->spr.spr_screen_x;
+	if (img->spr.draw_start_x < 0)
+		img->spr.draw_start_x = 0;
+	img->spr.draw_end_x = img->spr.sprite_width / 2 + img->spr.spr_screen_x;
+	if (img->spr.draw_end_x >= img->win.width)
+		img->spr.draw_end_x = img->win.width - 1;
 }
-void ft_draw_spr(t_data *img, t_ray *ray)
+
+void	ft_draw_spr(t_data *img, t_ray *ray)
 {
 	int i;
 	int d;
 	int y;
 	
 	i = 0;
-	if (!(img->sprites.sprite_order = (int*)malloc(sizeof(int*) * img->sprites.num_sprites))) 
+	if (!(img->spr.sprite_order = (int*)malloc(sizeof(int*) * img->spr.num_sprites))) 
 		ft_errors("Malloc trouble");
-	while(i < img->sprites.num_sprites)
+	while(i < img->spr.num_sprites)
     {
-    	img->sprites.sprite_order[i] = i;
-    	img->one[i].spriteDistance = ((ray->posX - img->one[i].x) * (ray->posX - img->one[i].x) + (ray->posY - img->one[i].y) * (ray->posY - img->one[i].y));
+    	img->spr.sprite_order[i] = i;
+    	img->one[i].spriteDistance = ((ray->posX - img->one[i].x) * (ray->posX - img->one[i].x) +
+		(ray->posY - img->one[i].y) * (ray->posY - img->one[i].y));
 		i++;
     }
 	ft_sort_sprites(img, img->one);
 	i = 0;
-	while (i < img->sprites.num_sprites)
+	while (i < img->spr.num_sprites)
 	{
 		ft_calc_sprite(img, ray, &i);
 		++i;
-		img->sprites.stripe = img->sprites.draw_start_x;
-		while (img->sprites.stripe < img->sprites.draw_end_x)
+		img->spr.stripe = img->spr.draw_start_x;
+		while (img->spr.stripe < img->spr.draw_end_x)
    		{
-        img->sprites.tex_x = (int)(256 *
-			(img->sprites.stripe - (-img->sprites.sprite_width / 2 + img->sprites.sprite_screen_x)) * img->sides[4].width / img->sprites.sprite_width) / 256;
-        if(img->sprites.transform_y  > 0 && img->sprites.stripe >= 0 && img->sprites.stripe < img->win.width && img->sprites.transform_y  < img->buf[img->sprites.stripe])
-        y = img->sprites.draw_start_y;
-		while (y < img->sprites.draw_end_y - 1)
-        {
-        	d = (y) * 256 - img->win.height * 128 + img->sprites.sprite_height * 128;
-        	img->sprites.tex_y = ((d * img->sides[4].height) / img->sprites.sprite_height) / 256;
-			ray->color = my_mlx_pixel_get(&img->sides[4], img->sprites.tex_x, img->sprites.tex_y);
-        	if((ray->color & 0x00FFFFFF) != 0)
-				my_mlx_pixel_put(img, img->sprites.stripe, y, ray->color);
-			y++;
-		}
-		img->sprites.stripe++;
+        	img->spr.tex_x = (int)(256 *
+				(img->spr.stripe - (-img->spr.sprite_width / 2 + img->spr.spr_screen_x)) * img->sides[4].width / img->spr.sprite_width) / 256;
+        	if(img->spr.transform_y  > 0 && img->spr.stripe >= 0 && img->spr.stripe < img->win.width && img->spr.transform_y  < img->buf[img->spr.stripe])
+        	y = img->spr.draw_start_y;
+			while (y < img->spr.draw_end_y - 1)
+        	{
+        		d = (y) * 256 - img->win.height * 128 + img->spr.sprite_height * 128;
+        		img->spr.tex_y = ((d * img->sides[4].height) / img->spr.sprite_height) / 256;
+				ray->color = my_mlx_pixel_get(&img->sides[4], img->spr.tex_x, img->spr.tex_y);
+        		if((ray->color & 0x00FFFFFF) != 0)
+					my_mlx_pixel_put(img, img->spr.stripe, y, ray->color);
+				y++;
+			}
+			img->spr.stripe++;
     	}
 	}
-	free(img->sprites.sprite_order);
-}	
+	free(img->spr.sprite_order);
+}

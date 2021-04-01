@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/07 14:08:33 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/31 21:59:34 by paminna          ###   ########.fr       */
+/*   Updated: 2021/04/01 15:49:13 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ void ft_sort_sprites(t_data *img, t_ones *one)
 
 	i = 0;
 	j = 1;
-	while (j <= img->sprites.num_sprites - 1)
+	while (j <= img->spr.num_sprites - 1)
 	{
-		while (i <= img->sprites.num_sprites - 1 - j)
+		while (i <= img->spr.num_sprites - 1 - j)
 		{
 			if (one[i].spriteDistance < one[i+1].spriteDistance)
 			{

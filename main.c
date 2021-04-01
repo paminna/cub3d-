@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 16:48:04 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/31 21:58:36 by paminna          ###   ########.fr       */
+/*   Updated: 2021/04/01 15:48:35 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,8 @@ void					ft_initialize(t_data *img)
 	img->ray.lineheight = 0;
 	img->ray.perpWallDist = 0;
 	img->ray.side = 0;
-	img->sprites.num_sprites = 0;
-	img->sprites.sprite_count = 0;
-	// img->flags.save = 0;
+	img->spr.num_sprites = 0;
+	img->spr.sprite_count = 0;
 	img->flags.r = 0;
 	img->max_len = -1;
 	img->size = 0;
@@ -38,14 +37,6 @@ void					ft_initialize(t_data *img)
 	img->flags.t = 0;
 	img->flags.c = 0;
 	img->flags.pl = 0;
-	img->flags.back = 0;
-	img->flags.forward = 0;
-	img->flags.right = 0;
-	img->flags.rright = 0;
-	img->flags.rleft = 0;
-	img->flags.left = 0;
-	img->map = NULL;
-
 }
 
 void					my_mlx_pixel_put(t_data *data, int x, int y, unsigned int color)
@@ -89,7 +80,6 @@ void ft_check_w_s(t_data *img)
 		if (img->map[(int)(img->ray.posX - img->ray.dirX * movespeed)][(int)(img->ray.posY)] != '1') 
 			img->ray.posX -= img->ray.dirX * movespeed;
 	}
-	// ft_check_d_a(img);
 }
 
 void ft_check_d_a(t_data *img)
@@ -108,7 +98,6 @@ void ft_check_d_a(t_data *img)
 		if (img->map[(int)(img->ray.posX - img->ray.planeX * movespeed)][(int)(img->ray.posY)] != '1') 
 			img->ray.posX -= img->ray.planeX * movespeed;
 	}
-	// ft_check_arrows(img);
 }
 
 void ft_check_arrows(t_data *img)
@@ -147,8 +136,6 @@ int	win_close(t_data *img)
 	if (img->flags.save == 1)
 		make_screenshoot(img);
 	mlx_put_image_to_window(img->mlx, img->mlx_win, img->win.img, 0, 0);
-	// if (keycode == ESC)
-	// 	exit(0);
 	return (0);
 }
 
@@ -240,8 +227,6 @@ void play(t_data *img, char *str)
                                  &img->win.endian);
 	win_close(img);
 	ft_raycast(img, &img->ray);
-	// if (img->flags.save == 1)
-	// 	make_screenshoot(img);
 	mlx_put_image_to_window(img->mlx, img->mlx_win, img->win.img, 0, 0);
 	mlx_hook(img->mlx_win, 2, 1L<<0, &key_down, img);
 	mlx_hook(img->mlx_win, 17, 1L<<17, ft_close, img);
@@ -259,7 +244,6 @@ int main(int argc, char **argv)
 	img.flags.save = 0;
 	if (argc == 2)
 		play(&img, argv[1]);
-	// printf("%d",ft_strncmp(argv[2],"--save", 7));
 	if (argc == 3 && !(ft_strncmp(argv[2],"--save", ft_strlen(argv[2])+1)))
 	{
 		img.flags.save = 1;
@@ -267,24 +251,5 @@ int main(int argc, char **argv)
 	}
 	else
 		ft_errors("wrong arguments");
-	// ft_check_file(argv[1]);
-	// ft_initialize(&img);
-	// ft_parser(&img.ray, &img, argv[1]);
-	// ft_validate(&img);
-	// img.mlx = mlx_init(); 
-	// ft_init_img(&img);
-	// if (img.flags.save != 1)
-	// 	img.mlx_win = mlx_new_window(img.mlx, img.win.width, img.win.height, "Cutie pie");
-	// img.win.img = mlx_new_image(img.mlx, img.win.width, img.win.height);
-	// img.win.addr = mlx_get_data_addr(img.win.img, &img.win.bits_per_pixel, &img.win.line_length,
-    //                              &img.win.endian);
-	// ft_raycast(&img, &img.ray);
-	// if (img.flags.save == 1)
-	// 	make_screenshoot(&img);
-	// mlx_put_image_to_window(img.mlx, img.mlx_win, img.win.img, 0, 0);
-	// mlx_hook(img.mlx_win, 2, 1L<<0, &key_down, &img);
-	// mlx_loop_hook(img.mlx, &win_close, &img);
-	// mlx_hook(img.mlx_win, 3, 2L<<0, &key_up, &img);
-	// mlx_loop(img.mlx);
 	return (0);
 }

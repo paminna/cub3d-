@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:11:57 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/31 21:59:07 by paminna          ###   ########.fr       */
+/*   Updated: 2021/04/01 15:51:21 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@
 #  define A 0
 #  define D 2
 #  define ESC 53
-#  define screenWidth 800
-#  define screenHeight 580
 #  define scale 20
 #  define pink 0xFFC0CB
 #  define orange 0xFF5733
@@ -101,12 +99,12 @@ typedef	struct 			s_sprites
     int         		endian;
 	int					*sprite_order;
 	int					num_sprites;
-	double				sprite_x;
-	double				sprite_y;
+	double				spr_x;
+	double				spr_y;
 	double				inv_det;
 	double				transform_x;
 	double				transform_y;
-	int					sprite_screen_x;
+	int					spr_screen_x;
 	int					sprite_height;
 	int					sprite_width;
 	int					draw_start_y;
@@ -165,39 +163,10 @@ typedef struct  		s_data
 	t_img				sides[5];
 	t_img				win;		
 	t_ray				ray;
-	t_sprites			sprites;
+	t_sprites			spr;
 	t_ones				*one;
 	t_flag				flags;
 }               		t_data;
-
-// void	make_screenshoot(t_data *img);
-// int		n_in_rem(char *str_n, char **remainder, char **line);
-// int		r_less_null(char **remainder);
-// int		r_null(char **line, char **remainder);
-// int		get_next_line(int fd, char **line);
-// t_data	*make_map(t_list **head, int size, t_data *img);
-// void 	find_player(t_data *img, t_ray *player);
-// void 	redraw(t_data *img);
-// void	ft_initialize(t_data *img);
-// void	my_mlx_pixel_put(t_data *data, int x, int y, unsigned int color);
-// void 	draw_square(t_data *img, int i, int j);
-// void 	draw_map(t_data *img);
-// int		win_close(int keycode, t_data *img);
-// void	ft_raycast(t_data *img, t_ray *ray);
-// void 	ft_init(t_ray *ray);
-// void 	ft_parser(t_ray *ray, t_data *img, char *file);
-// void	ft_parse_map(char *line, t_ray *ray, t_data *img);
-// void 	ft_parse_color(char *line, int *side, t_data *img);
-// void 	ft_parse_tex(char*line, char **side, t_data *img);
-// void 	ft_parse_resolution(t_data *imgg, char *line);
-// void 	ft_errors(char *ans);
-// void 	ft_init_tex(t_data *img);
-// int		my_mlx_pixel_get(t_img *data, int x, int y);
-// void 	ft_header(t_img *win, int fd);
-// void 	ft_validate(t_data *img);
-// int		ft_validator(char **map, int x, int y, int num_sprites);
-// void 	ft_draw_spr(t_data *img, t_ray *ray);
-// void 	ft_sort_sprites(t_data *img, t_ones *one);
 
 void					ft_initialize(t_data *img);
 void					my_mlx_pixel_put(t_data *data, int x, int y, unsigned int color);
@@ -228,6 +197,19 @@ int					r_null(char **line, char **remainder);
 int					r_less_null(char **remainder);
 int					n_in_rem(char *str_n, char **remainder, char **line);
 void 				ft_check_d_a(t_data *img);
-int					ft_close();
-
+int					ft_close(void);
+void				ft_check_resolution(char *line, t_data *img,unsigned int *w, unsigned int *h);
+void				ft_check_r(char *line, int *i, int *r, t_data *img);
+void				ft_check_g(char *line, int *i, int *g, t_data *img);
+void				ft_check_b_and_other(char *line, int *i, int *b, t_data *img);
+void				ft_full_matrix(t_data *img, char *line);
+void				ft_find_pl(t_ray *ray, t_data *img, char *line, int *i);
+void				ft_find_pl_2(t_ray *ray, t_data *img, char *line, int *i);
+void				ft_count_sprite(t_data *img, char *line, int *i);
+void				ft_count_lines(t_data *img);
+void				ft_check_map(t_data *img);
+void				ft_condition_of_parse(char *line, t_data *img, t_ray *ray);
+void				ft_check_string(char *str);
+void				ft_check_string(char *str);
+void				ft_condition_of_parse(char *line, t_data *img, t_ray *ray);
 #endif

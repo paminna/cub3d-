@@ -6,11 +6,28 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/20 19:52:30 by paminna           #+#    #+#             */
-/*   Updated: 2021/03/31 21:59:45 by paminna          ###   ########.fr       */
+/*   Updated: 2021/04/01 15:24:21 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+int		ft_close(void)
+{
+	exit(0);
+	return (0);
+}
+
+void	ft_errors(char *ans)
+{
+	int i;
+
+	i = 0;
+	write(1, "Error\n", 6);
+	while (*ans != '\0')
+		write(1, &(*ans++), 1);
+	exit(0);
+}
 
 void ft_header(t_img *win, int fd)
 {
