@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/01 15:21:11 by paminna           #+#    #+#             */
-/*   Updated: 2021/04/01 15:50:37 by paminna          ###   ########.fr       */
+/*   Updated: 2021/04/03 19:40:58 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,19 @@
 
 void	ft_find_pl(t_ray *ray, t_data *img, char *line, int *i)
 {
-	ray->posX = img->mapX + 0.5;
-	ray->posY = *i + 0.5;
-	ray->planeX = 0;
-	ray->dirY = 0;
+	ray->pos_x = img->mapX + 0.5;
+	ray->pos_y = *i + 0.5;
+	ray->plane_x = 0;
+	ray->dir_y = 0;
 	if (line[*i] == 'N')
 	{
-		ray->planeY = 0.66;
-		ray->dirX = -1;
+		ray->plane_y = 0.66;
+		ray->dir_x = -1;
 	}
 	if (line[*i] == 'S')
 	{
-		ray->planeY = -0.66;
-		ray->dirX = 1;
+		ray->plane_y = -0.66;
+		ray->dir_x = 1;
 	}
 	img->map[img->mapX][*i] = '0';
 	img->flags.pl++;
@@ -34,19 +34,19 @@ void	ft_find_pl(t_ray *ray, t_data *img, char *line, int *i)
 
 void	ft_find_pl_2(t_ray *ray, t_data *img, char *line, int *i)
 {
-	ray->posX = img->mapX + 0.5;
-	ray->posY = *i + 0.5;
-	ray->planeY = 0;
-	ray->dirX = 0;
+	ray->pos_x = img->mapX + 0.5;
+	ray->pos_y = *i + 0.5;
+	ray->plane_y = 0;
+	ray->dir_x = 0;
 	if (line[*i] == 'W')
 	{
-		ray->planeX = -1;
-		ray->dirY = -0.66;
+		ray->plane_x = -1;
+		ray->dir_y = -0.66;
 	}
 	if (line[*i] == 'E')
 	{
-		ray->planeX = 1;
-		ray->dirY = 0.66;
+		ray->plane_x = 1;
+		ray->dir_y = 0.66;
 	}
 	img->map[img->mapX][*i] = '0';
 	img->flags.pl++;
@@ -54,7 +54,7 @@ void	ft_find_pl_2(t_ray *ray, t_data *img, char *line, int *i)
 
 void	ft_count_sprite(t_data *img, char *line, int *i)
 {
-	int j;
+	int	j;
 
 	j = *i;
 	while ((line[j] == '1' || line[j] == '2' || line[j] == '0' || line[j] == ' '
@@ -68,8 +68,8 @@ void	ft_count_sprite(t_data *img, char *line, int *i)
 			img->spr.num_sprites++;
 	}
 	j = 0;
-	free(line);
 	*i = j;
+	free(line);
 }
 
 void	ft_count_lines(t_data *img)

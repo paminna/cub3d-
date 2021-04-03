@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:11:57 by paminna           #+#    #+#             */
-/*   Updated: 2021/04/01 15:51:21 by paminna          ###   ########.fr       */
+/*   Updated: 2021/04/03 19:38:41 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,8 @@
 #  define A 0
 #  define D 2
 #  define ESC 53
-#  define scale 20
-#  define pink 0xFFC0CB
-#  define orange 0xFF5733
 #  define movespeed 0.1
 #  define rotation 0.2
-#  define blue 0xB0E0E6
-#  define green 0x90EE90
 # endif
 
 #include "libft/libft.h"
@@ -35,51 +30,44 @@
 # include <fcntl.h>
 # include <unistd.h>
 # include <math.h>
-# include <stdio.h> //
-
-// typedef struct			s_player
-// {
-// 	double	posX;
-// 	double	posY;
-// }						t_player;
 
 typedef struct			s_ray
 {
-	double	planeX;
-	double	planeY;
-	double	dirX;		//то куда мы смотрим
-	double	dirY;		//то куда мы смотрим
-	double	cameraX;
-	double	rayDirX;	// координаты луча, который мы пускаем, меняется в зависимости от угла луча
-	double	rayDirY;	// координаты луча, который мы пускаем, меняется в зависимости от угла луча
-	double	deltaDistX;	// расстояние до пересечения со стеной по диагонали
-	double	deltaDistY; // расстояние до пересечения со стеной по диагонали
-	double	perpWallDist; //расстояние до стены под прямым углом
-	int		stepX;
-	int		stepY;
-	int		hit;
-	int		side;
-	double	sideDistX;
-	double	sideDistY;
-	int		lineheight;
-	int		drawstart;
-	int		drawend;
-	double	posX;
-	double	posY;
-	int 	color;
-	int		c;
-	int		f;
-	double	tex_pos;
-	int		tex_h;
-	int		tex_w;
-	double	wall_h;
-	double	wall_x;
-	int		tex_x;
-	int		tex_y;
-	double	step;
-	void	*tex;
-	double	pos_s_x;
-	double	pos_s_y;
+	double				plane_x;
+	double				plane_y;
+	double				dir_x;
+	double				dir_y;
+	double				camera_x;
+	double				ray_dir_x;
+	double				ray_dir_y;
+	double				delta_dist_x;
+	double				delta_dist_y;
+	double				perp_wall_dist;
+	int					step_x;
+	int					step_y;
+	int					hit;
+	int					side;
+	double				side_dist_x;
+	double				side_dist_y;
+	int					lineheight;
+	int					drawstart;
+	int					drawend;
+	double				pos_x;
+	double				pos_y;
+	int					color;
+	int					c;
+	int					f;
+	double				tex_pos;
+	int					tex_h;
+	int					tex_w;
+	double				wall_h;
+	double				wall_x;
+	int					tex_x;
+	int					tex_y;
+	double				step;
+	void				*tex;
+	double				pos_s_x;
+	double				pos_s_y;
 }						t_ray;
 
 typedef	struct 			s_ones
@@ -87,7 +75,7 @@ typedef	struct 			s_ones
  	double				x;
   	double				y;
   	int					texture;
-	double				spriteDistance;
+	double				sprite_distance;
 }						t_ones;
 
 typedef	struct 			s_sprites
@@ -119,21 +107,21 @@ typedef	struct 			s_sprites
 
 typedef struct			s_flag
 {
-	int r;
-	int save;
-	int pl;
-	int color;
-	int coma;
-	int count_c;
-	int t;
-	int s;
-	int c;
-	int forward;
-	int left;
-	int back;
-	int right;
-	int rleft;
-	int rright;
+	int					r;
+	int					save;
+	int					pl;
+	int					color;
+	int					coma;
+	int					count_c;
+	int					t;
+	int					s;
+	int					c;
+	int					forward;
+	int					left;
+	int					back;
+	int					right;
+	int					rleft;
+	int					rright;
 }						t_flag;
 
 typedef struct			s_img
@@ -168,48 +156,58 @@ typedef struct  		s_data
 	t_flag				flags;
 }               		t_data;
 
+void					ft_check_w_s(t_data *img);
+void					ft_check_d_a(t_data *img);
+void					ft_check_arrows(t_data *img);
+int						key_up(int keycode, t_data *img);
+int						key_down(int keycode, t_data *img);
+void					ft_find_pl(t_ray *ray, t_data *img, char *line, int *i);
+void					ft_find_pl_2(t_ray *ray, t_data *img, char *line, int *i);
+void					ft_count_sprite(t_data *img, char *line, int *i);
+void					ft_count_lines(t_data *img);
+void					ft_check_map(t_data *img);
+void					ft_check_resolution(char *line, t_data *img,
+								unsigned int *w, unsigned int *h);
+void					ft_check_r(char *line, int *i, int *r, t_data *img);
+void					ft_check_g(char *line, int *i, int *g, t_data *img);
+void					ft_check_b_and_other(char *line, int *i, int *b, t_data *img);
+void					ft_full_matrix(t_data *img, char *line);
+void					ft_parse_resolution(t_data *img, char *line);
+void					ft_parse_tex(char *line, char **side, t_data *img);
+void					ft_parse_color(char *line, int *side, t_data *img);
+void					ft_parse_map(char *line, t_ray *ray, t_data *img);
+void					ft_parser(t_ray *ray, t_data *img, char *file);
+void					ft_tex(t_ray *ray, t_data *img, int *c);
+void					ft_tex_2(t_ray *ray, t_data *img, int *c);
+void					ft_calc_tex(t_ray *ray, t_data *img, int *x);
+void					ft_draw(t_data *img, int *y, int *x, int *c);
+void					ft_sort_sprites(t_data *img, t_ones *one);
+void					ft_check_side(t_ray *ray, t_data *img, int *x);
+void					ft_check_side_2(t_ray *ray, t_data *img);
+void					ft_raycast_help(t_data *img, int *c, t_ray *ray);
+void					ft_raycast(t_data *img, t_ray *ray);
+int						ft_close(void);
+void					ft_errors(char *ans);
+void					ft_header(t_img *win, int fd);
+void					make_screenshoot(t_data *img);
+void					ft_calc_sprite(t_data *img, t_ray *ray, int *i);
+void					ft_draw_s(t_data *img, t_ray *ray);
+void					ft_sprite_help(t_data *img, t_ray *ray);
+void					ft_draw_spr(t_data *img, t_ray *ray);
+void					ft_check_string(char *str);
+void					ft_condition_of_parse(char *line, t_data *img, t_ray *ray);
+void					ft_init_img(t_data *img);
+void					ft_check_file(const char *str);
 void					ft_initialize(t_data *img);
+int						ft_validator(char **map, int x, int y, int num_lines);
+void					ft_validate(t_data *img);
+int						n_in_rem(char *str_n, char **remainder, char **line);
+int						r_less_null(char **remainder);
+int						r_null(char **line, char **remainder);
+int						get_next_line(int fd, char **line);
 void					my_mlx_pixel_put(t_data *data, int x, int y, unsigned int color);
-int					my_mlx_pixel_get(t_img *data, int x, int y);
-void				ft_check_w_s(t_data *img);
-void 				ft_check_arrows(t_data *img);
-int					win_close(t_data *img);
-void				ft_init_img(t_data *img);
-void				ft_check_file(const char *str);
-void				ft_errors(char *ans);
-void				ft_check_string(char *str);
-void 				ft_parse_resolution(t_data *img, char *line);
-void				ft_parse_tex(char*line, char **side, t_data *img);
-void				ft_parse_color(char *line, int *side, t_data *img);
-void				ft_parse_map(char *line, t_ray *ray, t_data *img);
-void				ft_count_lines(t_data *img);
-void 				ft_check_map(t_data *img);
-void 				ft_parser(t_ray *ray, t_data *img, char *file);
-void 				ft_sort_sprites(t_data *img, t_ones *one);
-void				ft_raycast(t_data *img, t_ray *ray);
-void				make_screenshoot(t_data *img);
-void				ft_header(t_img *win, int fd);
-void				ft_draw_spr(t_data *img, t_ray *ray);
-int					ft_validator(char **map, int x, int y, int num_lines);
-void				ft_validate(t_data *img);
-int					get_next_line(int fd, char **line);
-int					r_null(char **line, char **remainder);
-int					r_less_null(char **remainder);
-int					n_in_rem(char *str_n, char **remainder, char **line);
-void 				ft_check_d_a(t_data *img);
-int					ft_close(void);
-void				ft_check_resolution(char *line, t_data *img,unsigned int *w, unsigned int *h);
-void				ft_check_r(char *line, int *i, int *r, t_data *img);
-void				ft_check_g(char *line, int *i, int *g, t_data *img);
-void				ft_check_b_and_other(char *line, int *i, int *b, t_data *img);
-void				ft_full_matrix(t_data *img, char *line);
-void				ft_find_pl(t_ray *ray, t_data *img, char *line, int *i);
-void				ft_find_pl_2(t_ray *ray, t_data *img, char *line, int *i);
-void				ft_count_sprite(t_data *img, char *line, int *i);
-void				ft_count_lines(t_data *img);
-void				ft_check_map(t_data *img);
-void				ft_condition_of_parse(char *line, t_data *img, t_ray *ray);
-void				ft_check_string(char *str);
-void				ft_check_string(char *str);
-void				ft_condition_of_parse(char *line, t_data *img, t_ray *ray);
+int						my_mlx_pixel_get(t_img *data, int x, int y);
+int						win_close(t_data *img);
+void					play(t_data *img, char *str);
+
 #endif

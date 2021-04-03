@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/20 19:52:30 by paminna           #+#    #+#             */
-/*   Updated: 2021/04/01 15:24:21 by paminna          ###   ########.fr       */
+/*   Updated: 2021/04/03 18:39:03 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	ft_errors(char *ans)
 	exit(0);
 }
 
-void ft_header(t_img *win, int fd)
+void	ft_header(t_img *win, int fd)
 {
 	int size;
 
@@ -47,17 +47,16 @@ void ft_header(t_img *win, int fd)
 	size = 1;
 	write(fd, &size, 2);
 	write(fd, &win->bits_per_pixel, 2);
-	// write(fd, &size, 12);
 	size = 0;
 	write(fd, &size, 24);
 }
 
-void make_screenshoot(t_data *img)
+void	make_screenshoot(t_data *img)
 {
 	int		i;
 	char	*file;
 	int		fd;
-	
+
 	file = (char*)"screen.bmp";
 	if ((fd = open(file, O_RDWR | O_TRUNC | O_CREAT, 0777)) < 0)
 		ft_errors("can't open file");
@@ -65,10 +64,10 @@ void make_screenshoot(t_data *img)
 	i = img->win.height;
 	while (i > 0)
 	{
-		write(fd, (img->win.addr + i * img->win.line_length), (img->win.width * img->win.bits_per_pixel / 8));
+		write(fd, (img->win.addr + i * img->win.line_length),
+		(img->win.width * img->win.bits_per_pixel / 8));
 		i--;
 	}
-	close (fd);
-	// mlx_destroy_image(img->mlx, img->win.img);
+	close(fd);
 	exit(0);
 }

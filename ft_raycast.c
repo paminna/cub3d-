@@ -6,17 +6,17 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/07 14:08:33 by paminna           #+#    #+#             */
-/*   Updated: 2021/04/01 15:49:13 by paminna          ###   ########.fr       */
+/*   Updated: 2021/04/03 19:43:12 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void ft_sort_sprites(t_data *img, t_ones *one)
+void	ft_sort_sprites(t_data *img, t_ones *one)
 {
-	int i;
-	int j;
-	t_ones help;
+	int		i;
+	int		j;
+	t_ones	help;
 
 	i = 0;
 	j = 1;
@@ -24,11 +24,11 @@ void ft_sort_sprites(t_data *img, t_ones *one)
 	{
 		while (i <= img->spr.num_sprites - 1 - j)
 		{
-			if (one[i].spriteDistance < one[i+1].spriteDistance)
+			if (one[i].sprite_distance < one[i + 1].sprite_distance)
 			{
 				help = one[i];
-				one[i] = one[i+1];
-				one[i+1] = help;
+				one[i] = one[i + 1];
+				one[i + 1] = help;
 			}
 			i++;
 		}
@@ -36,145 +36,88 @@ void ft_sort_sprites(t_data *img, t_ones *one)
 	}
 }
 
-void ft_raycast(t_data *img, t_ray *ray)
+void	ft_check_side(t_ray *ray, t_data *img, int *x)
+{
+	ray->camera_x = 2 * (*x) / (double)img->win.width - 1;
+	ray->ray_dir_x = ray->dir_x + ray->plane_x * ray->camera_x;
+	ray->ray_dir_y = ray->dir_y + ray->plane_y * ray->camera_x;
+	img->mapX = (int)ray->pos_x;
+	img->mapY = (int)ray->pos_y;
+	if (ray->ray_dir_y == 0)
+		ray->delta_dist_x = 0;
+	else
+	{
+		if (ray->ray_dir_x == 0)
+			ray->delta_dist_x = 1;
+		else
+			ray->delta_dist_x = fabs(1 / ray->ray_dir_x);
+	}
+	if (ray->ray_dir_x == 0)
+		ray->delta_dist_y = 0;
+	else
+	{
+		if (ray->ray_dir_y == 0)
+			ray->delta_dist_y = 1;
+		else
+			ray->delta_dist_y = fabs(1 / ray->ray_dir_y);
+	}
+}
+
+void	ft_check_side_2(t_ray *ray, t_data *img)
+{
+	if (ray->ray_dir_x < 0)
+	{
+		ray->step_x= -1;
+		ray->side_dist_x = (ray->pos_x - img->mapX) * ray->delta_dist_x;
+	}
+	else
+	{
+		ray->step_x= 1;
+		ray->side_dist_x = (img->mapX + 1.0 - ray->pos_x) * ray->delta_dist_x;
+	}
+	if (ray->ray_dir_y < 0)
+	{
+		ray->step_y = -1;
+		ray->side_dist_y = (ray->pos_y - img->mapY) * ray->delta_dist_y;
+	}
+	else
+	{
+		ray->step_y = 1;
+		ray->side_dist_y = (img->mapY + 1.0 - ray->pos_y) * ray->delta_dist_y;
+	}
+}
+
+void	ft_raycast_help(t_data *img, int *c, t_ray *ray)
+{
+	if (ray->side_dist_x < ray->side_dist_y)
+		ft_tex(ray, img, c);
+	else
+		ft_tex_2(ray, img, c);
+	if (img->map[img->mapX][img->mapY] == '1')
+		ray->hit = 1;
+}
+
+void	ft_raycast(t_data *img, t_ray *ray)
 {
 	int x;
 	int y;
-	int i;
 	int c;
-	// int d;
-		
-	if (!(img->buf = (double*)malloc(sizeof(double)*img->win.width)))
+
+	if (!(img->buf = (double*)malloc(sizeof(double) * img->win.width)))
 		ft_errors("Malloc error");
 	x = -1;
 	while (++x < img->win.width)
 	{
-		ray->cameraX = 2 * x / (double)img->win.width - 1;
-		ray->rayDirX = ray->dirX + ray->planeX * ray->cameraX;
-		ray->rayDirY = ray->dirY + ray->planeY * ray->cameraX;
-		img->mapX = (int)ray->posX;
-		img->mapY = (int)ray->posY;
-		if (ray->rayDirY == 0)
-			ray->deltaDistX = 0;
-		else
-		{
-			if (ray->rayDirX == 0)	
-				ray->deltaDistX = 1;
-			else 
-				ray->deltaDistX = fabs(1 / ray->rayDirX);
-		}
-		if (ray->rayDirX == 0)
-			ray->deltaDistY = 0;
-		else
-		{
-
-			if (ray->rayDirY == 0)	
-				ray->deltaDistY = 1;
-			else 
-				ray->deltaDistY = fabs(1 / ray->rayDirY);
-		}
-		if (ray->rayDirX < 0)
-		{
-			ray->stepX = -1;
-			ray->sideDistX = (ray->posX - img->mapX) * ray->deltaDistX;
-		}
-		else
-		{
-			ray->stepX = 1;
-			ray->sideDistX = (img->mapX + 1.0 - ray->posX) * ray->deltaDistX;
-		}
-		if (ray->rayDirY < 0)
-		{
-			ray->stepY = -1;
-			ray->sideDistY = (ray->posY - img->mapY) * ray->deltaDistY;
-		}
-		else
-		{
-			ray->stepY = 1;
-			ray->sideDistY = (img->mapY + 1.0 - ray->posY) * ray->deltaDistY;
-		}
+		ft_check_side(ray, img, &x);
+		ft_check_side_2(ray, img);
 		ray->hit = 0;
 		while (ray->hit == 0)
-		{
-			if (ray->sideDistX < ray->sideDistY)
-			{
-				ray->sideDistX += ray->deltaDistX;
-				img->mapX += ray->stepX;
-				ray->side = 0;
-				if (ray->rayDirX < 0)  // север
-				{
-					ray->tex_h = img->sides[0].height;
-					ray->tex_w = img->sides[0].width;
-					c = 0;
-				}
-				if (ray->rayDirX > 0) // юг
-				{
-					ray->tex_h = img->sides[1].height;
-					ray->tex_w = img->sides[1].width;
-					c = 1;
-				}
-			}
-			else
-			{
-				ray->sideDistY += ray->deltaDistY;
-				img->mapY += ray->stepY;
-				ray->side = 1;
-				if (ray->rayDirY < 0) // запад
-				{
-					ray->tex_h = img->sides[2].height;
-					ray->tex_w = img->sides[2].width;
-					c = 2;
-				}
-				if (ray->rayDirY > 0) // восток
-				{
-					ray->tex_h = img->sides[3].height;
-					ray->tex_w = img->sides[3].width;
-					c = 3;
-				}
-			}
-			if (img->map[img->mapX][img->mapY] == '1')
-				ray->hit = 1;
-		}
-		if (ray->side == 0 )
-			ray->perpWallDist = ((double)img->mapX - ray->posX + (1 - (double)ray->stepX) / 2) / ray->rayDirX;
-		else
-			ray->perpWallDist = ((double)img->mapY - ray->posY + (1 - (double)ray->stepY) / 2) / ray->rayDirY;
-		img->buf[x] = ray->perpWallDist;
-		ray->lineheight = (int) (img->win.height / ray->perpWallDist);
-		ray->drawstart = -ray->lineheight / 2 + img->win.height / 2;
-		if (ray->drawstart < 0)
-			ray->drawstart = 0;
-		ray->drawend = ray->lineheight / 2 + img->win.height/ 2;
-		if (ray->drawstart >= img->win.height)
-			ray->drawend = img->win.height - 1;
-      	if (ray->side == 0) 
-			ray->wall_x = ray->posY + ray->perpWallDist * ray->rayDirY;
-      	else          
-			ray->wall_x = ray->posX + ray->perpWallDist * ray->rayDirX;
-      	ray->wall_x -= floor((ray->wall_x));
-		ray->tex_x = (int)(ray->wall_x * (double)ray->tex_w);
-      	if (ray->side == 0 && ray->rayDirX > 0)
-			ray->tex_x = ray->tex_w - ray->tex_x - 1;
-      	if(ray->side == 1 && ray->rayDirY < 0)
-			ray->tex_x = ray->tex_w - ray->tex_x - 1;
-		ray->step = 1.0 * ray->tex_h / ray->lineheight;
-		ray->tex_pos = (ray->drawstart - img->win.height / 2 + ray->lineheight / 2) * ray->step;
-	 	y = 0;
-        i = ray->drawend;
-        while (y++ < ray->drawstart)
-            my_mlx_pixel_put(img, x, y, ray->f);
-        while (y < ray->drawend && y < img->win.height)
-        {
-			ray->tex_y = (int)(ray->tex_pos);
-			ray->tex_pos += ray->step;
-			ray->color = my_mlx_pixel_get(&img->sides[c], ray->tex_x, ray->tex_y);
-			my_mlx_pixel_put(img, x, y, ray->color);
-            y++;
-        }
-        y = i;
-        while (y++ < img->win.height)
-            my_mlx_pixel_put(img, x, y, ray->c);
+			ft_raycast_help(img, &c, ray);
+		ft_calc_tex(ray, img, &x);
+		ray->tex_pos = (ray->drawstart - img->win.height / 2
+		+ ray->lineheight / 2) * ray->step;
+		ft_draw(img, &y, &x, &c);
 	}
 	ft_draw_spr(img, ray);
-	free (img->buf);
+	free(img->buf);
 }

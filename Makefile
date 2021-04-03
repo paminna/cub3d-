@@ -6,11 +6,12 @@
 #    By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/04 15:47:14 by paminna           #+#    #+#              #
-#    Updated: 2021/04/01 15:51:35 by paminna          ###   ########.fr        #
+#    Updated: 2021/04/03 19:45:53 by paminna          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS = main.c ft_parser.c get_next_line.c ft_raycast.c ft_screenshoot.c ft_validate.c ft_sprites.c ft_parse_utils.c ft_parse_utils_2.c ft_utils.c
+SRCS = main.c ft_parser.c get_next_line.c ft_raycast.c ft_screenshoot.c ft_validate.c\
+ ft_sprites.c ft_parse_utils.c ft_parse_utils_2.c ft_utils.c ft_moving.c ft_raycast_walls.c
 
 OBJS = ${SRCS:.c=.o}
 
