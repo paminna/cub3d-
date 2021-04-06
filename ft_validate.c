@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 17:41:45 by paminna           #+#    #+#             */
-/*   Updated: 2021/04/03 18:38:09 by paminna          ###   ########.fr       */
+/*   Updated: 2021/04/06 18:10:19 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,18 +34,27 @@ void	ft_validate(t_data *img)
 	int res;
 
 	res = -1;
-	img->mapX = 0;
-	while (img->mapX < img->size)
+	img->map_x = 0;
+	while (img->map_x < img->size)
 	{
-		img->mapY = 0;
-		while (img->mapY < img->max_len)
+		img->map_y = 0;
+		while (img->map_y < img->max_len)
 		{
-			if (img->map[img->mapX][img->mapY] == '0' && res != 0)
-				res = ft_validator(img->map, img->mapX, img->mapY, img->size);
+			if (img->map[img->map_x][img->map_y] == '0' && res != 0)
+				res = ft_validator(img->map, img->map_x, img->map_y, img->size);
 			if (res == 0)
 				ft_errors("wrong map");
-			img->mapY++;
+			img->map_y++;
 		}
-		img->mapX++;
+		img->map_x++;
+		if (img->map_x == img->size)
+		{
+			while (img->map_y < img->max_len)
+			{
+				if (img->map[img->map_x][img->map_y] == '0')
+					ft_errors("wrong map");
+				img->map_y++;
+			}
+		}
 	}
 }

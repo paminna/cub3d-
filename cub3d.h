@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:11:57 by paminna           #+#    #+#             */
-/*   Updated: 2021/04/03 19:38:41 by paminna          ###   ########.fr       */
+/*   Updated: 2021/04/06 17:21:46 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@
 #  define A 0
 #  define D 2
 #  define ESC 53
-#  define movespeed 0.1
-#  define rotation 0.2
+#  define MOVESPEED 0.1
+#  define ROTATION 0.2
 # endif
 
-#include "libft/libft.h"
+# include "libft/libft.h"
 # include "minilibx/mlx.h"
 # include <stdlib.h>
 # include <fcntl.h>
@@ -70,21 +70,21 @@ typedef struct			s_ray
 	double				pos_s_y;
 }						t_ray;
 
-typedef	struct 			s_ones
+typedef	struct			s_ones
 {
- 	double				x;
-  	double				y;
-  	int					texture;
+	double				x;
+	double				y;
+	int					texture;
 	double				sprite_distance;
 }						t_ones;
 
-typedef	struct 			s_sprites
+typedef	struct			s_sprites
 {
-	void        		*img;
-    char       			*addr;
-    int         		bits_per_pixel;
-    int         		line_length;
-    int         		endian;
+	void				*img;
+	char				*addr;
+	int					bits_per_pixel;
+	int					line_length;
+	int					endian;
 	int					*sprite_order;
 	int					num_sprites;
 	double				spr_x;
@@ -126,35 +126,35 @@ typedef struct			s_flag
 
 typedef struct			s_img
 {
-	void        		*img;
-    char       			*addr;
-    int         		bits_per_pixel;
-    int         		line_length;
-    int         		endian;
+	void				*img;
+	char				*addr;
+	int					bits_per_pixel;
+	int					line_length;
+	int					endian;
 	int					width;
 	int					height;
 	char				*side;
 }						t_img;
 
-typedef struct  		s_data
+typedef struct			s_data
 {
-	unsigned int 		color;
-	void 				*mlx;
-	void 				*mlx_win;
+	unsigned int		color;
+	void				*mlx;
+	void				*mlx_win;
 	int					max_len;
-	int 				mapX;
-	int 				mapY;
-	char	 			**map;
+	int					map_x;
+	int					map_y;
+	char				**map;
 	double				*buf;
 	int					size;
 	t_img				tex;
 	t_img				sides[5];
-	t_img				win;		
+	t_img				win;
 	t_ray				ray;
 	t_sprites			spr;
 	t_ones				*one;
 	t_flag				flags;
-}               		t_data;
+}						t_data;
 
 void					ft_check_w_s(t_data *img);
 void					ft_check_d_a(t_data *img);
@@ -162,15 +162,18 @@ void					ft_check_arrows(t_data *img);
 int						key_up(int keycode, t_data *img);
 int						key_down(int keycode, t_data *img);
 void					ft_find_pl(t_ray *ray, t_data *img, char *line, int *i);
-void					ft_find_pl_2(t_ray *ray, t_data *img, char *line, int *i);
+void					ft_find_pl_2(t_ray *ray, t_data *img,
+							char *line, int *i);
 void					ft_count_sprite(t_data *img, char *line, int *i);
 void					ft_count_lines(t_data *img);
 void					ft_check_map(t_data *img);
 void					ft_check_resolution(char *line, t_data *img,
 								unsigned int *w, unsigned int *h);
 void					ft_check_r(char *line, int *i, int *r, t_data *img);
-void					ft_check_g(char *line, int *i, int *g, t_data *img);
-void					ft_check_b_and_other(char *line, int *i, int *b, t_data *img);
+void					ft_check_g(char *line, int *i,
+							int *g, t_data *img);
+void					ft_check_b_and_other(char *line, int *i,
+							int *b, t_data *img);
 void					ft_full_matrix(t_data *img, char *line);
 void					ft_parse_resolution(t_data *img, char *line);
 void					ft_parse_tex(char *line, char **side, t_data *img);
@@ -195,7 +198,8 @@ void					ft_draw_s(t_data *img, t_ray *ray);
 void					ft_sprite_help(t_data *img, t_ray *ray);
 void					ft_draw_spr(t_data *img, t_ray *ray);
 void					ft_check_string(char *str);
-void					ft_condition_of_parse(char *line, t_data *img, t_ray *ray);
+void					ft_condition_of_parse(char *line,
+							t_data *img, t_ray *ray);
 void					ft_init_img(t_data *img);
 void					ft_check_file(const char *str);
 void					ft_initialize(t_data *img);
@@ -205,7 +209,8 @@ int						n_in_rem(char *str_n, char **remainder, char **line);
 int						r_less_null(char **remainder);
 int						r_null(char **line, char **remainder);
 int						get_next_line(int fd, char **line);
-void					my_mlx_pixel_put(t_data *data, int x, int y, unsigned int color);
+void					my_mlx_pixel_put(t_data *data, int x,
+							int y, unsigned int color);
 int						my_mlx_pixel_get(t_img *data, int x, int y);
 int						win_close(t_data *img);
 void					play(t_data *img, char *str);

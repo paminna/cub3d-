@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/03 19:06:10 by paminna           #+#    #+#             */
-/*   Updated: 2021/04/03 19:43:53 by paminna          ###   ########.fr       */
+/*   Updated: 2021/04/06 17:19:12 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	ft_tex(t_ray *ray, t_data *img, int *c)
 {
 	ray->side_dist_x += ray->delta_dist_x;
-	img->mapX += ray->step_x;
+	img->map_x += ray->step_x;
 	ray->side = 0;
 	if (ray->ray_dir_x < 0)
 	{
@@ -34,7 +34,7 @@ void	ft_tex(t_ray *ray, t_data *img, int *c)
 void	ft_tex_2(t_ray *ray, t_data *img, int *c)
 {
 	ray->side_dist_y += ray->delta_dist_y;
-	img->mapY += ray->step_y;
+	img->map_y += ray->step_y;
 	ray->side = 1;
 	if (ray->ray_dir_y < 0)
 	{
@@ -53,10 +53,10 @@ void	ft_tex_2(t_ray *ray, t_data *img, int *c)
 void	ft_calc_tex(t_ray *ray, t_data *img, int *x)
 {
 	if (ray->side == 0)
-		ray->perp_wall_dist = ((double)img->mapX - ray->pos_x +
+		ray->perp_wall_dist = ((double)img->map_x - ray->pos_x +
 		(1 - (double)ray->step_x) / 2) / ray->ray_dir_x;
 	else
-		ray->perp_wall_dist = ((double)img->mapY - ray->pos_y +
+		ray->perp_wall_dist = ((double)img->map_y - ray->pos_y +
 		(1 - (double)ray->step_y) / 2) / ray->ray_dir_y;
 	img->buf[*x] = ray->perp_wall_dist;
 	ray->lineheight = (int)(img->win.height / ray->perp_wall_dist);

@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/20 19:52:30 by paminna           #+#    #+#             */
-/*   Updated: 2021/04/03 18:39:03 by paminna          ###   ########.fr       */
+/*   Updated: 2021/04/06 16:01:26 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ void	ft_header(t_img *win, int fd)
 	size = 14 + 40 + win->height * win->width * win->bits_per_pixel / 8;
 	write(fd, &size, 4);
 	size = 0;
-	write(fd, &size, 4);
+	write(fd, &size, 2);
+	write(fd, &size, 2);
 	size = 54;
 	write(fd, &size, 4);
 	size = 40;
@@ -48,7 +49,7 @@ void	ft_header(t_img *win, int fd)
 	write(fd, &size, 2);
 	write(fd, &win->bits_per_pixel, 2);
 	size = 0;
-	write(fd, &size, 24);
+	write(fd, "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0", 24);
 }
 
 void	make_screenshoot(t_data *img)

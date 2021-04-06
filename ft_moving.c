@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/03 19:04:12 by paminna           #+#    #+#             */
-/*   Updated: 2021/04/03 19:40:58 by paminna          ###   ########.fr       */
+/*   Updated: 2021/04/06 17:12:05 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,20 +17,20 @@ void	ft_check_w_s(t_data *img)
 	if (img->flags.forward == 1)
 	{
 		if (img->map[(int)(img->ray.pos_x)]
-		[(int)(img->ray.pos_y + img->ray.dir_y * movespeed)] != '1')
-			img->ray.pos_y += img->ray.dir_y * movespeed;
-		if (img->map[(int)(img->ray.pos_x + img->ray.dir_x * movespeed)]
+		[(int)(img->ray.pos_y + img->ray.dir_y * MOVESPEED)] != '1')
+			img->ray.pos_y += img->ray.dir_y * MOVESPEED;
+		if (img->map[(int)(img->ray.pos_x + img->ray.dir_x * MOVESPEED)]
 		[(int)(img->ray.pos_y)] != '1')
-			img->ray.pos_x += img->ray.dir_x * movespeed;
+			img->ray.pos_x += img->ray.dir_x * MOVESPEED;
 	}
 	if (img->flags.back == 1)
 	{
 		if (img->map[(int)(img->ray.pos_x)]
-		[(int)(img->ray.pos_y - img->ray.dir_y * movespeed)] != '1')
-			img->ray.pos_y -= img->ray.dir_y * movespeed;
-		if (img->map[(int)(img->ray.pos_x - img->ray.dir_x * movespeed)]
+		[(int)(img->ray.pos_y - img->ray.dir_y * MOVESPEED)] != '1')
+			img->ray.pos_y -= img->ray.dir_y * MOVESPEED;
+		if (img->map[(int)(img->ray.pos_x - img->ray.dir_x * MOVESPEED)]
 		[(int)(img->ray.pos_y)] != '1')
-			img->ray.pos_x -= img->ray.dir_x * movespeed;
+			img->ray.pos_x -= img->ray.dir_x * MOVESPEED;
 	}
 }
 
@@ -39,20 +39,20 @@ void	ft_check_d_a(t_data *img)
 	if (img->flags.right == 1)
 	{
 		if (img->map[(int)(img->ray.pos_x)]
-		[(int)(img->ray.pos_y + img->ray.plane_y * movespeed)] != '1')
-			img->ray.pos_y += img->ray.plane_y * movespeed;
-		if (img->map[(int)(img->ray.pos_x + img->ray.plane_x * movespeed)]
+		[(int)(img->ray.pos_y + img->ray.plane_y * MOVESPEED)] != '1')
+			img->ray.pos_y += img->ray.plane_y * MOVESPEED;
+		if (img->map[(int)(img->ray.pos_x + img->ray.plane_x * MOVESPEED)]
 		[(int)(img->ray.pos_y)] != '1')
-			img->ray.pos_x += img->ray.plane_x * movespeed;
+			img->ray.pos_x += img->ray.plane_x * MOVESPEED;
 	}
 	if (img->flags.left == 1)
 	{
 		if (img->map[(int)(img->ray.pos_x)]
-		[(int)(img->ray.pos_y - img->ray.plane_y * movespeed)] != '1')
-			img->ray.pos_y -= img->ray.plane_y * movespeed;
-		if (img->map[(int)(img->ray.pos_x - img->ray.plane_x * movespeed)]
+		[(int)(img->ray.pos_y - img->ray.plane_y * MOVESPEED)] != '1')
+			img->ray.pos_y -= img->ray.plane_y * MOVESPEED;
+		if (img->map[(int)(img->ray.pos_x - img->ray.plane_x * MOVESPEED)]
 		[(int)(img->ray.pos_y)] != '1')
-			img->ray.pos_x -= img->ray.plane_x * movespeed;
+			img->ray.pos_x -= img->ray.plane_x * MOVESPEED;
 	}
 }
 
@@ -65,9 +65,9 @@ void	ft_check_arrows(t_data *img)
 	oldplane_x = img->ray.plane_x;
 	olddir_x = img->ray.dir_x;
 	if (img->flags.rright == 1)
-		rotate = -rotation;
+		rotate = -ROTATION;
 	if (img->flags.rleft == 1)
-		rotate = rotation;
+		rotate = ROTATION;
 	if ((img->flags.rright != 1 && img->flags.rleft == 1)
 	|| (img->flags.rright == 1 && img->flags.rleft != 1))
 	{

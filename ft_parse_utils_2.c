@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/01 15:21:11 by paminna           #+#    #+#             */
-/*   Updated: 2021/04/03 19:40:58 by paminna          ###   ########.fr       */
+/*   Updated: 2021/04/06 18:17:50 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ft_find_pl(t_ray *ray, t_data *img, char *line, int *i)
 {
-	ray->pos_x = img->mapX + 0.5;
+	ray->pos_x = img->map_x + 0.5;
 	ray->pos_y = *i + 0.5;
 	ray->plane_x = 0;
 	ray->dir_y = 0;
@@ -28,13 +28,13 @@ void	ft_find_pl(t_ray *ray, t_data *img, char *line, int *i)
 		ray->plane_y = -0.66;
 		ray->dir_x = 1;
 	}
-	img->map[img->mapX][*i] = '0';
+	img->map[img->map_x][*i] = '0';
 	img->flags.pl++;
 }
 
 void	ft_find_pl_2(t_ray *ray, t_data *img, char *line, int *i)
 {
-	ray->pos_x = img->mapX + 0.5;
+	ray->pos_x = img->map_x + 0.5;
 	ray->pos_y = *i + 0.5;
 	ray->plane_y = 0;
 	ray->dir_x = 0;
@@ -48,7 +48,7 @@ void	ft_find_pl_2(t_ray *ray, t_data *img, char *line, int *i)
 		ray->plane_x = 1;
 		ray->dir_y = 0.66;
 	}
-	img->map[img->mapX][*i] = '0';
+	img->map[img->map_x][*i] = '0';
 	img->flags.pl++;
 }
 
@@ -103,25 +103,25 @@ void	ft_count_lines(t_data *img)
 
 void	ft_check_map(t_data *img)
 {
-	img->mapX = 0;
-	while (img->mapX < img->size)
+	img->map_x = 0;
+	while (img->map_x < img->size)
 	{
-		img->mapY = 0;
-		while (img->mapY < img->max_len)
+		img->map_y = 0;
+		while (img->map_y < img->max_len)
 		{
-			if (img->map[img->mapX][img->mapY] != '1'
-			&& img->map[img->mapX][img->mapY] != '2'
-			&& img->map[img->mapX][img->mapY] != '0'
-			&& img->map[img->mapX][img->mapY] != ' '
-			&& img->map[img->mapX][img->mapY] != '\t'
-			&& img->map[img->mapX][img->mapY] != 'N'
-			&& img->map[img->mapX][img->mapY] != 'E'
-			&& img->map[img->mapX][img->mapY] != 'W'
-			&& img->map[img->mapX][img->mapY] != 'S')
+			if (img->map[img->map_x][img->map_y] != '1'
+			&& img->map[img->map_x][img->map_y] != '2'
+			&& img->map[img->map_x][img->map_y] != '0'
+			&& img->map[img->map_x][img->map_y] != ' '
+			&& img->map[img->map_x][img->map_y] != '\t'
+			&& img->map[img->map_x][img->map_y] != 'N'
+			&& img->map[img->map_x][img->map_y] != 'E'
+			&& img->map[img->map_x][img->map_y] != 'W'
+			&& img->map[img->map_x][img->map_y] != 'S')
 				ft_errors("wrong map");
-			img->mapY++;
+			img->map_y++;
 		}
-		img->mapX++;
+		img->map_x++;
 	}
 	if (img->flags.r == 0 || img->flags.t != 5 || img->flags.c == 0)
 		ft_errors("not enought data");

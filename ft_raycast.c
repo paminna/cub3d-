@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/07 14:08:33 by paminna           #+#    #+#             */
-/*   Updated: 2021/04/03 19:43:12 by paminna          ###   ########.fr       */
+/*   Updated: 2021/04/06 17:19:12 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	ft_sort_sprites(t_data *img, t_ones *one)
 			}
 			i++;
 		}
+		i = 0;
 		j++;
 	}
 }
@@ -41,8 +42,8 @@ void	ft_check_side(t_ray *ray, t_data *img, int *x)
 	ray->camera_x = 2 * (*x) / (double)img->win.width - 1;
 	ray->ray_dir_x = ray->dir_x + ray->plane_x * ray->camera_x;
 	ray->ray_dir_y = ray->dir_y + ray->plane_y * ray->camera_x;
-	img->mapX = (int)ray->pos_x;
-	img->mapY = (int)ray->pos_y;
+	img->map_x = (int)ray->pos_x;
+	img->map_y = (int)ray->pos_y;
 	if (ray->ray_dir_y == 0)
 		ray->delta_dist_x = 0;
 	else
@@ -67,23 +68,23 @@ void	ft_check_side_2(t_ray *ray, t_data *img)
 {
 	if (ray->ray_dir_x < 0)
 	{
-		ray->step_x= -1;
-		ray->side_dist_x = (ray->pos_x - img->mapX) * ray->delta_dist_x;
+		ray->step_x = -1;
+		ray->side_dist_x = (ray->pos_x - img->map_x) * ray->delta_dist_x;
 	}
 	else
 	{
-		ray->step_x= 1;
-		ray->side_dist_x = (img->mapX + 1.0 - ray->pos_x) * ray->delta_dist_x;
+		ray->step_x = 1;
+		ray->side_dist_x = (img->map_x + 1.0 - ray->pos_x) * ray->delta_dist_x;
 	}
 	if (ray->ray_dir_y < 0)
 	{
 		ray->step_y = -1;
-		ray->side_dist_y = (ray->pos_y - img->mapY) * ray->delta_dist_y;
+		ray->side_dist_y = (ray->pos_y - img->map_y) * ray->delta_dist_y;
 	}
 	else
 	{
 		ray->step_y = 1;
-		ray->side_dist_y = (img->mapY + 1.0 - ray->pos_y) * ray->delta_dist_y;
+		ray->side_dist_y = (img->map_y + 1.0 - ray->pos_y) * ray->delta_dist_y;
 	}
 }
 
@@ -93,7 +94,7 @@ void	ft_raycast_help(t_data *img, int *c, t_ray *ray)
 		ft_tex(ray, img, c);
 	else
 		ft_tex_2(ray, img, c);
-	if (img->map[img->mapX][img->mapY] == '1')
+	if (img->map[img->map_x][img->map_y] == '1')
 		ray->hit = 1;
 }
 

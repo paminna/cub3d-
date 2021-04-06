@@ -6,11 +6,12 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/26 20:46:01 by paminna           #+#    #+#             */
-/*   Updated: 2021/04/05 15:49:12 by paminna          ###   ########.fr       */
+/*   Updated: 2021/04/06 16:31:17 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+#include <stdio.h>
 
 void	ft_calc_sprite(t_data *img, t_ray *ray, int *i)
 {

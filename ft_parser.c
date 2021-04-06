@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:11:09 by paminna           #+#    #+#             */
-/*   Updated: 2021/04/03 16:57:53 by paminna          ###   ########.fr       */
+/*   Updated: 2021/04/06 18:27:30 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,24 +97,26 @@ void	ft_parse_map(char *line, t_ray *ray, t_data *img)
 	i = 0;
 	if (img->flags.t != 5 || img->flags.c != 2)
 		ft_errors("wrong data in file");
-	img->mapY = 0;
-	img->map[img->mapX] = (char*)malloc(img->max_len + 1);
+	img->map_y = 0;
+	img->map[img->map_x] = (char*)malloc(img->max_len + 1);
 	ft_full_matrix(img, line);
+	if (line[i] == '\n')
+		ft_errors("wrong map");
 	while (line[i] != '\0')
 	{
 		if (line[i] == 'N' || line[i] == 'S')
 			ft_find_pl(ray, img, line, &i);
-		if (line[i] == 'W' || line[i] == 'E')
+		else if (line[i] == 'W' || line[i] == 'E')
 			ft_find_pl_2(ray, img, line, &i);
-		if (line[i] == '2')
+		else if (line[i] == '2')
 		{
-			img->one[img->spr.sprite_count].x = (double)img->mapX + 0.5;
+			img->one[img->spr.sprite_count].x = (double)img->map_x + 0.5;
 			img->one[img->spr.sprite_count].y = (double)i + 0.5;
 			img->spr.sprite_count++;
 		}
 		i++;
 	}
-	img->mapX++;
+	img->map_x++;
 }
 
 void	ft_parser(t_ray *ray, t_data *img, char *file)

@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/01 15:17:12 by paminna           #+#    #+#             */
-/*   Updated: 2021/04/01 15:20:51 by paminna          ###   ########.fr       */
+/*   Updated: 2021/04/06 17:19:12 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,16 +111,16 @@ void	ft_full_matrix(t_data *img, char *line)
 	int i;
 
 	i = 0;
-	while (img->mapY < img->max_len)
+	while (img->map_y < img->max_len)
 	{
-		while (img->mapY < (int)ft_strlen(line))
+		while (img->map_y < (int)ft_strlen(line))
 		{
-			img->map[img->mapX][img->mapY] = line[i++];
-			img->mapY++;
+			img->map[img->map_x][img->map_y] = line[i++];
+			img->map_y++;
 		}
-		if (img->mapY < img->max_len)
-			img->map[img->mapX][img->mapY] = ' ';
-		img->mapY++;
-		img->map[img->mapX][img->mapY] = '\0';
+		if (img->map_y < img->max_len)
+			img->map[img->map_x][img->map_y] = ' ';
+		img->map_y++;
+		img->map[img->map_x][img->map_y] = '\0';
 	}
 }

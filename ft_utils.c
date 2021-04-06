@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/01 15:27:28 by paminna           #+#    #+#             */
-/*   Updated: 2021/04/03 19:43:53 by paminna          ###   ########.fr       */
+/*   Updated: 2021/04/06 18:22:01 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,8 @@ void	ft_initialize(t_data *img)
 	img->win.bits_per_pixel = 0;
 	img->win.endian = 0;
 	img->win.line_length = 0;
-	img->mapX = 0;
-	img->mapY = 0;
+	img->map_x = 0;
+	img->map_y = 0;
 	img->ray.camera_x = 0;
 	img->ray.hit = 0;
 	img->ray.lineheight = 0;
