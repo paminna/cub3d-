@@ -6,7 +6,7 @@
 #    By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/04 15:47:14 by paminna           #+#    #+#              #
-#    Updated: 2021/04/06 16:05:22 by paminna          ###   ########.fr        #
+#    Updated: 2021/04/07 09:39:29 by paminna          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ RM			=	rm -f
 CC			=	gcc
 
 %.o: %.c
-	$(CC) -Wall -Wextra -Werror -Imlx -c $< -o $@
+	$(CC) -Wall -Wextra -Werror -g -Imlx -c $< -o $@
 
 $(NAME): $(OBJS) $(HEADER)
 		$(MAKELIB)
@@ -44,7 +44,7 @@ all:		${NAME}
 
 clean:
 			${RM} ${OBJS}
-			@make clean -C ./libft
+			$(MAKE) clean -C ./libft
 
 fclean:		clean
 			${RM} ${NAME}

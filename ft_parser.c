@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:11:09 by paminna           #+#    #+#             */
-/*   Updated: 2021/04/06 18:27:30 by paminna          ###   ########.fr       */
+/*   Updated: 2021/04/07 10:47:34 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,13 +95,12 @@ void	ft_parse_map(char *line, t_ray *ray, t_data *img)
 	int i;
 
 	i = 0;
+	img->flags.map_start++;
 	if (img->flags.t != 5 || img->flags.c != 2)
 		ft_errors("wrong data in file");
 	img->map_y = 0;
 	img->map[img->map_x] = (char*)malloc(img->max_len + 1);
 	ft_full_matrix(img, line);
-	if (line[i] == '\n')
-		ft_errors("wrong map");
 	while (line[i] != '\0')
 	{
 		if (line[i] == 'N' || line[i] == 'S')

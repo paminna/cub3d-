@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:11:57 by paminna           #+#    #+#             */
-/*   Updated: 2021/04/06 17:21:46 by paminna          ###   ########.fr       */
+/*   Updated: 2021/04/07 09:52:06 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,7 @@ typedef struct			s_flag
 	int					right;
 	int					rleft;
 	int					rright;
+	int					map_start;
 }						t_flag;
 
 typedef struct			s_img

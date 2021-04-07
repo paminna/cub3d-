@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/01 15:27:28 by paminna           #+#    #+#             */
-/*   Updated: 2021/04/06 18:22:01 by paminna          ###   ########.fr       */
+/*   Updated: 2021/04/07 10:59:09 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	ft_check_string(char *str)
 
 void	ft_condition_of_parse(char *line, t_data *img, t_ray *ray)
 {
-	if (line[0] == 'R' && line[1] == ' ')
+	if (line[0] == 'R' && (line[1] == ' ' || line[1] == '\t'))
 		ft_parse_resolution(img, line);
 	else if (line[0] == 'N' && line[1] == 'O')
 		ft_parse_tex(line, &(img->sides[0].side), img);
@@ -44,9 +44,11 @@ void	ft_condition_of_parse(char *line, t_data *img, t_ray *ray)
 		ft_parse_color(line, &ray->c, img);
 	else if (line[0] == 'F' && line[1] == ' ')
 		ft_parse_color(line, &ray->f, img);
-	else if (line[0] == ' ' || line[0] == '0'
-	|| line[0] == '1' || (line[0] > 8 && line[0] < 14))
+	else if ((line[0] == ' ' || line[0] == '0'
+	|| line[0] == '1' || (line[0] > 8 && line[0] < 14)))
 		ft_parse_map(line, ray, img);
+	else if (line[0] == '\0' && img->flags.map_start != 0)
+		ft_errors("wrong data in file");
 }
 
 void	ft_init_img(t_data *img)
@@ -110,4 +112,5 @@ void	ft_initialize(t_data *img)
 	img->flags.t = 0;
 	img->flags.c = 0;
 	img->flags.pl = 0;
+	img->flags.map_start = 0;
 }

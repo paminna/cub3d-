@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 17:41:45 by paminna           #+#    #+#             */
-/*   Updated: 2021/04/06 18:10:19 by paminna          ###   ########.fr       */
+/*   Updated: 2021/04/07 11:11:05 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,7 @@ void	ft_validate(t_data *img)
 				ft_errors("wrong map");
 			img->map_y++;
 		}
-		img->map_x++;
-		if (img->map_x == img->size)
+		if (img->map_x++ == img->size)
 		{
 			while (img->map_y < img->max_len)
 			{
@@ -57,4 +56,11 @@ void	ft_validate(t_data *img)
 			}
 		}
 	}
+	if (img->map_x == img->size - 1)
+		while (img->map_y != img->max_len)
+		{
+			if (img->map[img->map_x][img->map_y] != '1' || img->map[img->map_x][img->map_y] != ' ')
+				ft_errors("wrong map");
+			img->map_y++;
+		}
 }
