@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:11:57 by paminna           #+#    #+#             */
-/*   Updated: 2021/04/07 09:52:06 by paminna          ###   ########.fr       */
+/*   Updated: 2021/04/10 17:19:42 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 #  define D 2
 #  define ESC 53
 #  define MOVESPEED 0.1
-#  define ROTATION 0.2
+#  define ROTATION 0.4
 # endif
 
 # include "libft/libft.h"

@@ -1,0 +1,34 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/paminna/Desktop/raycasting_project_c/cub3d.h
+libft/libft.h
+/Users/paminna/Desktop/raycasting_project_c/libft/libft.h
+minilibx/mlx.h
+/Users/paminna/Desktop/raycasting_project_c/minilibx/mlx.h
+stdlib.h
+-
+fcntl.h
+-
+unistd.h
+-
+math.h
+-
+
+/Users/paminna/Desktop/raycasting_project_c/ft_validate.c
+cub3d.h
+/Users/paminna/Desktop/raycasting_project_c/cub3d.h
+
+/Users/paminna/Desktop/raycasting_project_c/libft/libft.h
+unistd.h
+-
+stdlib.h
+-
+
+/Users/paminna/Desktop/raycasting_project_c/minilibx/mlx.h
+

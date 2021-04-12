@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/01 15:21:11 by paminna           #+#    #+#             */
-/*   Updated: 2021/04/07 10:35:03 by paminna          ###   ########.fr       */
+/*   Updated: 2021/04/07 20:13:41 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,8 @@ void	ft_count_lines(t_data *img)
 	{
 		if ((int)ft_strlen(line) > img->max_len)
 			img->max_len = (int)ft_strlen(line);
+		if (line[0] == '\t')
+			img->max_len += 3;
 		if ((line[i] == '1' || line[i] == '2' || line[i] == '0'
 		|| line[i] == ' ' || line[i] == 32 ||
 		(line[i] > 8 && line[i] < 14)) && (line[i] != '\0'))
@@ -92,12 +94,10 @@ void	ft_count_lines(t_data *img)
 		ft_count_sprite(img, line, &i);
 	}
 	free(line);
-	img->size++;
 	close(fd);
 	if (!(img->map = (char**)malloc((img->size + 1) * sizeof(char*))))
 		ft_errors("Malloc error");
-	if (!(img->one = (t_ones*)malloc(sizeof(t_ones)
-	* (img->spr.num_sprites))))
+	if (!(img->one = (t_ones*)malloc(sizeof(t_ones) * (img->spr.num_sprites))))
 		ft_errors("Malloc error");
 }
 

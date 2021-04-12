@@ -6,7 +6,7 @@
 /*   By: paminna <paminna@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:11:09 by paminna           #+#    #+#             */
-/*   Updated: 2021/04/07 10:47:34 by paminna          ###   ########.fr       */
+/*   Updated: 2021/04/07 20:02:03 by paminna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	ft_parse_resolution(t_data *img, char *line)
 		h = 1400;
 	img->win.width = (int)w;
 	img->win.height = (int)h;
-	if (img->win.height < 0 || img->win.width < 0)
+	if (img->win.height <= 0 || img->win.width <= 0)
 		ft_errors("Error wrong resolution");
 }
 

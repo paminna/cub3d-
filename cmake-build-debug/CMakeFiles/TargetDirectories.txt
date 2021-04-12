@@ -1,0 +1,6 @@
+/Users/paminna/Desktop/raycasting_project_c/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/paminna/Desktop/raycasting_project_c/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/paminna/Desktop/raycasting_project_c/cmake-build-debug/CMakeFiles/Cub3D.dir
+/Users/paminna/Desktop/raycasting_project_c/cmake-build-debug/libft/CMakeFiles/rebuild_cache.dir
+/Users/paminna/Desktop/raycasting_project_c/cmake-build-debug/libft/CMakeFiles/edit_cache.dir
+/Users/paminna/Desktop/raycasting_project_c/cmake-build-debug/libft/CMakeFiles/libft.dir
